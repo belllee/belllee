@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mongodb的internalQueryExecMaxBlockingSortBytes异常修复 | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="现象node执行的服务出现异常，查看日志发现如下错误。12345678910MongoError: QueryFailure flag set on getmore command    at Object.toError (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\utils.js:114:11)    at e:\co">
+<meta name="keywords" content="db,mongodb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongodb的internalQueryExecMaxBlockingSortBytes异常修复">
+<meta property="og:url" content="https://belllee.github.io/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="现象node执行的服务出现异常，查看日志发现如下错误。12345678910MongoError: QueryFailure flag set on getmore command    at Object.toError (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\utils.js:114:11)    at e:\co">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:updated_time" content="2018-01-10T13:58:35.229Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mongodb的internalQueryExecMaxBlockingSortBytes异常修复">
+<meta name="twitter:description" content="现象node执行的服务出现异常，查看日志发现如下错误。12345678910MongoError: QueryFailure flag set on getmore command    at Object.toError (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\utils.js:114:11)    at e:\co">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/" class="article-date">
+  <time datetime="2018-01-10T13:57:40.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mongodb的internalQueryExecMaxBlockingSortBytes异常修复
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>node执行的服务出现异常，查看日志发现如下错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MongoError: QueryFailure flag set on getmore command</span><br><span class="line">    at Object.toError (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\utils.js:114:11)</span><br><span class="line">    at e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\cursor.js:854:31</span><br><span class="line">    at e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\db.js:1905:9</span><br><span class="line">    at Server.Base._callHandler (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\connection\base.js:453:41)</span><br><span class="line">    at e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\connection\server.js:488:18</span><br><span class="line">    at MongoReply.parseBody (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\responses\mongo_reply.js:68:5)</span><br><span class="line">    at .&lt;anonymous&gt; (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\connection\server.js:446:20)</span><br><span class="line">    at emitOne (events.js:96:13)</span><br><span class="line">    at emit (events.js:188:7)</span><br></pre></td></tr></table></figure></p>
+<p>查询该错误，未找到具体原因。然后在mongodb\cursor.js 854行，增加打印result。得到具体错误信息如下：<br>Overflow sort stage buffered data usage exceeds in internal limit<br>mongo执行sort语句时，内存最大32M，如果数据量大，超过这个限制就出抛出异常。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>1、给sort语句中的字段建立索引。<br>  比如： sort({ endDate: -1, createTime: -1})<br>  建立索引如下：db.activity.createIndex({ endDate: -1, createTime: -1})  。其中acitivity是集合名</p>
+<p>2、增加内存限制<br>需要在admin数据库下role为root的账户下设置,例如设置成100M<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.auth(&quot;adminuser&quot;,&quot;passwd&quot;)</span><br><span class="line">db.adminCommand(&#123;setParameter: 1, internalQueryExecMaxBlockingSortBytes: 104857600&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>综合查询性能和服务器资源占用，推荐使用建立索引的方式。</p>
+<h3 id="其他需要注意的地方"><a href="#其他需要注意的地方" class="headerlink" title="其他需要注意的地方"></a>其他需要注意的地方</h3><p>除了sort, aggregate也存在内存限制，这是需要使用allowDiskUse参数，允许使用硬盘缓存中间数据。具体设置如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">db.activity.aggregate(</span><br><span class="line">		[&#123; $unwind: &apos;$applyment&apos; &#125;,</span><br><span class="line">		&#123; $match: &#123; &apos;applyment.items.value&apos;: req.query.uid &#125;&#125;,</span><br><span class="line">		&#123; $project : &#123;id:1,title: 1, &apos;applyment.approve&apos;: 1,&apos;applyment.createTime&apos;: 1, endDate: 1&#125;&#125;,</span><br><span class="line">		&#123; $sort:&#123; &apos;applyment.createTime&apos;: -1 &#125;&#125;,</span><br><span class="line">		&#123; $skip:(result.pageNumber - 1) * result.pageSize&#125;,</span><br><span class="line">		&#123; $limit:result.pageSize&#125;],</span><br><span class="line">		&#123; allowDiskUse: true&#125;）</span><br></pre></td></tr></table></figure></p>
+<h3 id="关于设置索引"><a href="#关于设置索引" class="headerlink" title="关于设置索引"></a>关于设置索引</h3><p>1、mongoDB 3.0开始ensureIndex被废弃，今后都仅仅是db.collection.createIndex的一个别名。<br>2、子对象的属性设置索引db.activity.createIndex({ “applyment.createTime”: -1})<br>3、数组内置顶位置设置索引db.activity.createIndex({ “applyment.items.0.value”: 1}) </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/" data-id="cjc95ci3a000180cmuseh0lp6" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/db/">db</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/">mongodb</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          EffectiveJava--对象的通用方法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/10/java/非maven的jar包怎么引入maven工程/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">非maven的jar包怎么引入maven工程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/工具/" style="font-size: 16.67px;">工具</a> <a href="/tags/性能/" style="font-size: 16.67px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 13.33px;">测试</a> <a href="/tags/自动化/" style="font-size: 13.33px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/">mongodb的internalQueryExecMaxBlockingSortBytes异常修复</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/非maven的jar包怎么引入maven工程/">非maven的jar包怎么引入maven工程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/swe/也谈TDD/">也谈TDD</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

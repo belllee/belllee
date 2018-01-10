@@ -1,13 +1,822 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="iewport" />
-	<title>bell lee's blog</title>
+  <meta charset="utf-8">
+  
+  <title>李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="记录点滴">
+<meta property="og:type" content="website">
+<meta property="og:title" content="李忠伟的个人博客">
+<meta property="og:url" content="https://belllee.github.io/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="记录点滴">
+<meta property="og:locale" content="zh_cn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="李忠伟的个人博客">
+<meta name="twitter:description" content="记录点滴">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
 </head>
+
 <body>
-	<div>
-  This is bell lee's blog main page.
-	</div>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-java/EffectiveJava--创建和销毁对象" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/" class="article-date">
+  <time datetime="2018-01-10T14:00:46.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="第1条，考虑用静态工厂方法代替构造器"><a href="#第1条，考虑用静态工厂方法代替构造器" class="headerlink" title="第1条，考虑用静态工厂方法代替构造器"></a>第1条，考虑用静态工厂方法代替构造器</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点:"></a>优点:</h3><ul>
+<li>有名称，作用更清晰</li>
+<li>可以实现单例</li>
+<li>可以返回原类型的任何子类型</li>
+<li>创建参数化实例对象时，代码更简洁</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点:"></a>缺点:</h3><ul>
+<li>类如果不含公有或者受保护的构造器，就不能被子类化  </li>
+<li>与其他静态方法没区别</li>
+</ul>
+<h2 id="第2条，遇到多个构造器参数时考虑用建造者-builder-模式"><a href="#第2条，遇到多个构造器参数时考虑用建造者-builder-模式" class="headerlink" title="第2条，遇到多个构造器参数时考虑用建造者(builder)模式"></a>第2条，遇到多个构造器参数时考虑用建造者(builder)模式</h2><p>构造器遇到多个参数组合的时候，需要定义不通组合的构造器，复杂而且顺序容易弄错。使用建造者模式就可以解决此类问题。<br>优点:灵活链式构建<br>缺点:需创建构建器，有开销  </p>
+<h2 id="第3条，用私有构造器或者枚举类型强化Singleton属性"><a href="#第3条，用私有构造器或者枚举类型强化Singleton属性" class="headerlink" title="第3条，用私有构造器或者枚举类型强化Singleton属性"></a>第3条，用私有构造器或者枚举类型强化Singleton属性</h2><p>序列化，反射安全？<br>单元素的枚举类型已经成为实现Sibgleton的最佳方法。  </p>
+<h2 id="第4条，通过私有构造器强化不可实例化的能力"><a href="#第4条，通过私有构造器强化不可实例化的能力" class="headerlink" title="第4条，通过私有构造器强化不可实例化的能力"></a>第4条，通过私有构造器强化不可实例化的能力</h2><p>不需要被实例化的类，添加私有构造函数，并且在构造函数中抛出异常，来避免被实例化。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UtilityClass</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">UtilityClass</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> AssertionError();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="第5条，避免创建不必要的对象"><a href="#第5条，避免创建不必要的对象" class="headerlink" title="第5条，避免创建不必要的对象"></a>第5条，避免创建不必要的对象</h2><p>如下情况可以不创建对象，示例如下：<br>1、””字符串本身就是一个String对象，再new会重复创建String对象。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="keyword">new</span> String(<span class="string">"this is a wrong"</span>);<span class="comment">//bad  </span></span><br><span class="line">String s = <span class="string">"good"</span>;<span class="comment">//good</span></span><br></pre></td></tr></table></figure></p>
+<p>2、提供静态方法和构造函数的不可变类，静态方法优于创建对象<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Boolean constructObj = <span class="keyword">new</span> Boolean(<span class="string">"true"</span>);<span class="comment">//bad  </span></span><br><span class="line">Boolean staticMethodObj = Boolean.valueOf(<span class="string">"true"</span>);<span class="comment">//good</span></span><br></pre></td></tr></table></figure></p>
+<p>3、作为常量使用的可变类。比如作为固定开始日期的Date，只需要实例化一次即可重复使用<br>4、优先使用基本类型而不是装箱基本类型，当心无意识的自动装箱<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Long sum = <span class="number">0L</span>;<span class="comment">//bad  </span></span><br><span class="line"><span class="keyword">long</span> sum = <span class="number">0L</span>;<span class="comment">//good</span></span><br></pre></td></tr></table></figure></p>
+<p>不是不要创建对象，小对象的开销很小。<br>重量级的对象才需要维护资源池，例如数据库连接。  </p>
+<h2 id="第6条，消除过期的对象引用"><a href="#第6条，消除过期的对象引用" class="headerlink" title="第6条，消除过期的对象引用"></a>第6条，消除过期的对象引用</h2><p>例如，Stack中pop的对象引用，需要主动释放内存,同时也能尽早暴漏错误调用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">pop</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(size == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</span><br><span class="line">    Object result = elements[--size];</span><br><span class="line">    elements[size] = bull; <span class="comment">//释放过期的引用</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>清空对象引用应该是一种例外，而不是一种规范行为。通过再尽量小的作用域内，变量及时结束其生命周期来释放。<br>关于内存泄露的来源：  </p>
+<ul>
+<li>类自己管理的内存，程序猿需要关注其释放</li>
+<li>缓存，可以使用WeakHashMap代替缓存，需要定期清理，或者类似LinkedHashMap的removeEldestEntry方法清理。</li>
+<li>监听器和其他回调。确保回调立即回收的方法保存他们的弱引用。例如保存成WeakHashMap的键。 </li>
+</ul>
+<h2 id="第7条，避免使用终结方法-finalizer"><a href="#第7条，避免使用终结方法-finalizer" class="headerlink" title="第7条，避免使用终结方法(finalizer)"></a>第7条，避免使用终结方法(finalizer)</h2><p>finalizer的缺点：</p>
+<ul>
+<li>不能保证会被及时的执行，间隔是任意的。</li>
+<li>在不同JVM平台表现不同。</li>
+<li>finalizer线程的优先级比程序中其他线程低很多，会导致队列积压，内存溢出。</li>
+<li>finalizer可能不会被执行。<br>需要注意的地方：</li>
+<li>所以不应该依赖finalizer来更新重要的持久状态。  </li>
+<li>System.gc和System.runFinalization可以增加finalizer被执行的机会，单不能保证一定被执行。  </li>
+<li>finalizer中抛出的异常如果未捕获，该异常可能被忽略（警告也不会被打印），并且finalizer也会终止。继续使用此对象时会产生不确定的结果。</li>
+<li>使用finalizer会导致对象的创建和销毁时间大幅增加，甚至几百倍。</li>
+<li>建议定义一个显式的终止方法释放资源。例如InputStream/FileOutputStream/Connection的close等。本地对等体需要finalizer或者显式的终止方法才能释放，GC不会自动释放。对于需要及时释放资源的情况，应该用显式的终止方法来释放。</li>
+<li>显式的终止方法通常与try-finally结构结合起来使用，以确保及时终止</li>
+<li><p>子类的finalizer，需要在try-finally的finally中调用超类的finalizer。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line"> <span class="comment">//Finalize subClass state</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line"> <span class="keyword">super</span>.finalize();</span><br><span class="line">&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以考虑使用匿名类来充当总结方法守卫者，确保能够调用finalizer.因为成员变量会被主动释放，从而触发finalizer。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Object finalizerGuardian = <span class="keyword">new</span> Object()&#123;</span><br><span class="line"> <span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">	 <span class="keyword">super</span>.finalize();</span><br><span class="line">   &#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/java/EffectiveJava--创建和销毁对象/" data-id="cjc95ci3i000480cm4oq5rapj" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java/EffectiveJava--对象的通用方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/" class="article-date">
+  <time datetime="2018-01-10T14:00:46.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="第8条，覆盖equals时请遵守通用约定"><a href="#第8条，覆盖equals时请遵守通用约定" class="headerlink" title="第8条，覆盖equals时请遵守通用约定"></a>第8条，覆盖equals时请遵守通用约定</h2><p>除非必要，不要重写equals方法。注意：</p>
+<ul>
+<li>类的每个实例本质上都是唯一的。这时候继承的Object的euqals方法是完全正确的，不需要重写</li>
+<li>不关心类是否提供“逻辑相等”功能。比如Random类。</li>
+<li>超类（父类）已经重写了quals，对于子类是适用的，无需重写。例如:AbstractSet——&gt;Set，AbstractList——&gt;List，AbstractMap——&gt;Map</li>
+<li><p>类是私有的或者是包级私有的，并且确定它的equals方法永远不会被调用时。可以进行如下重写，防止意外调用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span></span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果类具有自己特有的“逻辑相等概念”，而且超类还没有覆盖equals实现期望的行为，此时就需要重写equals方法。重写后被用做map的key，或者set的元素时才能表现出预期的行为。</p>
+</li>
+<li>对于“每个值至多只存在一个对象”的“值类”，Object的euqals方法等同于逻辑相等。例如：枚举类型<br>Object的euqals方法的规范：</li>
+<li>自反性（reflexive）。对于任何非null的引用值x，x.equals(x)必须返回true。</li>
+<li>对称性（symmetric）。对于任何非null的引用值x和y，当且仅当y.equals(x)返回true时，x.equals(y)必须返回true。</li>
+<li>传递性（transitive）。对于任何非null的引用值x、y和z，如果x.equals(y)返回true，并且y.equals(z)也返回true，那么x.equals(z)必须返回true。</li>
+<li>一致性（consistent）。对于任何非null的引用值x和y，只要x，y没有被修改过，多次调用x.equals(y)，返回值一定是一致的。</li>
+<li>对于任何非null的引用值x，x.equals(null)必须返回false。<br>如果不符合这些规范，程序会表现异常，甚至是崩溃，而且很难找到根源。<br>在子类和超类，子类之间，以及同一个超类的子类之间，equals就很有可能出现问题。我们无法在扩展可实例化的类的同时，既增加新的值组件，同时又保留equals约定。推荐用复合的方式代替继承，每个属性分别equals。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ColorPoint</span> </span>&#123;</span><br><span class="line"> <span class="keyword">private</span> Point point;</span><br><span class="line"> <span class="keyword">private</span> Color color;</span><br><span class="line"> <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span></span>&#123;</span><br><span class="line">	 <span class="keyword">if</span>(!(o <span class="keyword">instanceof</span> ColorPoint))&#123;</span><br><span class="line">		 <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	 &#125;</span><br><span class="line">	 ColorPoint cp = (ColorPoint)o;</span><br><span class="line">	 <span class="keyword">return</span> cp.point.equals(point) &amp;&amp; cp.color.equals(color);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>equals实现时一般要使用instanceof进行类型检查，对null检查时必定返回false，所以没必要再检查是否为null。<br>实现高质量equals方法的诀窍：</p>
+<ul>
+<li>使用==操作符检查“参数是否为这个对象的引用”。（出于性能优化方面考虑）</li>
+<li>使用instanceof操作符检查“参数是否为正确的类型”。所谓“正确的类型”一般是指类，如果接口改进了equals约定，允许实现该接口的类之间进行比较，就可以使用接口。例如Set、List、Map和Map.Entry。</li>
+<li>把参数转换成正确的类型。即转换成当前对象的类型。</li>
+<li>对该类中的每个关键域（属性），分别进行比较。除float和double的基本值类型，直接使用==比较。float使用Float.compare，double使用Double.compare。如果要检查数组中的每个元素，可以使用Arrays.equals。对于引用域，可能存在null为合法值，需要进行null检查。多个域的情况下，要优先比较开销低的域。</li>
+<li>要确保equals符合对称性，传递性和一致性。 </li>
+<li>不要企图让equals做过多的比较</li>
+<li>不要将equals方法的参数类型必须是Object，不能改成当前类。因为没有重写Object.equals，只是重载了。</li>
+</ul>
+<h2 id="第9条：重写equals时必须重写hashCode"><a href="#第9条：重写equals时必须重写hashCode" class="headerlink" title="第9条：重写equals时必须重写hashCode"></a>第9条：重写equals时必须重写hashCode</h2><p>如果没有重写hashCode方法，就无法作为散列集合（例如：HashMap，HashSet和HashTable）的key。因为在取值时会优先通过hashCode比较。</p>
+<h2 id="第10条，始终要重写toString"><a href="#第10条，始终要重写toString" class="headerlink" title="第10条，始终要重写toString"></a>第10条，始终要重写toString</h2><p>toString在打印日志时，可以明确当前实例的重要信息，便于理解。而且要注意格式一旦确定就不要修改，格式要便于字符串解析，去除对应域的值。</p>
+<h2 id="第11条，谨慎的重写clone"><a href="#第11条，谨慎的重写clone" class="headerlink" title="第11条，谨慎的重写clone"></a>第11条，谨慎的重写clone</h2><p>如果要支持clone需要实现Cloneable接口。<br>clone方法就是一个构造器，你必须确保它不会伤害到原始的对象，并确保正确地创建被克隆对象中的约束条件。</p>
+<ul>
+<li>对于子类型的域直接使用Object.clone即可。</li>
+<li><p>对于可变的引用类型，可变引用类型的集合，就需要递归的调用clone。以避免伤害到原始对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> Stack <span class="title">clone</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="keyword">try</span>&#123;</span><br><span class="line">	 Stack result = (Stack) <span class="keyword">super</span>.clone();</span><br><span class="line">	 result.date = date.clone();</span><br><span class="line">	 result.elements = elements.clone();</span><br><span class="line">           <span class="keyword">return</span> result;</span><br><span class="line"> &#125; <span class="keyword">catch</span> (CloneNotSupportedException e) &#123;</span><br><span class="line">	 <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>clone架构与引用可变对象的final域的正常用法是不相兼容的，除非在clone对象和原始对象间可以安全的共享此可变对象。</p>
+</li>
+<li>对于散列桶数组，需要遍历每个数据元素，进行深度拷贝进行clone。</li>
+<li>clone不应该在构造的过程中，调用新对象中任何非final的方法，防止新旧对象不一致。</li>
+<li>对于有线程安全要求的类，clone方法要处理好同步。Object.clone没有同步。</li>
+<li>对于ID或者时间戳一类的值域，注意clone后进行修正。</li>
+<li>可以考虑使用拷贝构造器或者拷贝工厂方法，更加灵活的实现拷贝操作，比如带参数或者类型转换（比如用数组生成List对象）。</li>
+<li>如果不能提供良好保护的clone方法，他的子类就不可能实现Cloneable接口。</li>
+</ul>
+<p>编程通则：永远不要让客户去做任何类库能够替客户完成的事情。</p>
+<h2 id="第12条，考虑实现Compareable接口"><a href="#第12条，考虑实现Compareable接口" class="headerlink" title="第12条，考虑实现Compareable接口"></a>第12条，考虑实现Compareable接口</h2><p>compareTo的通用约定与equals类似。<br>注意：HashSet实例中添加new BigDecimal(“1.0”)和new BigDecimal(“1.00”)，这个集合将含有两个元素。而如果把类型HashSet改成TreeSet，则只有一个元素。因为HashSet使用equals比较，TreeSet使用comapreTo比较。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/java/EffectiveJava--对象的通用方法/" data-id="cjc95ci3e000280cmed7lx2df" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/" class="article-date">
+  <time datetime="2018-01-10T13:57:40.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/">mongodb的internalQueryExecMaxBlockingSortBytes异常修复</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>node执行的服务出现异常，查看日志发现如下错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MongoError: QueryFailure flag set on getmore command</span><br><span class="line">    at Object.toError (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\utils.js:114:11)</span><br><span class="line">    at e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\cursor.js:854:31</span><br><span class="line">    at e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\db.js:1905:9</span><br><span class="line">    at Server.Base._callHandler (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\connection\base.js:453:41)</span><br><span class="line">    at e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\connection\server.js:488:18</span><br><span class="line">    at MongoReply.parseBody (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\responses\mongo_reply.js:68:5)</span><br><span class="line">    at .&lt;anonymous&gt; (e:\code\api\mobile\nodejs\node_modules\mongodb\lib\mongodb\connection\server.js:446:20)</span><br><span class="line">    at emitOne (events.js:96:13)</span><br><span class="line">    at emit (events.js:188:7)</span><br></pre></td></tr></table></figure></p>
+<p>查询该错误，未找到具体原因。然后在mongodb\cursor.js 854行，增加打印result。得到具体错误信息如下：<br>Overflow sort stage buffered data usage exceeds in internal limit<br>mongo执行sort语句时，内存最大32M，如果数据量大，超过这个限制就出抛出异常。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>1、给sort语句中的字段建立索引。<br>  比如： sort({ endDate: -1, createTime: -1})<br>  建立索引如下：db.activity.createIndex({ endDate: -1, createTime: -1})  。其中acitivity是集合名</p>
+<p>2、增加内存限制<br>需要在admin数据库下role为root的账户下设置,例如设置成100M<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.auth(&quot;adminuser&quot;,&quot;passwd&quot;)</span><br><span class="line">db.adminCommand(&#123;setParameter: 1, internalQueryExecMaxBlockingSortBytes: 104857600&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>综合查询性能和服务器资源占用，推荐使用建立索引的方式。</p>
+<h3 id="其他需要注意的地方"><a href="#其他需要注意的地方" class="headerlink" title="其他需要注意的地方"></a>其他需要注意的地方</h3><p>除了sort, aggregate也存在内存限制，这是需要使用allowDiskUse参数，允许使用硬盘缓存中间数据。具体设置如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">db.activity.aggregate(</span><br><span class="line">		[&#123; $unwind: &apos;$applyment&apos; &#125;,</span><br><span class="line">		&#123; $match: &#123; &apos;applyment.items.value&apos;: req.query.uid &#125;&#125;,</span><br><span class="line">		&#123; $project : &#123;id:1,title: 1, &apos;applyment.approve&apos;: 1,&apos;applyment.createTime&apos;: 1, endDate: 1&#125;&#125;,</span><br><span class="line">		&#123; $sort:&#123; &apos;applyment.createTime&apos;: -1 &#125;&#125;,</span><br><span class="line">		&#123; $skip:(result.pageNumber - 1) * result.pageSize&#125;,</span><br><span class="line">		&#123; $limit:result.pageSize&#125;],</span><br><span class="line">		&#123; allowDiskUse: true&#125;）</span><br></pre></td></tr></table></figure></p>
+<h3 id="关于设置索引"><a href="#关于设置索引" class="headerlink" title="关于设置索引"></a>关于设置索引</h3><p>1、mongoDB 3.0开始ensureIndex被废弃，今后都仅仅是db.collection.createIndex的一个别名。<br>2、子对象的属性设置索引db.activity.createIndex({ “applyment.createTime”: -1})<br>3、数组内置顶位置设置索引db.activity.createIndex({ “applyment.items.0.value”: 1}) </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/" data-id="cjc95ci3a000180cmuseh0lp6" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/db/">db</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/">mongodb</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java/非maven的jar包怎么引入maven工程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/java/非maven的jar包怎么引入maven工程/" class="article-date">
+  <time datetime="2018-01-10T13:41:23.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/java/非maven的jar包怎么引入maven工程/">非maven的jar包怎么引入maven工程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前几天因为业务需要，引入了一个其他部门的jar包。不是Maven工程构建的，也就没有pom文件。这里记录下引入的过程，以备今后参考。  </p>
+<ol>
+<li>maven仓库中存在的jar包<br>可以直接在pom文件中添加依赖。但是问题来了，只有jar包，怎么知道groupId和artifactId呢？下面我就用实例告诉大家，怎么引入。比如依赖一个json-lib-2.2.1.jar。只需要在<a href="http://mvnrepository.com" target="_blank" rel="noopener"></a> 网站上查询这个jar包。然后在版本列表中，点击具体需要的版本。<br><img src="http://upload-images.jianshu.io/upload_images/4944427-0788fe4e3ca5beb2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mvn1-1.jpg"><br>进入具体页面后，拷贝需要的依赖配置内容，复制到maven<br><img src="http://upload-images.jianshu.io/upload_images/4944427-ed06810e63b8067a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mvn1-2.jpg"><br>复制maven的配置描述，拷贝到pom文件里即可。</li>
+<li>maven仓库里不存在的jar包<br>可以自己在本地手工添加的方式解决。例如，haha-1.0.jar。我们设置groupId为com.my.test，artifactId为haha。版本为1.0。<br>a.  maven添加本地jar包<br>配置好maven环境，有些使用eclipse的童鞋，可能没有安装过maven，会导致无法执行，需要自己配置maven环境。<br>执行如下命令：<br>mvn install:install-file -Dfile=E:\work\haha-1.0.jar -DgroupId=com.my.test -DartifactId=haha -Dversion=1.0 -Dpackaging=jar<br>b. 手工创建目录<br>在pom文件里添加配置信息：  <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;commons-httpclient&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-httpclient&lt;/artifactId&gt;
+    &lt;version&gt;3.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>创建好目录.m2\repository\com\my\test\haha\1.0。把haha-1.0.jar文件复制过来，同时新建haha-1.0.jar.pom。参考maven从仓库下载的jar包里相同的文件，复制里面的内容，修改一下groupId，artifactId和version信息即可。执行完这些后，再更新和编辑就可以解决了。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/java/非maven的jar包怎么引入maven工程/" data-id="cjc95ci3i000580cmls7naqjk" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-swe/也谈TDD" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/swe/也谈TDD/" class="article-date">
+  <time datetime="2018-01-10T13:33:51.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/swe/也谈TDD/">也谈TDD</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;最近在组织项目成员的能力提升，不可避免的就进入了TDD这个话题。对于TDD，已经成为很多公司员工入职的专业知识培训课程。网上关于TDD的各种文章和讨论也很多，但是感觉大家都是望文生义，都是先写测试用例，再写代码。<br>&nbsp;&nbsp;&nbsp;&nbsp;可能有人会说TDD就是“Test Driven Development”，就是测试驱动开发。就是写测试用例，然后再写代码。我承认，书里是这么写的。大家也是这么理解，然后去实践的。实际效果如何呢，就我了解的情况，大家对这个都很纠结。很多都在说，我先写几行代码，然后再写用例为啥就不行了呢？难道真是缺少仪式感吗？<br>&nbsp;&nbsp;&nbsp;&nbsp;那么我先说说，我最近的思考。TDD方式，实际上是关注点驱动开发，或者说规则驱动开发。我要实现一个关注点/规则，我就先一条用例来验证这个关注点/规则，然后去完成这个关注点/规则的代码。如果按照这个思路去思考，我每次实现一个关注点/规则，我先写用例后写代码，或者先写代码再写用例。每次都是围绕着一个关注点/规则，是否先后顺序就显得不那么重要了。关键是每次聚焦于一个关注点/规则，有测试用例保证这个关注点/规则的准确性。那么就可以放心的去实现下一个关注点/规则，并且保证整个功能的准确了。<br>&nbsp;&nbsp;&nbsp;&nbsp;以上是我对于TDD的最新理解和思考。各位看过后是否也对TDD也有了新的理解了呢？</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/swe/也谈TDD/" data-id="cjc95ci3m000680cmurao82ya" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/敏捷/">敏捷</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/js/高性能JavaScript-原型链" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/FE/js/高性能JavaScript-原型链/" class="article-date">
+  <time datetime="2018-01-10T13:29:12.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/FE/js/高性能JavaScript-原型链/">高性能JavaScript--原型链</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="对象成员"><a href="#对象成员" class="headerlink" title="对象成员"></a>对象成员</h3><p>前面已经介绍过，访问对象成员的速度比字面量或变量要慢，某些浏览器比数组元素还要慢。这里所说的对象成员包括属性和方法。大部分的JS代码都是以面向对象风格编写的，这就导致了非常频繁的访问对象成员操作？</p>
+<h4 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h4><p>JS的对象是基于原型的。原型是其他对象的基础，它定义并实现了一个新创建的对象所必须包含的成员列表。不同于其他编程语言的类，原型为所有对象实例所共享，因此这些实例也共享原型对象的成员。并且每个对象实例上的原型修改后，会影响原型的定义。<br>在Firefox，Safari，Chrome和IE11+浏览器里，对象实例可以通过<strong>proto</strong>读取原型对象。一旦创建一个内置对象（例如Object或Array）的实例，他们就会自动拥有一个Object对象作为原型。<br>对象可以有两种成员类型：实例成员（或own成员）和原型成员。实例成员直接存在于对象实例中，原型成员则从对象的原型继承而来。实例代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function Book(title, publisher)&#123;</span><br><span class="line">    this.title = title</span><br><span class="line">    this.publisher = publisher</span><br><span class="line">&#125;</span><br><span class="line">var book1 = new Book(&quot;High Performance JavaScript&quot;,&quot;Yahoo! Press&quot;);</span><br><span class="line">console.log(book1.title);//实例成员</span><br><span class="line">console.log(book1.toString());//原型成员</span><br></pre></td></tr></table></figure></p>
+<p>如何判断对象的相关成员是否存在？是实例成员还是原型成员成员？方法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">console.log( book1.hasOwnProperty(&apos;title&apos;)) //true</span><br><span class="line">console.log( book1.hasOwnProperty(&apos;toString&apos;)) //false</span><br><span class="line">console.log(&apos;title&apos; in book1) //true</span><br><span class="line">console.log(&apos;toString&apos; in book1) //true</span><br></pre></td></tr></table></figure></p>
+<h4 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h4><p>一个对象实例的原型对象，如果不是Object对象，那么原型对象就还有其自己的原型对象，直到原型对象是Object对象才结束。这种原型对象的嵌套就是原型链。<br>Object实例的原型就是Object对象，而其他对象生成实例时，instance.<strong>proto</strong>.<strong>proto</strong>才是Object对象。<br>示例代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function Book(title, publisher)&#123;</span><br><span class="line">    this.title = title</span><br><span class="line">    this.publisher = publisher</span><br><span class="line">&#125;</span><br><span class="line">Book.prototype.price = 1.2</span><br><span class="line"></span><br><span class="line">var book1 = new Book(&quot;High Performance JavaScript&quot;,&quot;Yahoo! Press&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>实例book1的原型(<strong>proto</strong>)是Book.prototype,而Book.prototype的原型是Object。<br>对象Book拥有<strong>proto</strong>和prototype两个属性，<br>注意prototype的使用，只有在实例中才能直接读取prototype定义的属性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function seven() &#123;</span><br><span class="line">    this.a = 7;</span><br><span class="line">&#125;</span><br><span class="line">seven.prototype.a = -1;</span><br><span class="line">console.log(&apos;seven.a&apos;, seven.a); //undefine</span><br><span class="line">console.log(&apos;new seven().a&apos;, new seven().a); //7</span><br></pre></td></tr></table></figure></p>
+<h4 id="缓存对象成员值"><a href="#缓存对象成员值" class="headerlink" title="缓存对象成员值"></a>缓存对象成员值</h4><p>访问对象成员时，对象在原型链的位置越深，读取的速度也就越慢。只有在必要时才使用对象成员，特别是没有必要反复多次读取同一对象成员。最佳做法是将属性值保存在局部变量中，使用局部变量代替属性以避免多次查找带来的性能开销。<br>实例代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function toggle(element)&#123;</span><br><span class="line">    if(YAHOO.util.Dom.hasClass(element,&apos;selected&apos;))&#123;</span><br><span class="line">        YAHOO.util.Dom.removeClass(element,&apos;selected&apos;);</span><br><span class="line">        return false;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        YAHOO.util.Dom.addClass(element,&apos;selected&apos;);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//改进后</span><br><span class="line">function toggle(element)&#123;</span><br><span class="line">    var dom = YAHOO.util.Dom;</span><br><span class="line">    var hasClass = dom.hasClass(element,&apos;selected&apos;);</span><br><span class="line">    if(hasClass)&#123;</span><br><span class="line">        dom.removeClass(element,&apos;selected&apos;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        dom.addClass(element,&apos;selected&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">    return !hasClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意：<br>这种优化技术，并不推荐用于对象的成员方法。因为许多对象方法使用this来判断执行环境，把一个对象方法保存在局部变量会导致this的改变，从而导致异常。示例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function Book(title, publisher)&#123;</span><br><span class="line">    this.title = title</span><br><span class="line">    this.publisher = publisher</span><br><span class="line">    this.getTitle = function()&#123;</span><br><span class="line">        return this.title</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var book1 = new Book(&quot;High Performance JavaScript&quot;,&quot;Yahoo! Press&quot;)</span><br><span class="line">console.log(book1.getTitle())</span><br><span class="line">var mytitle = book1.getTitle</span><br><span class="line">console.log(mytitle()) //throw exception</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/FE/js/高性能JavaScript-原型链/" data-id="cjc95ci46000n80cmtelmgdly" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能/">性能</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/js/高性能JavaScript-作用域链" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/FE/js/高性能JavaScript-作用域链/" class="article-date">
+  <time datetime="2018-01-10T13:28:35.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/FE/js/高性能JavaScript-作用域链/">高性能JavaScript--作用域链</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="数据存取"><a href="#数据存取" class="headerlink" title="数据存取"></a>数据存取</h2><p>JS中有如下四种基本数据的存取：</p>
+<ul>
+<li>字面量：字符串、数字、布尔值、对象、数组、函数、正则表达式、null和undefined。</li>
+<li>本地变量：var/let 定义的数据存储单元。</li>
+<li>数组元素</li>
+<li>对象成员<br>通常情况下，访问速度排序：字面量 &gt; 本地变量 &gt; 数组元素 &gt; 对象成员。个别浏览器的版本，可能有细微差别。<h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3>执行环境/运行期上下文(execution context): 是指当前变量或函数有权访问的其它数据。每个执行环境都有一个与之关联的变量对象(variable object, VO)，VO是不能直接访问的，执行环境中定义的所有变量和函数都会保存在这个对象中，解析器在处理数据的时候就会访问这个内部对象。<br>全局执行环境是最外层的一个执行环境，在web浏览器中全局执行环境是window对象，因此所有全局变量和函数都是作为window对象的属性和成员函数创建的。每个函数都有自己的执行环境，当执行流进入一个函数的时候，函数的环境会被推入一个函数栈中，而在函数执行完毕后执行环境出栈并被销毁，保存在其中的所有变量和函数定义随之销毁，控制权返回到之前的执行环境中，全局的执行环境在应用程序退出（浏览器关闭）才会被销毁。<br>每一个JS函数可以看做是Function对象的一个实例，并且含有一个内部属性[[Scopes]],[[Scopes]]包含了一个函数被创建的作用域中对象的集合。这个集合被称为作用域链，它决定哪些数据能被函数访问。函数作用域中的每个对象被称为一个可变对象，每个可变对象都是以“key-value”形式存在。<br>典型的作用域链：</li>
+</ul>
+<ol>
+<li>函数创建时<br>此时函数的作用域链会压入第一个作用域对象，即创建此函数的作用域中可访问的数据对象填充。如下图所示：</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/4944427-48ee5069cc4bba9e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="scope1.png"></p>
+<p>注意：这个作用域对象是可变的，可以理解为这个对象是引用的。<br>具体对象信息可以在chrome dev tool中查看，如下图：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4944427-2f9ebf872328209d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="scope1-tool.png"></p>
+<ol>
+<li>函数执行时<br>每次执行函数时都会创建一个执行环境，每个执行环境都是独一无二的，多次调用函数就会导致创建多个执行环境。此时会将会将一个被称为“活动对象”(activation object,AO)的新对象作为第二个作用域对象压入作用域链。如下图所示:</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/4944427-9709f477eae42387.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="scope2.png"></p>
+<p>在函数的执行过程中，每遇到一个变量或者函数，都会在作用域链中按照顺序进行查找，直到遍历所有的作用域，此过程会影响运行性能。</p>
+<ol>
+<li>闭包时的作用域<br>如下一段代码中，包含了闭包<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">functionassignEvents()&#123;</span><br><span class="line">    var id= &quot;xdi9592&quot;;</span><br><span class="line">    document.getElementById(&quot;save-btn&quot;).onclick =function(event)&#123;</span><br><span class="line">        saveDocument(id);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/4944427-98c7ce04672a331c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="scope3.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4944427-b5a1093ace42448b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="scope3-tool.png"></p>
+<ol>
+<li>其他改变作用域的情况<br>一般作用域链的顺序是按照调用的顺序排列的，但是特殊情况下会改变。</li>
+</ol>
+<ul>
+<li>with<br>执行with语句时，会将with带入的对象压入作用域链，导致调用深度发生变化。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">functioninitUI()&#123;</span><br><span class="line">    with(document)&#123;</span><br><span class="line">        var bd= body,</span><br><span class="line">        links=getElementsByTagName_r(&quot;a&quot;),</span><br><span class="line">        i=0,</span><br><span class="line">        len= links.length;</span><br><span class="line">        while(i&lt;len)&#123;</span><br><span class="line">        update(links[i++]);</span><br><span class="line">        &#125;</span><br><span class="line">        getElementById(&quot;go-btn&quot;).onclick=function()&#123;</span><br><span class="line">        start();</span><br><span class="line">        &#125;;</span><br><span class="line">        bd.className =&quot;active&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/4944427-71b9617f98d995b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="with.png"></p>
+<ul>
+<li>try-catch<br>类似with，当try块发生异常时，程序跳转到catch子句，并且把异常对象压入作用域首位。catch子句执行完作用域链恢复之前的状态。由于加深了调用深度，如果在catch子句执行操作会造成性能问题。可以采用错误处理函数的方式，改变作用域链的状态，从而减少调用深度。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">try&#123;</span><br><span class="line">    methodThatMightCauseAnError();</span><br><span class="line">&#125;catch (ex)&#123;</span><br><span class="line">    handleError(ex);//delegate tohandlermethod</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="标识符解析的性能"><a href="#标识符解析的性能" class="headerlink" title="标识符解析的性能"></a>标识符解析的性能</h3><p>在执行环境的作用域链中，一个标识符的位置越深，他的读写速度就越慢，因此函数中读写局部变量是最快的，读写全局变量通常是最慢的。<br>改进办法，通过赋值给局部变量，改变标识符的深度，从而提高读写速度。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for(var i = 0; i &lt; document.getElementsByTagName(&quot;a&quot;).length; i++)&#123;</span><br><span class="line">    document.getElementsByTagName(&quot;a&quot;)[i].class = &apos;active&apos;</span><br><span class="line">&#125;</span><br><span class="line">//改进后</span><br><span class="line">var list = document.getElementsByTagName(&quot;a&quot;);</span><br><span class="line">for(var i = 0; i &lt; list.length; i++)&#123;</span><br><span class="line">    list[i].class = &apos;active&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/FE/js/高性能JavaScript-作用域链/" data-id="cjc95ci4a000p80cmkp2j2yir" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能/">性能</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/js/高性能JavaScript-JS加载和执行" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/FE/js/高性能JavaScript-JS加载和执行/" class="article-date">
+  <time datetime="2018-01-10T13:28:07.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/FE/js/高性能JavaScript-JS加载和执行/">高性能JavaScript--JS加载和执行</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>随着前端技术的不断发展，JS在web应用中的作用越来越来大，同时也意味着JS越来越成为前端的瓶颈。写出高性能的JS代码，也成为了前端开发者必备的技能。这里分享一下《高性能JavaScript》的读书心得，以便大家更好的理解JS，写出更高效的JS代码。  </p>
+<h2 id="JS加载和执行"><a href="#JS加载和执行" class="headerlink" title="JS加载和执行"></a>JS加载和执行</h2><h3 id="JS的加载"><a href="#JS的加载" class="headerlink" title="JS的加载"></a>JS的加载</h3><ol>
+<li>地球人都知道，为了不阻塞页面的加载和渲染，JS文件一般放在html的底部加载。</li>
+<li>减少加载的JS脚本数量，一般采用合并文件的方式</li>
+<li>减小JS文件大小，压缩JS文件，开启GZIP压缩  </li>
+</ol>
+<h3 id="无阻塞的脚本"><a href="#无阻塞的脚本" class="headerlink" title="无阻塞的脚本"></a>无阻塞的脚本</h3><p>避免一次加载一个很大的JS文件，避免阻塞浏览器。主要采用延迟加载技术，具体实现方法包括：</p>
+<ol>
+<li>利用script标签的延迟加载属性defer(需注意兼容性，可以在<a href="http://caniuse.com/" target="_blank" rel="noopener"></a>上查看)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;file1.js&quot; defer&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>带有defer属性的script标签，可以放在文档的任何位置。对应的JS文件将在script标签解析时下载，但代码不会被执行，直到DOM加载完成（onload事件触发之前）才会执行。JS文件下载时不会阻塞页面的其他处理过程。</p>
+<ol>
+<li>动态创建script元素,通过src加载脚本 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var script= document.createElement (&quot;script&quot;);</span><br><span class="line">script.type= &quot;text/javascript&quot;;</span><br><span class="line">script.src= &quot;file1.js&quot;;</span><br><span class="line">document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>特点：无论在何处启动下载，文件的下载和运行都不会阻塞页面的其他处理过程。如需控制狂态和加载顺序，需要自己添加监听事件处理.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//Internet Explorer</span><br><span class="line">script.onreadystatechange =function()&#123;...&#125;</span><br><span class="line">//Firefox,Opera, Chrome,Safari3+</span><br><span class="line">script.onload = function()&#123;...&#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">3. XMLHttpRequest脚本注入，通过XHR获取JS字符串，填入script元素。</span><br></pre></td></tr></table></figure></p>
+<p>var xhr= newXMLHttpRequest();<br>xhr.open(“get”,”file1.js”,true);<br>xhr.onreadystatechange= function(){<br>    if (xhr.readyState==4){<br>        if (xhr.status&gt;=200&amp;&amp;xhr.status<300|| xhr.status="=" 304){="" varscript="document.createElement("script");" script.type="text/javascript" ;="" script.text="xhr.responseText;" document.body.appendchild(script);="" }="" };="" xhr.send(null)="" <figure="" class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">特点：下载后可以不用立即添加script元素，从而控制执行时间。</span><br><span class="line">### 推荐的无阻塞模式</span><br><span class="line">先加载必要的JS文件，然后再执行load函数，再加载其他功能所需的脚本。</span><br></pre></td></tr></table></300||></p>
+<p><script type="text/javascript" src="loader.js"></script></p>
+<p><script type="text/javascript"><br>    loadScript(“the-rest.js”,function(){<br>        Application.init();<br>    });<br></script><br>```<br>目前各主流的延迟加载类库，也是采用这些技术。比如，图片懒加载，动态给img元素的src赋值。requireJS是使用动态创建script元素实现的。  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/FE/js/高性能JavaScript-JS加载和执行/" data-id="cjc95ci42000m80cm8gmyfauf" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能/">性能</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/test/基于karma-jasmine的web前端自动化测试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/FE/test/基于karma-jasmine的web前端自动化测试/" class="article-date">
+  <time datetime="2018-01-10T13:24:35.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/FE/test/基于karma-jasmine的web前端自动化测试/">基于karma+jasmine的web前端自动化测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文介绍了基于karma+jasmine的web前端自动化测试的方案和详细操作指导。</p>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><ol>
+<li>Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。Node.js 使用了一个事件驱动、非阻塞式 I/O 的模型，使其轻量又高效。Node.js 的包管理器 npm，是全球最大的开源库生态系统。</li>
+<li>Karma是一个基于Node.js的JavaScript测试执行过程管理工具（Test Runner）。该工具可用于测试所有主流Web浏览器，也可集成到CI（Continuous integration）工具，也可和其他代码编辑器一起使用。这个测试工具的一个强大特性就是，它可以监控(Watch)文件的变化，然后自行执行，通过console.log显示测试结果。</li>
+<li>Jasmine 是一个简易的JS单元测试框架。Jasmine 不依赖于任何浏览器、DOM、或者是任何 JavaScript 而存在。它适用于所有网站、Node.js 项目，或者是任何能够在 JavaScript 上面运行的程序。</li>
+</ol>
+<h3 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h3><ol>
+<li>首先必须安装执行环境nodejs</li>
+<li>安装浏览器，推荐chrome（用于运行监听程序，监听js文件变化，自动触发测试执行）</li>
+<li>安装karma+jasmine<pre><code>npm install karma -g
+npm install karma-jasmine -g
+npm install karma-chrome-launcher -g 
+npm install karma-cli -g 
+npm install karma-coverage -g 
+npm install karma-html-reporter -g 
+</code></pre></li>
+<li>安装完成后执行karma -v，检查安装是否正常</li>
+</ol>
+<h3 id="工程配置"><a href="#工程配置" class="headerlink" title="工程配置"></a>工程配置</h3><ol>
+<li>可以使用karma init，自动生成配置文件，完成部分参数的设置，然后再手动修改。</li>
+<li>当然最快的配置方法，复制下面的配置<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line">		<span class="comment">// Karma configuration</span></span><br><span class="line">		<span class="comment">// Generated on Tue Nov 01 2016 14:17:00 GMT+0800 (中国标准时间)</span></span><br><span class="line"></span><br><span class="line">		<span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">config</span>) </span>&#123;</span><br><span class="line">		  config.set(&#123;</span><br><span class="line">		  <span class="comment">// base path that will be used to resolve all patterns (eg. files, exclude)</span></span><br><span class="line">			basePath: <span class="string">''</span>,</span><br><span class="line"></span><br><span class="line">        <span class="comment">// frameworks to use</span></span><br><span class="line">        <span class="comment">// available frameworks: https://npmjs.org/browse/keyword/karma-adapter</span></span><br><span class="line">        frameworks: [<span class="string">'jasmine'</span>],</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// list of files / patterns to load in the browser</span></span><br><span class="line">        <span class="comment">//需要加载入浏览器的js文件，包括基础的类库，被测试js文件和测试用例js文件</span></span><br><span class="line">        <span class="comment">//如果需要测试angular代码，比如引入angular-mock.js，给angular代码进行mock。</span></span><br><span class="line">        <span class="comment">//注意angular-mock的版本一定要和angular版本一致。可在cdn网站对应的angular版本列表中寻找</span></span><br><span class="line">        files: [</span><br><span class="line">            <span class="string">'../webapp/vender/jquery/jquery-1.10.2.min.js'</span>,</span><br><span class="line">            <span class="string">'../webapp/vender/angular/angular.min.js'</span>,</span><br><span class="line">            <span class="string">'../webapp/vender/angular/angular-ui-router.min.js'</span>,</span><br><span class="line">            <span class="string">'lib/angular-mocks.js'</span>,</span><br><span class="line">            <span class="string">'../webapp/common/*.js'</span>,</span><br><span class="line">            <span class="string">'../webapp/commont/template/*.html'</span>,</span><br><span class="line">            <span class="string">'tc/ut/**/*.js'</span></span><br><span class="line">        ],</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// list of files to exclude</span></span><br><span class="line">        exclude: [</span><br><span class="line">          <span class="comment">//'../webapp/vender/**/*.js'</span></span><br><span class="line">        ],</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// test results reporter to use</span></span><br><span class="line">        <span class="comment">// possible values: 'dots', 'progress'</span></span><br><span class="line">        <span class="comment">// available reporters: https://npmjs.org/browse/keyword/karma-reporter</span></span><br><span class="line">        <span class="comment">//这里定义输出的报告</span></span><br><span class="line">        <span class="comment">//html对应karma-html-reporter组件，输出测试用例执行报告</span></span><br><span class="line">        <span class="comment">//coverage对应karma-coverage组件，输出测试用例执行报告</span></span><br><span class="line">        reporters: [<span class="string">'progress'</span>, <span class="string">'html'</span>, <span class="string">'junit'</span>, <span class="string">'coverage'</span>],</span><br><span class="line">        junitReporter: &#123;  </span><br><span class="line">               <span class="comment">// will be resolved to basePath (in the same way as files/exclude patterns)  </span></span><br><span class="line">              outputFile: <span class="string">'report/ut/test-results.xml'</span>,</span><br><span class="line">              suite: <span class="string">'UT'</span>,</span><br><span class="line">              useBrowserName: <span class="literal">false</span> </span><br><span class="line">        &#125;,  </span><br><span class="line">        htmlReporter: &#123;</span><br><span class="line">          outputDir: <span class="string">'report/ut'</span>,</span><br><span class="line">          reportName: <span class="string">'result'</span> <span class="comment">//outputDir+reportName组成完整的输出报告格式，如没有定义，会自动生成浏览器+OS信息的文件夹，不方便读取报告</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">//定义需要统计覆盖率的文件</span></span><br><span class="line">        preprocessors: &#123;</span><br><span class="line">            <span class="string">'../webapp/common/*.js'</span>:<span class="string">'coverage'</span>, </span><br><span class="line">            <span class="string">'../webapp/common/template/*.html'</span>: <span class="string">'ng-html2js'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        coverageReporter: &#123;  </span><br><span class="line">            type: <span class="string">'html'</span>, <span class="comment">//将覆盖率报告类型type设置为cobertura 或者 html</span></span><br><span class="line">            subdir:<span class="string">'coverage'</span>, <span class="comment">//dir+subdir组成完整的输出报告格式，如没有定义，会自动生成浏览器+OS信息的文件夹，不方便读取报告</span></span><br><span class="line">            dir: <span class="string">'report/ut/'</span>  <span class="comment">//代码覆盖率报告生成地址</span></span><br><span class="line">        &#125;,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// web server port</span></span><br><span class="line">        port: <span class="number">9876</span>,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// enable / disable colors in the output (reporters and logs)</span></span><br><span class="line">        colors: <span class="literal">true</span>,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// level of logging</span></span><br><span class="line">        <span class="comment">// possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG</span></span><br><span class="line">        logLevel: config.LOG_INFO,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// enable / disable watching file and executing tests whenever any file changes</span></span><br><span class="line">        <span class="comment">//karma自动自动监视被测试文件和测试用用例文件，如有修改，自动重新执行测试</span></span><br><span class="line">        autoWatch: <span class="literal">true</span>,</span><br><span class="line">        <span class="comment">// Continuous Integration mode</span></span><br><span class="line">        <span class="comment">// if true, Karma captures browsers, runs the tests and exits</span></span><br><span class="line">        <span class="comment">//上一个参数为true，本参数为false，，则自动监视才生效。否则执行完测试用例后自动退出</span></span><br><span class="line">        singleRun: <span class="literal">true</span>,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// start these browsers</span></span><br><span class="line">        <span class="comment">// available browser launchers: https://npmjs.org/browse/keyword/karma-launcher</span></span><br><span class="line">        <span class="comment">//用来执行自动监听的浏览器，推荐chrome</span></span><br><span class="line">        browsers: [<span class="string">'Chrome'</span>],</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// Concurrency level</span></span><br><span class="line">        <span class="comment">// how many browser should be started simultaneous</span></span><br><span class="line">        concurrency: <span class="literal">Infinity</span>，</span><br><span class="line">       <span class="comment">//自动将模板文件路径转换页面引入路径，以便注入用例中</span></span><br><span class="line">        ngHtml2JsPreprocessor: &#123;</span><br><span class="line">             cacheIdFromPath: <span class="function"><span class="keyword">function</span>(<span class="params">filepath</span>) </span>&#123;</span><br><span class="line">                 <span class="keyword">var</span> cacheId = filepath.substr(filepath.lastIndexOf(<span class="string">'/webapp/'</span>)+<span class="number">7</span>);</span><br><span class="line">                 <span class="comment">// console.log(cacheId);</span></span><br><span class="line">                 <span class="keyword">return</span> cacheId;</span><br><span class="line">               &#125;,</span><br><span class="line">           moduleName: <span class="string">'template'</span></span><br><span class="line">        &#125;</span><br><span class="line">		&#125;)</span><br><span class="line">		&#125;</span><br><span class="line"><span class="string">``</span><span class="string">`    </span></span><br><span class="line"><span class="string">3. 保存配置文件到测试目录</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">### 测试用例编写</span></span><br><span class="line"><span class="string">#### 1、用例怎么写</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>javascript</span><br><span class="line">describe(<span class="string">"A suite of Common/common.js"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	</span><br><span class="line">	beforeAll(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'beforeAll'</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">   describe(<span class="string">"extends of String"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;	</span><br><span class="line">	   <span class="keyword">var</span> expected;</span><br><span class="line">		beforeEach(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			expected = <span class="string">'abcd'</span>;</span><br><span class="line">		&#125;);</span><br><span class="line">		it(<span class="string">"trim"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			expect(expected).toEqual((<span class="string">" abcd "</span>).trim());</span><br><span class="line">		&#125;);</span><br><span class="line">		it(<span class="string">"ltrim"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			expect(expected).toEqual((<span class="string">" abcd"</span>).ltrim());</span><br><span class="line">		&#125;);</span><br><span class="line">		it(<span class="string">"rtrim"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			expect(expected).toEqual((<span class="string">"abcd "</span>).rtrim());</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>上述例子中，<br>a. describe相当于一个测试套，可以嵌套。<br>b. it(‘tc name’,function(){})是一个测试用例。<br>c. beforeAll和beforeEach是预置条件，前者一个测试套执行一次，后者每个测试用例执行一次。<br>d. 当然还会有afterAll和afterEach<br>e. expect是断言</p>
+<h4 id="2、-断言都有那些比较"><a href="#2、-断言都有那些比较" class="headerlink" title="2、 断言都有那些比较"></a>2、 断言都有那些比较</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Matcher实现了断言的比较操作，将Expectation传入的实际值和Matcher传入的期望值比较。任何Matcher都能通过在expect调用Matcher前加上not来实现一个否定的断言（expect(a).not().toBe(<span class="literal">false</span>);）。</span><br><span class="line">常用的Matchers有：</span><br><span class="line">toBe()：相当于= =比较。</span><br><span class="line">toNotBe():相当于! =比较。</span><br><span class="line">toBeDefined()：检查变量或属性是否已声明且赋值。</span><br><span class="line">toBeUndefined()</span><br><span class="line">toBeNull()：是否是<span class="literal">null</span>。</span><br><span class="line">toBeTruthy()：如果转换为布尔值，是否为<span class="literal">true</span>。</span><br><span class="line">toBeFalsy()</span><br><span class="line">toBeLessThan()：数值比较，小于。</span><br><span class="line">toBeGreaterThan()：数值比较，大于。</span><br><span class="line">toEqual()：相当于==，注意与toBe()的区别。一个新建的<span class="built_in">Object</span>不是（not to be）另一个新建的<span class="built_in">Object</span>，但是它们是相等（to equal）的。</span><br><span class="line">expect(&#123;&#125;).not().toBe(&#123;&#125;);</span><br><span class="line">expect(&#123;&#125;).toEqual(&#123;&#125;);</span><br><span class="line">toNotEqual()</span><br><span class="line">toContain()：数组中是否包含元素（值）。只能用于数组，不能用于对象。</span><br><span class="line">toBeCloseTo()：数值比较时定义精度，先四舍五入后再比较。</span><br><span class="line">toHaveBeenCalled()</span><br><span class="line">toHaveBeenCalledWith()</span><br><span class="line">toMatch()：按正则表达式匹配。</span><br><span class="line">toNotMatch()</span><br><span class="line">toThrow()：检验一个函数是否会抛出一个错误</span><br></pre></td></tr></table></figure>
+<h4 id="3、-angular代码怎么写"><a href="#3、-angular代码怎么写" class="headerlink" title="3、 angular代码怎么写"></a>3、 angular代码怎么写</h4><p>先看例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">describe(<span class="string">'Apply MainCtrl'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> $scope,</span><br><span class="line">      $controller,</span><br><span class="line">      $httpBackend;</span><br><span class="line">     <span class="keyword">var</span> MainCtrl;</span><br><span class="line"></span><br><span class="line">  beforeEach(<span class="built_in">module</span>(<span class="string">'applyApp'</span>));</span><br><span class="line"></span><br><span class="line">  beforeEach(inject(<span class="function"><span class="keyword">function</span>(<span class="params">_$controller_, $rootScope,  _$httpBackend_</span>) </span>&#123;</span><br><span class="line">    $scope = $rootScope.$<span class="keyword">new</span>();</span><br><span class="line">    $httpBackend = _$httpBackend_;</span><br><span class="line">    $controller = _$controller_;</span><br><span class="line">    $httpBackend.when(<span class="string">'POST'</span>, /\/api\/wxcop\/common\/record.*<span class="regexp">/).respond(&#123;&#125;);      </span></span><br><span class="line"><span class="regexp">  &#125;));</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    it('Check $scope assignments.', function() &#123;</span></span><br><span class="line"><span class="regexp">      MainCtrl = $controller('MainController', &#123;</span></span><br><span class="line"><span class="regexp">            $scope: $scope</span></span><br><span class="line"><span class="regexp">        &#125;);      </span></span><br><span class="line"><span class="regexp">      $httpBackend.flush();</span></span><br><span class="line"><span class="regexp">      $scope.gotoApplyHome();</span></span><br><span class="line"><span class="regexp">      $scope.judgeLogin();</span></span><br><span class="line"><span class="regexp">      expect($scope.typeSelect).toEqual(["单行文本","多行文本","单选","多选"]);</span></span><br><span class="line"><span class="regexp">      expect($scope.getItemItems("1,2，3")).toEqual(["1","2","3"]);</span></span><br><span class="line"><span class="regexp">    &#125;);</span></span><br><span class="line"><span class="regexp">&#125;);</span></span><br></pre></td></tr></table></figure>
+<p>注意，要测试angular必须引入angular-mock。<br>说明</p>
+<ol>
+<li>beforeEach(module(‘applyApp’));  引入module ‘applyApp’</li>
+<li>beforeEach(inject(function(<em>$controller</em>, $rootScope,  <em>$httpBackend</em>)  依赖注入和http测试打桩</li>
+<li>$controller(‘MainController’,  )初始化controller</li>
+<li>直接调用scope，然后执行断言</li>
+</ol>
+<h4 id="5、-angular的相关特性如何测试"><a href="#5、-angular的相关特性如何测试" class="headerlink" title="5、 angular的相关特性如何测试"></a>5、 angular的相关特性如何测试</h4><h5 id="1、测试函数"><a href="#1、测试函数" class="headerlink" title="1、测试函数"></a>1、测试函数</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$scope.functionTriger = <span class="literal">false</span>;</span><br><span class="line">$scope.doTest = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	$scope.functionTriger = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'function'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;    </span><br><span class="line">    expect($scope.functionTriger).toBeFalsy();</span><br><span class="line">    $scope.doTest();</span><br><span class="line">    expect($scope.functionTriger).toBeTruthy();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="2、测试监听"><a href="#2、测试监听" class="headerlink" title="2、测试监听"></a>2、测试监听</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$scope.watchVar = <span class="literal">false</span>;</span><br><span class="line">$scope.watchedTrigeIndex = <span class="number">0</span>;</span><br><span class="line">$scope.$watch(<span class="string">'watchVar'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    $scope.watchedTrigeIndex++;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'watch'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;    </span><br><span class="line">    expect($scope.watchedTrigeIndex).toBe(<span class="number">0</span>);</span><br><span class="line">    $scope.watchVar = <span class="literal">true</span>;</span><br><span class="line">    $scope.$digest();</span><br><span class="line">    expect($scope.watchedTrigeIndex).toBe(<span class="number">1</span>);</span><br><span class="line">    $scope.watchVar = <span class="literal">false</span>;</span><br><span class="line">    $scope.$digest();</span><br><span class="line">    expect($scope.watchedTrigeIndex).toBe(<span class="number">2</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="3、测试广播"><a href="#3、测试广播" class="headerlink" title="3、测试广播"></a>3、测试广播</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$scope.isHaveTriger = <span class="literal">false</span>;</span><br><span class="line">$scope.$on(<span class="string">'ngRepeatFinished'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    $scope.isHaveTriger = <span class="literal">true</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'broadcast'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;    </span><br><span class="line">  expect($scope.isHaveTriger).toBeFalsy();</span><br><span class="line">  $scope.$broadcast(<span class="string">'ngRepeatFinished'</span>);</span><br><span class="line">  expect($scope.isHaveTriger).toBeTruthy();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="4、测试路由切换"><a href="#4、测试路由切换" class="headerlink" title="4、测试路由切换"></a>4、测试路由切换</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.config([<span class="string">'$stateProvider'</span>, <span class="string">'$urlRouterProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider, $urlRouterProvider</span>)</span>&#123;</span><br><span class="line">    $urlRouterProvider.otherwise(<span class="string">"/detail"</span>);</span><br><span class="line">    $stateProvider.state(<span class="string">'detail'</span>, &#123;</span><br><span class="line">        url:<span class="string">'/detail'</span>,</span><br><span class="line">        template:<span class="string">'&lt;p&gt;&lt;/p&gt;'</span>,</span><br><span class="line">        controller:<span class="string">'MainCtrl'</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;])</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'route'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">    inject(<span class="function"><span class="keyword">function</span> (<span class="params">_$injector_</span>) </span>&#123;</span><br><span class="line">      $state = _$injector_.get(<span class="string">'$state'</span>);</span><br><span class="line">    &#125;);  </span><br><span class="line">    <span class="keyword">var</span> curState = $state.get(<span class="string">'detail'</span>);</span><br><span class="line">    expect(curState.name).toEqual(<span class="string">'detail'</span>);</span><br><span class="line">    expect(curState.url).toEqual(<span class="string">'/detail'</span>);</span><br><span class="line">    expect(curState.controller).toEqual(<span class="string">'MainCtrl'</span>);</span><br><span class="line">    expect(curState.template).toEqual(<span class="string">'&lt;p&gt;&lt;/p&gt;'</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="5、测试过滤器"><a href="#5、测试过滤器" class="headerlink" title="5、测试过滤器"></a>5、测试过滤器</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.filter(<span class="string">'myFilter'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;    </span><br><span class="line">        <span class="keyword">return</span> data + <span class="string">'lzw'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'filter'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  inject(<span class="function"><span class="keyword">function</span> (<span class="params">_$injector_</span>) </span>&#123;</span><br><span class="line">    $filter = _$injector_.get(<span class="string">'$filter'</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="6、测试service"><a href="#6、测试service" class="headerlink" title="6、测试service"></a>6、测试service</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">.service(<span class="string">'foo'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> thisIsPrivate = <span class="string">"Private"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">getPrivate</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> thisIsPrivate;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        variable: <span class="string">"This is public"</span>,</span><br><span class="line">        getPrivate: getPrivate</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'service'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> foo;</span><br><span class="line">    inject(<span class="function"><span class="keyword">function</span>(<span class="params">_foo_</span>) </span>&#123;</span><br><span class="line">        foo = _foo_;</span><br><span class="line">    &#125;);</span><br><span class="line">    expect(foo.variable).toBe(<span class="string">'This is public'</span>);</span><br><span class="line">    expect(foo.getPrivate()).toBe(<span class="string">'Private'</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="7、测试指令"><a href="#7、测试指令" class="headerlink" title="7、测试指令"></a>7、测试指令</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">.directive(<span class="string">'myDirective'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        restrict: <span class="string">'A'</span>,</span><br><span class="line">        replace: <span class="literal">true</span>,</span><br><span class="line">        template: <span class="string">'&lt;p&gt;11&lt;/p&gt;'</span>,</span><br><span class="line">        link: <span class="function"><span class="keyword">function</span>(<span class="params">scope</span>) </span>&#123;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)</span><br><span class="line">.directive(<span class="string">'dirButton'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        template: <span class="string">'&lt;button&gt;Increment value!&lt;/button&gt;'</span>,</span><br><span class="line">        link: <span class="function"><span class="keyword">function</span> (<span class="params">scope, elem</span>) </span>&#123;</span><br><span class="line">            elem.find(<span class="string">'button'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                scope.value++;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)</span><br><span class="line">.directive(<span class="string">'dirScope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        scope:&#123;</span><br><span class="line">            config: <span class="string">'='</span>,</span><br><span class="line">            notify: <span class="string">'@'</span>,</span><br><span class="line">            onChange:<span class="string">'&amp;'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        link: <span class="function"><span class="keyword">function</span>(<span class="params">scope</span>)</span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'directive'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;    </span><br><span class="line">    <span class="keyword">var</span> link = $compile(<span class="string">'&lt;p my-directive&gt;&lt;/p&gt;'</span>);</span><br><span class="line">    <span class="keyword">var</span> element = link($scope);</span><br><span class="line">    expect($(element).html()).toBe(<span class="string">'11'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  it(<span class="string">'button directive'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> directiveElem = $compile(<span class="string">'&lt;button dir-button&gt;&lt;/button&gt;'</span>)($scope);</span><br><span class="line">    $scope.value=<span class="number">10</span>;</span><br><span class="line">    <span class="keyword">var</span> button = directiveElem.find(<span class="string">'button'</span>);</span><br><span class="line">    button.triggerHandler(<span class="string">'click'</span>);</span><br><span class="line">    $scope.$digest();</span><br><span class="line">    expect($scope.value).toEqual(<span class="number">11</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  it(<span class="string">'scope directive'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    $scope.config = &#123;</span><br><span class="line">      prop: <span class="string">'value'</span></span><br><span class="line">    &#125;;</span><br><span class="line">    $scope.notify = <span class="literal">true</span>;</span><br><span class="line">    $scope.onChange = jasmine.createSpy(<span class="string">'onChange'</span>);</span><br><span class="line">    <span class="keyword">var</span> directiveElem = $compile(angular.element(<span class="string">'&lt;p dir-scope config="config" notify="notify" on-change="onChange()"&gt;&lt;/p&gt;'</span>))($scope);</span><br><span class="line">    $scope.$digest();</span><br><span class="line">    <span class="keyword">var</span> isolatedScope = directiveElem.isolateScope();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//test =    </span></span><br><span class="line">    isolatedScope.config.prop = <span class="string">"value2"</span>;</span><br><span class="line">    expect($scope.config.prop).toEqual(<span class="string">'value2'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//test @</span></span><br><span class="line">    isolatedScope.notify = <span class="literal">false</span>;</span><br><span class="line">    expect($scope.notify).toEqual(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//test &amp;</span></span><br><span class="line">    expect(<span class="keyword">typeof</span>(isolatedScope.onChange)).toEqual(<span class="string">'function'</span>);</span><br><span class="line">    isolatedScope.onChange();</span><br><span class="line">    expect($scope.onChange).toHaveBeenCalled();</span><br><span class="line">	</span><br><span class="line">   <span class="comment">//调用指令的父controller。</span></span><br><span class="line">   directiveElem.scope().doFunction();</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="关于mock"><a href="#关于mock" class="headerlink" title="关于mock"></a>关于mock</h3><h4 id="httpBackend"><a href="#httpBackend" class="headerlink" title="$httpBackend"></a>$httpBackend</h4><p>$httpBackend对于代码中的http请求进行mock。常用方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$httpBackend.when(method, url, [data], [headers]);</span><br><span class="line">$httpBackend.expect(method, url, [data], [headers]);</span><br></pre></td></tr></table></figure></p>
+<p>when和expect都有对应的快捷方法:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">whenGET(url, [headers]);</span><br><span class="line">whenHEAD(url, [headers]);</span><br><span class="line">whenDELETE(url, [headers]);</span><br><span class="line">whenPOST(url, [data], [headers]);</span><br><span class="line">whenPUT(url, [data], [headers]);</span><br><span class="line">whenJSONP(url);</span><br><span class="line">expectGET(url, [headers]);</span><br><span class="line">expectHEAD(url, [headers]);</span><br><span class="line">expectDELETE(url, [headers]);</span><br><span class="line">expectPOST(url, [data], [headers]);</span><br><span class="line">expectPUT(url, [data], [headers]);</span><br><span class="line">expectPATCH(url, [data], [headers]);</span><br><span class="line">expectJSONP(url);</span><br></pre></td></tr></table></figure></p>
+<p>url支持正则，比如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$httpBackend.when(<span class="string">'POST'</span>, /\/api\/wxcop\/common\/record.*<span class="regexp">/).respond(&#123;&#125;);</span></span><br></pre></td></tr></table></figure></p>
+<p>注意：<br>$httpBackend.when与$httpBackend.expect的区别在于：$httpBackend.expect的伪后台只能被调用一次(调用一次后会被清除)，第二次调用就会报错，而且$httpBackend.resetExpectations可以移除所有的expect而对when没有影响。</p>
+<h3 id="常见异常处理"><a href="#常见异常处理" class="headerlink" title="常见异常处理"></a>常见异常处理</h3><h5 id="Argument-‘MainCtrl’-is-not-a-function-got-undefined"><a href="#Argument-‘MainCtrl’-is-not-a-function-got-undefined" class="headerlink" title="Argument ‘MainCtrl’ is not a function, got undefined"></a>Argument ‘MainCtrl’ is not a function, got undefined</h5><p>无法找到MainCtrl。可能原因：controller定义错误，app注入失败。</p>
+<h5 id="Disconnected-because-no-message-in-10000-ms"><a href="#Disconnected-because-no-message-in-10000-ms" class="headerlink" title="Disconnected, because no message in 10000 ms."></a>Disconnected, because no message in 10000 ms.</h5><p>ajax请求超时。原因：$httpBackend.flush();要放在ajax发起请求后执行。</p>
+<h5 id="指令采用templateUrl方式加载模板失败"><a href="#指令采用templateUrl方式加载模板失败" class="headerlink" title="指令采用templateUrl方式加载模板失败"></a>指令采用templateUrl方式加载模板失败</h5><p>可采用karma-ng-html2js-preprocessor插件自动注入。也可以采用$templateCache注入。注意，这两种方式都不支持模糊匹配</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://www.sitepoint.com/angular-testing-tips-testing-directives/" title="《AngularJS Testing Tips: Testing Directives》" target="_blank" rel="noopener">《AngularJS Testing Tips: Testing Directives》</a><br><a href="https://www.sitepoint.com/unit-testing-angularjs-services-controllers-providers/" target="_blank" rel="noopener">《Unit Testing in AngularJS: Services, Controllers &amp; Providers》</a><br><a href="https://nathanleclaire.com/blog/2014/04/12/unit-testing-services-in-angularjs-for-fun-and-for-profit/" target="_blank" rel="noopener">《Unit Testing Services in AngularJS for Fun and for Profit》</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/FE/test/基于karma-jasmine的web前端自动化测试/" data-id="cjc95ci4e000r80cm915rhvhc" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试/">测试</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/test/使用Protractor进行web功能测试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/FE/test/使用Protractor进行web功能测试/" class="article-date">
+  <time datetime="2018-01-10T13:21:34.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/FE/test/使用Protractor进行web功能测试/">使用Protractor进行web功能测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文介绍了使用Protractor对AngularJS开发的web应用进行自动化功能测试的方案和详细操作指导。</p>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>Protractor是AngularJS团队发布的一款开源的端到端web测试运行工具。它可以模拟用户的实际交互，帮助验证Angular应用的实际运行状况。Protractor使用Jasmine测试框架来定义测试用例。Protractor为不同的页面交互提供一套健壮的API。相对于其他的端到端的工具，Protractor有着自己的优势，它知道怎么和AngularJS的代码一起运行，特别是应对$digest循环。</p>
+<h3 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h3><ol>
+<li>首先必须安装执行环境nodejs</li>
+<li>安装浏览器，推荐chrome</li>
+<li>安装protractor+webdriver<pre><code>npm install protractor -g
+webdriver-manager update 
+</code></pre></li>
+<li>安装完成后执行protractor –version，检查安装是否正常</li>
+<li>在命令行控制台启动Selenium测试服务器。<pre><code>webdriver-manager start
+//默认情况下，Selenium测试服务器接入地址为：http://localhost:4444/wd/hub
+</code></pre></li>
+<li>输出测试报告需要安装相关插件<pre><code>//输出html报告
+npm install protractor-jasmine2-html-reporter -g
+//输出junit格式的xml报告
+npm install jasmine-reporters -g
+//由于需要在config文件中加载。一般把这两个插件放在根目录的node_modules 目录下
+</code></pre></li>
+</ol>
+<h3 id="工程配置"><a href="#工程配置" class="headerlink" title="工程配置"></a>工程配置</h3><p>配置文件举例如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Jasmine2HtmlReporter = <span class="built_in">require</span>(<span class="string">'./node_modules/protractor-jasmine2-html-reporter'</span>);</span><br><span class="line"><span class="keyword">var</span> report = <span class="built_in">require</span>(<span class="string">'./node_modules/jasmine-reporters'</span>);</span><br><span class="line">exports.config = &#123;</span><br><span class="line">  <span class="comment">// Selenium server 测试服务器接入地址</span></span><br><span class="line">  SeleniumAddress: <span class="string">'http://localhost:4444/wd/hub'</span>,</span><br><span class="line">  <span class="comment">// 测试服务器的配置信息</span></span><br><span class="line">  multiCapabilities: [&#123;</span><br><span class="line">    browserName: <span class="string">'firefox'</span></span><br><span class="line">  &#125;,&#123;</span><br><span class="line">    browserName: <span class="string">'chrome'</span>,</span><br><span class="line">    <span class="string">'chromeOptions'</span>: &#123;</span><br><span class="line">            <span class="string">'args'</span>: [<span class="string">'incognito'</span>, <span class="string">'disable-extensions'</span>, <span class="string">'start-maximized'</span>]</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;],</span><br><span class="line">  <span class="comment">// 需要运行的测试程序代码文件列表</span></span><br><span class="line">  suites: &#123;</span><br><span class="line">    scan: <span class="string">'tc/e2e/scan.js'</span>,</span><br><span class="line">    app: <span class="string">'tc/e2e/app.js'</span>,</span><br><span class="line">    hppd: <span class="string">'tc/e2e/hppd.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 选择使用 jasmine 作为JavaScript语言的测试框架</span></span><br><span class="line">  framework: <span class="string">'jasmine'</span>,</span><br><span class="line">  jasmineNodeOpts: &#123;</span><br><span class="line">    showColors: <span class="literal">true</span>,</span><br><span class="line">    defaultTimeoutInterval: <span class="number">30000</span>,</span><br><span class="line">    isVerbose: <span class="literal">true</span>,</span><br><span class="line">    includeStackTrace: <span class="literal">false</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">//输出测试报告</span></span><br><span class="line">  onPrepare: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    jasmine.getEnv().addReporter(</span><br><span class="line">        <span class="keyword">new</span> Jasmine2HtmlReporter(&#123;</span><br><span class="line">          savePath: <span class="string">'report/e2e/'</span>,</span><br><span class="line">          takeScreenshots: <span class="literal">true</span>,  <span class="comment">//是否截屏</span></span><br><span class="line">          takeScreenshotsOnlyOnFailures: <span class="literal">true</span> <span class="comment">//测试用例执行失败时才截屏</span></span><br><span class="line">        &#125;)</span><br><span class="line">      );</span><br><span class="line">    jasmine.getEnv().addReporter(</span><br><span class="line">      <span class="keyword">new</span> report.JUnitXmlReporter(&#123;</span><br><span class="line">          savePath: <span class="string">'report/tc/e2e/'</span>,</span><br><span class="line">          consolidateAll: <span class="literal">false</span>,</span><br><span class="line">          filePrefix:<span class="string">''</span>,</span><br><span class="line">          package:<span class="string">'E2E'</span></span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h3 id="测试用例怎么写"><a href="#测试用例怎么写" class="headerlink" title="测试用例怎么写"></a>测试用例怎么写</h3><p>测试用例是基于jasmine框架，关于用例描述和断言比较，请参考上一篇帖子<a href="https://my.oschina.net/u/2492371/blog/796382" title="《基于karma+jasmine的web前端自动化测试》" target="_blank" rel="noopener">《基于karma+jasmine的web前端自动化测试》</a>，这里不再赘述了<br>这里举一个简单的例子。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> DOMAIN = <span class="string">'127.0.0.1'</span>;</span><br><span class="line"><span class="keyword">var</span> TARGET_ROOT = <span class="string">'http://'</span>+DOMAIN;</span><br><span class="line">describe(<span class="string">'scan all app'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	beforeAll(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 设置cookie</span></span><br><span class="line">        <span class="keyword">var</span> cookieObj = &#123;</span><br><span class="line">            <span class="string">"real_name"</span>:<span class="string">"放松一下"</span>,</span><br><span class="line">            <span class="string">"dept_name"</span>:<span class="string">"开发部"</span>,</span><br><span class="line">            <span class="string">"avatar"</span>:<span class="string">"/images/u15.png"</span>,</span><br><span class="line">            <span class="string">"message"</span>:<span class="string">"22"</span></span><br><span class="line">        &#125;;</span><br><span class="line">        browser.get(TARGET_ROOT + <span class="string">'/index/about.html'</span>);</span><br><span class="line">        browser.manage().deleteAllCookies().then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">               	browser.manage().addCookie(<span class="string">"login_user"</span>,<span class="built_in">JSON</span>.stringify(<span class="built_in">JSON</span>.stringify(cookieObj)), <span class="string">'/'</span>, DOMAIN);</span><br><span class="line">        &#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">    </span><br><span class="line">    it(<span class="string">'app.code'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	browser.get(TARGET_ROOT + <span class="string">'/app/code/'</span>);        </span><br><span class="line">    	expect(element.all(by.binding(<span class="string">"project['name']"</span>)).count()).toBeGreaterThan(<span class="number">1</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">   </span><br><span class="line">    it(<span class="string">'app.ci'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	browser.get(TARGET_ROOT + <span class="string">'/app/ci/'</span>);        </span><br><span class="line">    	expect(element(by.binding(<span class="string">'userInfo.realName'</span>)).getText()).toEqual(<span class="string">'李忠伟10183089'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>上述事例主要使用了如下接口：</p>
+<ol>
+<li>browser.get(url) 访问url指定的web页面</li>
+<li>browser.manage().deleteAllCookies() 删除所有cookie</li>
+<li>browser.manage().addCookie(key,value) 添加cookie</li>
+<li>element.all(locator) 查找locator描述的所有元素</li>
+<li>element(locator)  查找locator描述的单个元素</li>
+</ol>
+<h3 id="浏览器的相关操作"><a href="#浏览器的相关操作" class="headerlink" title="#浏览器的相关操作"></a>#浏览器的相关操作</h3><p>这里举例常用的几个操作，详细的请见参考资料。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">browser.get(url)   <span class="comment">//访问url指定的web页面</span></span><br><span class="line">browser.close()   <span class="comment">//关闭当前窗口</span></span><br><span class="line">browser.sleep(ms)   <span class="comment">//等待，单位毫秒</span></span><br><span class="line">browser.pause()  <span class="comment">//暂停执行，停止在当前页面，主要用于调试</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="如何定位元素"><a href="#如何定位元素" class="headerlink" title="#如何定位元素"></a>#如何定位元素</h3><p>上述示例中提到的by.binding，用于定位元素，被称为定位器locator。Protractor中常用的定位器有如下几种：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">by.id(<span class="string">'myElement'</span>)   <span class="comment">//id为myElement的元素</span></span><br><span class="line">by.css(<span class="string">'[class="element"]'</span>)   <span class="comment">//根据元素的属性定位元素，此例为样式class为element的元素。同时也支持jquery的selector语法来定位元素，例如（by.css('.element')）。</span></span><br><span class="line">by.binding(<span class="string">'list.title'</span>)    <span class="comment">//绑定了ng-bind="list.title"的元素</span></span><br><span class="line">by.repeater(<span class="string">'modules.content'</span>)    <span class="comment">//绑定了ng-repeat="module in modules.content"的元素</span></span><br><span class="line">by.model(<span class="string">'person.name'</span>)  <span class="comment">//绑定了ng-model="person.nam"的元素</span></span><br></pre></td></tr></table></figure></p>
+<p>更多定位器请见参考资料。</p>
+<h3 id="定位的元素如何操作"><a href="#定位的元素如何操作" class="headerlink" title="定位的元素如何操作"></a>定位的元素如何操作</h3><p>Protractor中使用element(locator)和element.all(locator)来定位元素，前者是定位单个元素，后者是定位所有符合条件的元素。定位到元素后能做哪些操作？常用操作举例如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">element.all(by.binding(<span class="string">'list.title'</span>)).count()   <span class="comment">//返回查找到的元素的个数</span></span><br><span class="line">element.all(by.css(<span class="string">'.element'</span>)).get(<span class="number">1</span>)  <span class="comment">//返回定查找到的元素中的第二个元素</span></span><br><span class="line">element(by.css(<span class="string">'.myname'</span>)).getText()  <span class="comment">//返回查找到的元素的text</span></span><br><span class="line">element(by.id(<span class="string">'user_name'</span>).sendKeys(<span class="string">'user1'</span>)    <span class="comment">//向查找到的元素输入'user1'</span></span><br><span class="line">element(by.id(<span class="string">'user_desc'</span>).sendKeys(protractor.Key.ENTER);    <span class="comment">//向查找到的元素输入回车键</span></span><br><span class="line">element(by.id(<span class="string">'user_desc'</span>).sendKeys(protractor.Key.TAB);    <span class="comment">//向查找到的元素输入TAB键</span></span><br><span class="line">element(by.id(<span class="string">'user_name'</span>)).clear();   <span class="comment">//清空查找到的元素的内容</span></span><br><span class="line">element(by.id(<span class="string">'submit'</span>)).clear();   <span class="comment">//点击查找到的元素</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="http://www.protractortest.org/" title="Protractor官网，不过被墙了，你懂的。" target="_blank" rel="noopener">Protractor官网，不过被墙了，你懂的。</a><br><a href="http://ramonvictor.github.io/protractor/slides/#/1" title="《Protractor入门》推荐！有可能被墙" target="_blank" rel="noopener">《Protractor入门》推荐！有可能被墙</a><br><a href="http://timothymartin.azurewebsites.net/protractor-cheat-sheet/" title="示例比较多的指导书" target="_blank" rel="noopener">示例比较多的指导书</a><br><a href="http://definitelytyped.org/docs/angular-protractor--angular-protractor/classes/protractor.protractor.html" title="《浏览器相关接口文档》" target="_blank" rel="noopener">《浏览器r相关接口文档》</a><br><a href="http://definitelytyped.org/docs/angular-protractor--angular-protractor/classes/protractor.webelement.html" title="《元素操作的相关接口文档》" target="_blank" rel="noopener">《元素操作的相关接口文档》</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/FE/test/使用Protractor进行web功能测试/" data-id="cjc95ci4e000q80cm97orzr7v" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试/">测试</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
+  </nav>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/工具/" style="font-size: 16.67px;">工具</a> <a href="/tags/性能/" style="font-size: 16.67px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 13.33px;">测试</a> <a href="/tags/自动化/" style="font-size: 13.33px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/">mongodb的internalQueryExecMaxBlockingSortBytes异常修复</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/非maven的jar包怎么引入maven工程/">非maven的jar包怎么引入maven工程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/swe/也谈TDD/">也谈TDD</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
 </body>
 </html>

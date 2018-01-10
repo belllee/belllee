@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>也谈TDD | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;最近在组织项目成员的能力提升，不可避免的就进入了TDD这个话题。对于TDD，已经成为很多公司员工入职的专业知识培训课程。网上关于TDD的各种文章和讨论也很多，但是感觉大家都是望文生义，都是先写测试用例，再写代码。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;可能有人会说TDD就是“Test Driven Development”，就是测试驱动开发。">
+<meta name="keywords" content="敏捷">
+<meta property="og:type" content="article">
+<meta property="og:title" content="也谈TDD">
+<meta property="og:url" content="https://belllee.github.io/2018/01/10/swe/也谈TDD/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;最近在组织项目成员的能力提升，不可避免的就进入了TDD这个话题。对于TDD，已经成为很多公司员工入职的专业知识培训课程。网上关于TDD的各种文章和讨论也很多，但是感觉大家都是望文生义，都是先写测试用例，再写代码。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;可能有人会说TDD就是“Test Driven Development”，就是测试驱动开发。">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:updated_time" content="2018-01-10T13:36:17.525Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="也谈TDD">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;最近在组织项目成员的能力提升，不可避免的就进入了TDD这个话题。对于TDD，已经成为很多公司员工入职的专业知识培训课程。网上关于TDD的各种文章和讨论也很多，但是感觉大家都是望文生义，都是先写测试用例，再写代码。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;可能有人会说TDD就是“Test Driven Development”，就是测试驱动开发。">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-swe/也谈TDD" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/swe/也谈TDD/" class="article-date">
+  <time datetime="2018-01-10T13:33:51.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      也谈TDD
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;最近在组织项目成员的能力提升，不可避免的就进入了TDD这个话题。对于TDD，已经成为很多公司员工入职的专业知识培训课程。网上关于TDD的各种文章和讨论也很多，但是感觉大家都是望文生义，都是先写测试用例，再写代码。<br>&nbsp;&nbsp;&nbsp;&nbsp;可能有人会说TDD就是“Test Driven Development”，就是测试驱动开发。就是写测试用例，然后再写代码。我承认，书里是这么写的。大家也是这么理解，然后去实践的。实际效果如何呢，就我了解的情况，大家对这个都很纠结。很多都在说，我先写几行代码，然后再写用例为啥就不行了呢？难道真是缺少仪式感吗？<br>&nbsp;&nbsp;&nbsp;&nbsp;那么我先说说，我最近的思考。TDD方式，实际上是关注点驱动开发，或者说规则驱动开发。我要实现一个关注点/规则，我就先一条用例来验证这个关注点/规则，然后去完成这个关注点/规则的代码。如果按照这个思路去思考，我每次实现一个关注点/规则，我先写用例后写代码，或者先写代码再写用例。每次都是围绕着一个关注点/规则，是否先后顺序就显得不那么重要了。关键是每次聚焦于一个关注点/规则，有测试用例保证这个关注点/规则的准确性。那么就可以放心的去实现下一个关注点/规则，并且保证整个功能的准确了。<br>&nbsp;&nbsp;&nbsp;&nbsp;以上是我对于TDD的最新理解和思考。各位看过后是否也对TDD也有了新的理解了呢？</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/swe/也谈TDD/" data-id="cjc95ci3m000680cmurao82ya" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/敏捷/">敏捷</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/10/java/非maven的jar包怎么引入maven工程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          非maven的jar包怎么引入maven工程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/10/FE/js/高性能JavaScript-原型链/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">高性能JavaScript--原型链</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/工具/" style="font-size: 16.67px;">工具</a> <a href="/tags/性能/" style="font-size: 16.67px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 13.33px;">测试</a> <a href="/tags/自动化/" style="font-size: 13.33px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/">mongodb的internalQueryExecMaxBlockingSortBytes异常修复</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/非maven的jar包怎么引入maven工程/">非maven的jar包怎么引入maven工程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/swe/也谈TDD/">也谈TDD</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

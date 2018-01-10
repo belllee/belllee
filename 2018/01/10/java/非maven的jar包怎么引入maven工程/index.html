@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>非maven的jar包怎么引入maven工程 | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前几天因为业务需要，引入了一个其他部门的jar包。不是Maven工程构建的，也就没有pom文件。这里记录下引入的过程，以备今后参考。    maven仓库中存在的jar包可以直接在pom文件中添加依赖。但是问题来了，只有jar包，怎么知道groupId和artifactId呢？下面我就用实例告诉大家，怎么引入。比如依赖一个json-lib-2.2.1.jar。只需要在 网站上查询这个jar包。然后">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非maven的jar包怎么引入maven工程">
+<meta property="og:url" content="https://belllee.github.io/2018/01/10/java/非maven的jar包怎么引入maven工程/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="前几天因为业务需要，引入了一个其他部门的jar包。不是Maven工程构建的，也就没有pom文件。这里记录下引入的过程，以备今后参考。    maven仓库中存在的jar包可以直接在pom文件中添加依赖。但是问题来了，只有jar包，怎么知道groupId和artifactId呢？下面我就用实例告诉大家，怎么引入。比如依赖一个json-lib-2.2.1.jar。只需要在 网站上查询这个jar包。然后">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4944427-0788fe4e3ca5beb2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4944427-ed06810e63b8067a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-01-10T13:42:39.363Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="非maven的jar包怎么引入maven工程">
+<meta name="twitter:description" content="前几天因为业务需要，引入了一个其他部门的jar包。不是Maven工程构建的，也就没有pom文件。这里记录下引入的过程，以备今后参考。    maven仓库中存在的jar包可以直接在pom文件中添加依赖。但是问题来了，只有jar包，怎么知道groupId和artifactId呢？下面我就用实例告诉大家，怎么引入。比如依赖一个json-lib-2.2.1.jar。只需要在 网站上查询这个jar包。然后">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/4944427-0788fe4e3ca5beb2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/非maven的jar包怎么引入maven工程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/java/非maven的jar包怎么引入maven工程/" class="article-date">
+  <time datetime="2018-01-10T13:41:23.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      非maven的jar包怎么引入maven工程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前几天因为业务需要，引入了一个其他部门的jar包。不是Maven工程构建的，也就没有pom文件。这里记录下引入的过程，以备今后参考。  </p>
+<ol>
+<li>maven仓库中存在的jar包<br>可以直接在pom文件中添加依赖。但是问题来了，只有jar包，怎么知道groupId和artifactId呢？下面我就用实例告诉大家，怎么引入。比如依赖一个json-lib-2.2.1.jar。只需要在<a href="http://mvnrepository.com" target="_blank" rel="noopener"></a> 网站上查询这个jar包。然后在版本列表中，点击具体需要的版本。<br><img src="http://upload-images.jianshu.io/upload_images/4944427-0788fe4e3ca5beb2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mvn1-1.jpg"><br>进入具体页面后，拷贝需要的依赖配置内容，复制到maven<br><img src="http://upload-images.jianshu.io/upload_images/4944427-ed06810e63b8067a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mvn1-2.jpg"><br>复制maven的配置描述，拷贝到pom文件里即可。</li>
+<li>maven仓库里不存在的jar包<br>可以自己在本地手工添加的方式解决。例如，haha-1.0.jar。我们设置groupId为com.my.test，artifactId为haha。版本为1.0。<br>a.  maven添加本地jar包<br>配置好maven环境，有些使用eclipse的童鞋，可能没有安装过maven，会导致无法执行，需要自己配置maven环境。<br>执行如下命令：<br>mvn install:install-file -Dfile=E:\work\haha-1.0.jar -DgroupId=com.my.test -DartifactId=haha -Dversion=1.0 -Dpackaging=jar<br>b. 手工创建目录<br>在pom文件里添加配置信息：  <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;commons-httpclient&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-httpclient&lt;/artifactId&gt;
+    &lt;version&gt;3.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>创建好目录.m2\repository\com\my\test\haha\1.0。把haha-1.0.jar文件复制过来，同时新建haha-1.0.jar.pom。参考maven从仓库下载的jar包里相同的文件，复制里面的内容，修改一下groupId，artifactId和version信息即可。执行完这些后，再更新和编辑就可以解决了。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/java/非maven的jar包怎么引入maven工程/" data-id="cjc95ci3i000580cmls7naqjk" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          mongodb的internalQueryExecMaxBlockingSortBytes异常修复
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/10/swe/也谈TDD/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">也谈TDD</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/工具/" style="font-size: 16.67px;">工具</a> <a href="/tags/性能/" style="font-size: 16.67px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 13.33px;">测试</a> <a href="/tags/自动化/" style="font-size: 13.33px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/">mongodb的internalQueryExecMaxBlockingSortBytes异常修复</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/非maven的jar包怎么引入maven工程/">非maven的jar包怎么引入maven工程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/swe/也谈TDD/">也谈TDD</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
