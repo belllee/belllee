@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="记录点滴">
+  <link rel="icon" href="/favicon.png">
+  <style type="text/css">
+  body, html,#container {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+    .box {
+      display: -webkit-flex;
+      /* Safari */
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .menu{
+      flex-direction: column ;
+    }
+    .menu>div{
+      display: inline-block;
+      width:30%;
+      height: 50px;
+      text-align: center;
+      border: 1px solid #f2f2f2;
+    }
+  </style>  
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=YToRD3AuiLYasR2mcyzWtzMseWSCtPLQ"></script>
+</head>
+
+<body>
+  <header>
+    <span>上海加油站优惠站点</span>
+  </header>
+  <div>
+    <div class="menu">
+      <div>全部</div>
+      <div>中石化</div>
+      <div>中石油</div>
+    </div>
+    <div id="container" style="min-height:300px;"></div>
+  </div>
+  <script type="text/javascript">
+    var map = new BMap.Map("container");
+    map.centerAndZoom("上海",10);
+    map.enableScrollWheelZoom();
+    
+    var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+    map.addControl(top_left_navigation);
+    var data = [
+      {title:"中石化(浦东大道站)",info:"地址：浦东大道2629号(近友林路)<br>全天优惠0.3元",lat:121.572964,lng:31.269491},
+      {title:"中石化(大团加油站)",info:"地址：上海市浦东新区南芦公路879号<br>电话：58082237,58080101<br>全天优惠0.4元",lat:121.743129,lng:30.97251}
+    ]
+
+    for(var  i=0,t; t=data[i]; i++){
+      var point = new BMap.Point(t.lat, t.lng);
+      var marker = new BMap.Marker(point); // 创建点
+      map.addOverlay(marker);
+      
+      
+      
+      marker.addEventListener("click", (function(tt){
+        var opts = {
+            width : 260,     // 信息窗口宽度
+            height: 120,     // 信息窗口高度
+            title : tt.title 
+          }   
+        var point = new BMap.Point(tt.lat, tt.lng);
+        var infoWindow = new BMap.InfoWindow(tt.info, opts);  // 创建信息窗口对象 
+        return function(){
+             
+          map.openInfoWindow(infoWindow,point); //开启信息窗口
+        }
+      })(t));
+    }
+  </script>
+
+</body>
+
+</html>
