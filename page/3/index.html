@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="记录点滴">
+<meta property="og:type" content="website">
+<meta property="og:title" content="李忠伟的个人博客">
+<meta property="og:url" content="https://belllee.github.io/page/3/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="记录点滴">
+<meta property="og:locale" content="zh_cn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="李忠伟的个人博客">
+<meta name="twitter:description" content="记录点滴">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-other/微信公众号开发" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/10/other/微信公众号开发/" class="article-date">
+  <time datetime="2016-10-10T11:39:06.000Z" itemprop="datePublished">2016-10-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/10/other/微信公众号开发/">微信公众号开发</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>近日摸索了公众号的开发流程特记录下来，以供大家参考。<br>首先最重要的是你的有一个公众号，具体怎么申请这里就不赘述了。嘿嘿，其实开发调试的时候可以使用临时的调试公众号，这样即使没有公众号也可以进行开发调试了。具体方法如下：打开<a href="http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login。" target="_blank" rel="noopener">http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login。</a> 然后用自己的微信扫一下，确认即可。系统会自动给你生成一个测试公众号，有简单的管理功能。<br><img src="https://upload-images.jianshu.io/upload_images/4944427-677420acba8c71f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>当然你也可以直接在公众号上进行开发调试。登陆公众号平台后，在左侧菜单底部，选择开发者中心，配置服务器信息（同测试账号）。如需加密可以设置秘钥，需注意，公众账号主动调用API的情况将不受影响。只有被动回复用户的消息时，才需要进行消息加解密。参考：<a href="http://mp.weixin.qq.com/wiki/17/2d4265491f12608cd170a95559800f2d.html" target="_blank" rel="noopener">http://mp.weixin.qq.com/wiki/17/2d4265491f12608cd170a95559800f2d.html</a><br><img src="https://upload-images.jianshu.io/upload_images/4944427-46a4784287b9f390.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h1 id="服务端认证"><a href="#服务端认证" class="headerlink" title="服务端认证"></a>服务端认证</h1><p>添加服务器URL后，微信服务器会向你的公众号服务器发送一个认证请求。比如你的微信服务URL是：<a href="http://10.10.10.10/wx。微信服务器会发起一个get请求，http://10.10.10.10/wx/?signature=c4b6bed68f55e7bd09e2771674a1989619716054&amp;echostr=3942832202382810879&amp;timestamp=1441531611&amp;nonce=1839804127。公众号服务器校验流程入。" target="_blank" rel="noopener">http://10.10.10.10/wx。微信服务器会发起一个get请求，http://10.10.10.10/wx/?signature=c4b6bed68f55e7bd09e2771674a1989619716054&amp;echostr=3942832202382810879&amp;timestamp=1441531611&amp;nonce=1839804127。公众号服务器校验流程入。</a></p>
+<ol>
+<li>将token、timestamp、nonce三个参数进行字典序排序</li>
+<li>将三个参数字符串拼接成一个字符串进行sha1加密</li>
+<li>开发者获得加密后的字符串可与signature对比，如果相同则校验通过<br>校验通过后，返回echostr参数的内容给微信服务器，完成认证。</li>
+</ol>
+<p>服务端PHP代码参考：<a href="http://mp.weixin.qq.com/wiki/17/2d4265491f12608cd170a95559800f2d.html。" target="_blank" rel="noopener">http://mp.weixin.qq.com/wiki/17/2d4265491f12608cd170a95559800f2d.html。</a></p>
+<p>nodeJS代码参考：<a href="http://my.oschina.net/fengcunhan/blog/97367" target="_blank" rel="noopener">http://my.oschina.net/fengcunhan/blog/97367</a></p>
+<p>通过认证后，才能完成服务器的配置。</p>
+<h1 id="消息接收和自动回复"><a href="#消息接收和自动回复" class="headerlink" title="消息接收和自动回复"></a>消息接收和自动回复</h1><p>当用户向公众号发送消息时，微信服务器会自动讲消息转发到公众号服务器，发起一个post请求到<a href="http://10.10.10.10/wx。消息为xml字符串形式上传到服务器。公众号服务器解析出xml字符串中的消息类型，发送用户，以及发送的消息等信息。然后返回一个xml形式的字符串。API参考：http://mp.weixin.qq.com/wiki/10/79502792eef98d6e0c6e1739da387346.html" target="_blank" rel="noopener">http://10.10.10.10/wx。消息为xml字符串形式上传到服务器。公众号服务器解析出xml字符串中的消息类型，发送用户，以及发送的消息等信息。然后返回一个xml形式的字符串。API参考：http://mp.weixin.qq.com/wiki/10/79502792eef98d6e0c6e1739da387346.html</a></p>
+<p>PHP使用$GLOBALS[“HTTP_RAW_POST_DATA”]获取消息内容。</p>
+<p>nodejs无法自己获取，需要执行读取操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var formData=&quot;&quot;;</span><br><span class="line">    req.on(&quot;data&quot;,function(data)&#123;</span><br><span class="line">    formData+=data;</span><br><span class="line">    &#125;);</span><br><span class="line">    req.on(&quot;end&quot;,function()&#123;</span><br><span class="line">    processMessage(formData,res);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure></p>
+<h1 id="通过API创建菜单"><a href="#通过API创建菜单" class="headerlink" title="通过API创建菜单"></a>通过API创建菜单</h1><p>首先向微信服务器发起一个get请求：</p>
+<p><a href="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=APPID&amp;secret=APPSECRET" target="_blank" rel="noopener">https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=APPID&amp;secret=APPSECRET</a><br>获取到access_token，然后发起创建菜单请求。POST（请使用https协议） <a href="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN" target="_blank" rel="noopener">https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN</a></p>
+<p>菜单信息以json格式封装。参考：<a href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html" target="_blank" rel="noopener">http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/10/10/other/微信公众号开发/" data-id="cjemvlvz0000qtccmxc9qn5qu" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/engineering/Grunt--web前端构建工具" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/10/FE/engineering/Grunt--web前端构建工具/" class="article-date">
+  <time datetime="2016-09-10T11:39:06.000Z" itemprop="datePublished">2016-09-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/10/FE/engineering/Grunt--web前端构建工具/">Grunt--web前端构建工具</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#简介<br>Grunt是一款使用javascript开发的开源的web前端构建工具，有着丰富的给类工具插件。Grunt及其插件运行在node.js环境上。可以完成诸如：html/css/js/image文件的压缩和合并，html/css/js文件的静态检查，js的自动化测试，引入css/js文件的版本号自动更新，文件的删除和复制等等，web前端开发所需要的各类工作。</p>
+<p>Grunt官网：<a href="http://gruntjs.com/" title="http://gruntjs.com/" target="_blank" rel="noopener">http://gruntjs.com/</a></p>
+<p>非官方中文网站：<a href="http://www.gruntjs.net/" title="http://www.gruntjs.net/" target="_blank" rel="noopener">http://www.gruntjs.net/</a></p>
+<p>#Grunt的安装<br>Grunt在node.js环境上执行，使用前必须先安装node.js和npm。</p>
+<p>##node.js的安装<br>直接到官网下载安装包，执行安装即可。下载地址：<a href="https://nodejs.org/en/" target="_blank" rel="noopener">https://nodejs.org/en/</a></p>
+<p>安装了node.js之后，打开命令行控制台，输入“node -v”来查看node。js的版本，已验证node.js是否安装成功。npm集成在node.js的安装包，安装完node.js即可。输入“npm -v”，查看npm版本。</p>
+<p>##Grunt的安装<br>由于npm经常被墙，导致无法安装成功。幸好我们有了中兴自己的镜像。<br>执行“npm set registry <a href="http://mirrors.zte.com.cn/npm”" target="_blank" rel="noopener">http://mirrors.zte.com.cn/npm”</a> 配置好镜像后，就能顺利完成安装了。执行“npm install -g grunt-cli” 安装Grunt，注意安装的是grunt-cli，-g表示全局安装，所有目录均可使用</p>
+<p>安装完成后，执行“grunt -v”。验证安装是否成功。</p>
+<p>#Grunt插件的安装<br>安装Grunt插件的时候可以采用两种方式，一种是单个插件安装（常用于新搭建项目的场景）；一种是插件批量安装（常用于下载项目文件后搭建开发环境）。具体安装方法如下：</p>
+<ol>
+<li><p>安装单个插件<br> 首先在命令行控制台里，切换到项目根目录。例如安装jshint插件，执行“npm install grunt-contrib-jshint –save-dev”命令即可。</p>
+</li>
+<li><p>批量安装<br> 首先新建package.json文件。将需要安装的插件名称和版本填写好（如果是配置库上下载，已有配置文件，此步骤跳过）。详细内容参考下一小节。<br> 命令行控制台切换到项目根目录。执行“npm install –save-dev”命令即可。执行成功后，根目录下会出现node_modules目录，下面会出现已安装的所有插件。<br>##package.json配置文件<br>配置具体示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"wxcop"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"0.1.0"</span>,</span><br><span class="line">  <span class="string">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"grunt"</span>: <span class="string">"^0.4.5"</span>,</span><br><span class="line">    <span class="string">"grunt-contrib-clean"</span>: <span class="string">"^0.6.0"</span>,</span><br><span class="line">    <span class="string">"grunt-contrib-copy"</span>: <span class="string">"^0.8.2"</span>,</span><br><span class="line">    <span class="string">"grunt-contrib-cssmin"</span>: <span class="string">"^0.14.0"</span>,</span><br><span class="line">    <span class="string">"grunt-contrib-jshint"</span>: <span class="string">"^0.11.3"</span>,</span><br><span class="line">    <span class="string">"grunt-contrib-uglify"</span>: <span class="string">"^0.9.2"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>示例中name为当前工程名称，version工程版本信息，devDependencies为依赖项（即Grunt和相关插件）。注意，这里的版本号前面有一个^符号，表示该插件可以被Grunt自动更新到最新的子版本。<br>关于配置文件的说明，详见：<a href="https://docs.npmjs.com/files/package.json" target="_blank" rel="noopener">https://docs.npmjs.com/files/package.json</a></p>
+<p>#配置构建任务<br>在项目根目录下新建构建任务描述文件Gruntfile.js。具体示例如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">grunt</span>) </span>&#123;  </span><br><span class="line">  grunt.initConfig(&#123;</span><br><span class="line">    pkg: grunt.file.readJSON(<span class="string">'package.json'</span>),   <span class="comment">//加载配置文件 </span></span><br><span class="line">    uglify: &#123;</span><br><span class="line">      options: &#123; &#125;,</span><br><span class="line">      buildall: &#123;<span class="comment">//按原文件结构压缩js文件夹内所有js文件</span></span><br><span class="line">          options: &#123;</span><br><span class="line">            preserveComments:<span class="literal">false</span>,</span><br><span class="line">            report: <span class="string">"min"</span><span class="comment">//输出压缩率，可选的值有 false(不输出信息)，gzip</span></span><br><span class="line">          &#125;,</span><br><span class="line">          files: [&#123;</span><br><span class="line">              compress:<span class="literal">false</span>,</span><br><span class="line">              expand:<span class="literal">true</span>,</span><br><span class="line">              cwd:<span class="string">'js'</span>,<span class="comment">//js目录下</span></span><br><span class="line">              src:<span class="string">'**/*.js'</span>,<span class="comment">//所有js文件</span></span><br><span class="line">              dest: <span class="string">'dist/js'</span><span class="comment">//输出到此目录下</span></span><br><span class="line">          &#125;]</span><br><span class="line">      &#125;,</span><br><span class="line">      ueditor: &#123;<span class="comment">//单独压缩ueditor.all.js文件</span></span><br><span class="line">          options: &#123;</span><br><span class="line">            preserveComments:<span class="literal">false</span>,</span><br><span class="line">            report: <span class="string">"min"</span></span><br><span class="line">          &#125;,</span><br><span class="line">          files: [&#123;</span><br><span class="line">              compress:<span class="literal">false</span>,</span><br><span class="line">              src:<span class="string">'vender/ueditor/ueditor.all.js'</span>,</span><br><span class="line">              dest: <span class="string">'vender/ueditor/ueditor.all.min.js'</span></span><br><span class="line">          &#125;]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    cssmin: &#123;</span><br><span class="line">      compress: &#123;<span class="comment">//按原文件结构压缩css文件夹内所有css文件</span></span><br><span class="line">        files: [&#123;</span><br><span class="line">               expand: <span class="literal">true</span>,</span><br><span class="line">               cwd: <span class="string">'css/'</span>,</span><br><span class="line">               src: <span class="string">'**/*.css'</span>,</span><br><span class="line">               dest: <span class="string">'dist/css'</span></span><br><span class="line">         &#125;]</span><br><span class="line">      &#125;,</span><br><span class="line">      adminlte: &#123;<span class="comment">//单独压缩AdminLTE.css文件</span></span><br><span class="line">          files: [&#123;</span><br><span class="line">              src:<span class="string">'vender/AdminLTE/AdminLTE.css'</span>,</span><br><span class="line">              dest: <span class="string">'vender/AdminLTE/AdminLTE.min.css'</span></span><br><span class="line">          &#125;]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;  </span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// 加载包含 "uglify" 任务的插件。</span></span><br><span class="line">  grunt.loadNpmTasks(<span class="string">'grunt-contrib-uglify'</span>);</span><br><span class="line">  grunt.loadNpmTasks(<span class="string">'grunt-contrib-cssmin'</span>);</span><br><span class="line">  <span class="comment">// 默认被执行的任务列表。</span></span><br><span class="line">  grunt.registerTask(<span class="string">'default'</span>, [<span class="string">'uglify'</span>,<span class="string">'cssmin:compress'</span>,<span class="string">'cssmin:adminlte'</span>]);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>上述代码实现了js目录下所有js文件的压缩，css目录下的所有css文件的压缩。文件主题是module.exports = function(grunt) { };函数内部主要有三部分：初始化参数，加载插件，注册构建任务。</p>
+<ol>
+<li>初始化参数<br> pkg属性，指定具体加载的配置文件，默认的必选项。uglify和cssmin是自己定义的任务，名称也是自定义的。</li>
+<li>加载插件<br> 加载指定的插件。</li>
+<li>注册构建任务<br> default是任务名称，[]中是具体构建项，按照先后顺序执行。可以是一个任务集合’uglify’,也可以是一个具体的任务’cssmin:compress’。<br>#执行构建<br>在命令行控制台里，切换到项目根目录。执行grunt，即可执行default任务。执行“grunt cssmin:adminlte”，即可执行具体的一个任务。执行“grunt uglify”即可执行一个任务集合。</li>
+</ol>
+<p>这里只是对grunt的一个概括介绍，配置的详细参数，具体插件的配置，后续在其他帖子里描述。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/09/10/FE/engineering/Grunt--web前端构建工具/" data-id="cjemvlw0b0012tccm75m9ugn4" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tool/BeyongCompare跨操作系统比较文件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/10/tool/BeyongCompare跨操作系统比较文件/" class="article-date">
+  <time datetime="2016-07-10T11:39:06.000Z" itemprop="datePublished">2016-07-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/10/tool/BeyongCompare跨操作系统比较文件/">BeyongCompare跨操作系统比较文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h1><p>一份代码在windows上，一份在linux上。直接用BC比较，js和css文件，结果文件全部红色，被判为有差异。实际文件没有修改，必须挨个文件打开，才能知道是否有变化。其他文件无此问题。如果两份代码全部在windows上也没有此问题。</p>
+<h1 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h1><p>windows和linux上对换行符的定义是不一样的，所以导致BC因为有变化。</p>
+<h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><p>在BC里面选择基于规则比较。<br><img src="https://static.oschina.net/uploads/img/201803/09212530_pb36.jpg" alt=""></p>
+<p>打开一个JS文件选择规则，设置“比较行结尾”<br><img src="https://static.oschina.net/uploads/img/201803/09212726_UN7r.jpg" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/07/10/tool/BeyongCompare跨操作系统比较文件/" data-id="cjemvlvyl0007tccmiko9u08a" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tool/Chrome无法搜索和安装插件的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/10/tool/Chrome无法搜索和安装插件的解决办法/" class="article-date">
+  <time datetime="2016-07-10T11:39:06.000Z" itemprop="datePublished">2016-07-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/10/tool/Chrome无法搜索和安装插件的解决办法/">Chrome无法搜索和安装插件的解决办法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>由于你懂的原因，Google Chrome插件无法搜索和安装。这里提供一个临时解决方案。</p>
+<ol>
+<li>打开 <a href="http://www.cnplugins.com" target="_blank" rel="noopener">http://www.cnplugins.com</a>  或者 <a href="http://www.chromeextensions.org" target="_blank" rel="noopener">http://www.chromeextensions.org</a> 网站（类似网站很多，可以自己搜索）。 搜索您需要的插件，下载到本地。</li>
+<li>在chrome地址栏输入 chrome://extensions/ 或者通过菜单打开扩展程序。</li>
+<li>将下载的.crx文件拖放到扩展程序页面，然后确认安装即可。</li>
+</ol>
+<h3 id="web前端开发常用的插件推荐"><a href="#web前端开发常用的插件推荐" class="headerlink" title="web前端开发常用的插件推荐"></a>web前端开发常用的插件推荐</h3><ol>
+<li>网页调试HTTP测试工具-Postman  <a href="http://www.cnplugins.com/devtool/postman/#dlink" target="_blank" rel="noopener">http://www.cnplugins.com/devtool/postman/#dlink</a>  </li>
+<li>web性能分析工具PageSpeed Insights (by Google)  <a href="http://www.cnplugins.com/devtool/pagespeed-insights-by-goo/#dlink" target="_blank" rel="noopener">http://www.cnplugins.com/devtool/pagespeed-insights-by-goo/#dlink</a> </li>
+</ol>
+<p>备注：<br>pagespeed安装后执行分析会出现跑死现象，初步分析是改工具需要连接google获取资源，被墙了：（<br>可以考虑使用performance-analyser代替，进行性能分析 <a href="http://www.cnplugins.com/devtool/performance-analyser/download.html" target="_blank" rel="noopener">http://www.cnplugins.com/devtool/performance-analyser/download.html</a></p>
+<h3 id="补充postman无法安装的解决办法"><a href="#补充postman无法安装的解决办法" class="headerlink" title="补充postman无法安装的解决办法"></a>补充postman无法安装的解决办法</h3><ol>
+<li>使用解压缩软件将crx文件解压缩。将解压后的文件夹里的”_metadata”文件夹改名为”metadata”</li>
+<li>打开chrome的扩展程序<img src="https://upload-images.jianshu.io/upload_images/4944427-2a15fe06d12e3d68.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片1.png"></li>
+<li>勾选开发者模式，然后点击“加载已解压的扩展程序”，选中.crx文件解压后的目录，即可安装成功<img src="https://upload-images.jianshu.io/upload_images/4944427-c2d1b9399f61ce5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片2.png"></li>
+<li>使用时在扩展程序中点击“启动”，打开postman后，无需注册也可以使用<img src="https://upload-images.jianshu.io/upload_images/4944427-4482bb1ef4543f90.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片3.png"></li>
+<li>以后每次打开chrome都会出现如下提醒，一定要选择“取消”，否则插件会停用<img src="https://upload-images.jianshu.io/upload_images/4944427-a058ca135e76688d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片4.png"></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/07/10/tool/Chrome无法搜索和安装插件的解决办法/" data-id="cjemvlvyl0008tccm6545ts65" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java/spring boot开发经验汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/09/java/spring boot开发经验汇总/" class="article-date">
+  <time datetime="2016-07-09T06:24:08.000Z" itemprop="datePublished">2016-07-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/09/java/spring boot开发经验汇总/">spring boot开发经验汇总</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文记录了Spring boot开发过程中遇到的一些坑，整理一下，希望能够帮助大家</p>
+<h1 id="spring-boot工程在Eclipse中发布"><a href="#spring-boot工程在Eclipse中发布" class="headerlink" title="spring boot工程在Eclipse中发布"></a>spring boot工程在Eclipse中发布</h1><p>导出jar包方式（以demo工程为例）</p>
+<ol>
+<li>工程右键，选择export-》java-》Runnbale JAR file<img src="https://upload-images.jianshu.io/upload_images/4944427-43adf772b1f7a9b5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></li>
+<li>选择launch configuration,设置输出目标文件，勾选依赖库导入到单独目录（demo_lib）</li>
+<li>将工程属性文件，例如application.properties拷贝到jar文件所在目录。<br>完成的发布包应该包括：demo.jar，demo_lib，application.properties等文件<br>执行 java -jar demo.jar即可启动整个项目</li>
+</ol>
+<h1 id="已有数据表如何导入入到项目的Entity"><a href="#已有数据表如何导入入到项目的Entity" class="headerlink" title="已有数据表如何导入入到项目的Entity"></a>已有数据表如何导入入到项目的Entity</h1><p>使用jpa工具导入<br>在 eclipse matketpalce里搜索jpa，选择 JPA Diagram Editor进行安装<br>在工程的属性里，选择 project facets 再选中JPA<br>工程右键，选择JPA Tools-&gt;Generate Entities from Tables。然后配置数据库连接字，选择数据表，生成entity</p>
+<h1 id="上传文件大小最大值设置"><a href="#上传文件大小最大值设置" class="headerlink" title="上传文件大小最大值设置"></a>上传文件大小最大值设置</h1><p>Spring boot默认最大上传文件是10Mb，如果要改变这个阈值需要自己设置。不同Spring boot版本存在差别。举例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//例如在application.properties</span><br><span class="line">//Spring Boot 1.3.x或者之前</span><br><span class="line">multipart.maxFileSize=500Mb</span><br><span class="line">multipart.maxRequestSize=1000Mb</span><br><span class="line">//Spring Boot 1.4.x或者之后</span><br><span class="line">spring.http.multipart.maxFileSize=500Mb</span><br><span class="line">spring.http.multipart.maxRequestSize=1000Mb</span><br><span class="line">//Spring Boot 2.0.x或者之后</span><br><span class="line">spring.servlet.multipart.maxFileSize=500Mb</span><br><span class="line">spring.servlet.multipart.maxRequestSize=1000Mb</span><br></pre></td></tr></table></figure></p>
+<p>注意：如果有使用zuul路由服务，还需要设置zuul的相关参数。</p>
+<h1 id="EntityNotFoundException"><a href="#EntityNotFoundException" class="headerlink" title="EntityNotFoundException"></a>EntityNotFoundException</h1><p>使用ManyToOne进行表关联且懒加载时，如果被关联的记录不存在时，序列化时报如下异常：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//关联定义如下</span><br><span class="line">@JoinColumn(name=&quot;topic_id&quot;)</span><br><span class="line">@JsonView(JsonViews.Public.class)</span><br><span class="line">@ManyToOne(fetch=FetchType.LAZY)</span><br><span class="line">public Topic getTopic() &#123;</span><br><span class="line">    return topic;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>异常信息如下：<br>Could not write content: Unable to find com.demo.entity.topic.Topic with id 14363<br>//跟踪代码，能发现<br>javax.persistence.EntityNotFoundException: Unable to find xxx<br>如果关联记录不存在，还需要返回结果，增加@NotFound(action= NotFoundAction.IGNORE)，解决方案：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@JoinColumn(name=&quot;topic_id&quot;)</span><br><span class="line">@ManyToOne(fetch=FetchType.LAZY)</span><br><span class="line">@NotFound(action= NotFoundAction.IGNORE)</span><br><span class="line">public Topic getTopic() &#123;</span><br><span class="line">    return topic;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="无法下载maven依赖库"><a href="#无法下载maven依赖库" class="headerlink" title="无法下载maven依赖库"></a>无法下载maven依赖库</h1><p>现象<br>下载依赖库失败。 Failure to transfer org.apache.maven.plugins:maven-compiler-plugin:pom:2.0.2 from <a href="http://repo1.maven.org/maven2" target="_blank" rel="noopener">http://repo1.maven.org/maven2</a> was cached in the local repository</p>
+<p>解决办法<br>在下面两个文件中的mirrors 组中增加自己公司里的私有仓库<br>The Maven install: $M2_HOME/conf/settings.xml<br>A user’s install: ${user.home}/.m2/settings.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;mirrors&gt;</span><br><span class="line">&lt;mirror&gt;</span><br><span class="line"> &lt;id&gt;nexus-demo&lt;/id&gt;</span><br><span class="line"> &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;</span><br><span class="line"> &lt;name&gt;Nexus demo&lt;/name&gt;</span><br><span class="line"> &lt;url&gt;http://maven.demo.com.cn/content/groups/public&lt;/url&gt;</span><br><span class="line">&lt;/mirror&gt;</span><br><span class="line">&lt;/mirrors&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后重新update，注意勾上强制更新。<br>STS里如果更新失败，可以尝试直接命令行 mvn clean &amp; mvn install</p>
+<h1 id="其他异常"><a href="#其他异常" class="headerlink" title="其他异常"></a>其他异常</h1><h2 id="Not-an-managed-type-class-com-demo-entity-Approve"><a href="#Not-an-managed-type-class-com-demo-entity-Approve" class="headerlink" title="Not an managed type: class com.demo.entity.Approve"></a>Not an managed type: class com.demo.entity.Approve</h2><p>class Approve定义没有添加注解@Entity</p>
+<h2 id="No-qualifying-bean-of-type-com-demo-service-ApplyService-found-for-dependency"><a href="#No-qualifying-bean-of-type-com-demo-service-ApplyService-found-for-dependency" class="headerlink" title="No qualifying bean of type [com.demo.service.ApplyService] found for dependency"></a>No qualifying bean of type [com.demo.service.ApplyService] found for dependency</h2><p>没有在config/JPAConfig.java里正确配置package信息。或者是没有给加上@Service注解。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/07/09/java/spring boot开发经验汇总/" data-id="cjemvlvy50003tccmu9l1somi" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/ng/AngularJS学习--Resource" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/09/FE/ng/AngularJS学习--Resource/" class="article-date">
+  <time datetime="2016-05-09T06:24:08.000Z" itemprop="datePublished">2016-05-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/09/FE/ng/AngularJS学习--Resource/">AngularJS学习--Resource</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>AngularJS提供了$resourceService来更方便地与RESTful服务进行交互，可以方便地定义一个REST资源，而不必手动声明CRUD方法。</p>
+<h1 id="如何使用Resource？"><a href="#如何使用Resource？" class="headerlink" title="如何使用Resource？"></a>如何使用Resource？</h1><p>具体步骤如下：</p>
+<ol>
+<li>引入angular-resource.min.js文件 </li>
+<li>在模块中依赖ngResourece,</li>
+<li>在服务中注入$resource</li>
+</ol>
+<p>示例代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//定义</span><br><span class="line">var Topic = angular.module(&apos;Topic&apos;,[&apos;ngResource&apos;]);</span><br><span class="line">Topic.factory(&apos;topicResource&apos;,function($resource)&#123;</span><br><span class="line">  return $resource(&apos;/topic/:id&apos;,</span><br><span class="line">    &#123;</span><br><span class="line">      id:&apos;@id&apos;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      close:&#123;</span><br><span class="line">        method:&apos;POST&apos;,</span><br><span class="line">        params:&#123;close:true&#125;,</span><br><span class="line">        isArray:false</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//调用,对id为123的topic执行close操作</span><br><span class="line">topicResource.close(&#123;id:123&#125;, successFn, errorFn)</span><br></pre></td></tr></table></figure></p>
+<h1 id="resource的参数说明"><a href="#resource的参数说明" class="headerlink" title="$resource的参数说明"></a>$resource的参数说明</h1><p>$resource(url,{url参数},{自定义方法})</p>
+<ol>
+<li>url: 必填, 资源的基础url，url中带有’:’项的是根据第二个参数来进行配置的。</li>
+<li>url参数: 选填，配置url中的带有’:’ 项的参数。例如: (‘/card/user/:userID/:id’, {userID:123,id:’@id’}), 那么userID会被配置为123.。另外,在调用$resource()的方法的时候(比如get,query…),可以传入参数覆盖这里对url参数的配置。</li>
+<li>自定义方法: 选填，使用$resource获取到的资源,或者通过$resource实例化的资源,资源本身会具有一些方法,比如$save,第三个参数用于给资源添加自定义的方法。</li>
+</ol>
+<h1 id="resource的方法"><a href="#resource的方法" class="headerlink" title="$resource的方法"></a>$resource的方法</h1><p>$resource()默认有如下5个方法:</p>
+<ol>
+<li>get: {method:’GET’}  一般用于获取某个资源.</li>
+<li>query: {method:’GET’,isArray:true},一般用于获取一整套的资源,isArray参数，用以设置返回数据格式，是否是数组。默认是true。</li>
+<li>save: {method:’POST’},一般用于保存某个资源,有可能是新建的资源,也有可能是更新现有的资源</li>
+<li>remove: {method:’DELETE’},一般用于删除某个资源</li>
+<li>delete:  {method:’DELETE’} , 一般用于删除某个资源</li>
+</ol>
+<h1 id="resource的响应方法"><a href="#resource的响应方法" class="headerlink" title="$resource的响应方法"></a>$resource的响应方法</h1><p> Resource.action([parameters], [success], [error])</p>
+<ol>
+<li>[parameters]: 可选. 一个json对象,用于配置url里的参数,比如这里写了{id:cardID},那么提交的请求url就是 ‘/card/user/123/cardID’. 可以不填,不填就直接按照$resource()里的url来提交,注意,不填的话,不需要给个空,可以直接写success回调,angular能够判断出它没有填第一个参数,而不是死板的按照顺序来解读参数.</li>
+<li>[success]:可选. 请求成功后的回调函数.回调接受2个参数(注意这里和$http有所不同)function(data, responseHeaders)</li>
+<li>[error]:可选. 请求失败后的回调.回调接受1个参数 function(httpResponse){   }<br>注意：凡是通过$resource返回的对象,一定是json格式的,如果后台返回的数据不是json,$resource也会按照自己的方式处理成json格式.不能返回null,因为$resource必须返回json格式,所以要返回{}<br>#响应转换<br>有时基于既定的后台设计，无法提供完全RESTful的API，比如返回的是一个分页器对象，而非数组。此时，我们仍然可以使用$resource，但需要设置响应转换回调。例如：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">API返回的是一个分页对象，需要读取其中的数组数据。</span><br><span class="line">&#123;</span><br><span class="line">  currentPage : 1,</span><br><span class="line">  totalPage : 20,</span><br><span class="line">  pageSize : 2,</span><br><span class="line">  content : [</span><br><span class="line">    &#123;</span><br><span class="line">      id : 1,</span><br><span class="line">      body : &apos;hello&apos;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      id : 2,</span><br><span class="line">      body : &apos;world&apos;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">//定义</span><br><span class="line">var Topics = $resouce(&apos;/topic/list/page/:pageid&apos;, null, &#123; </span><br><span class="line">  page: &#123;</span><br><span class="line">    method : &apos;GET&apos;,</span><br><span class="line">    transformResponse: function(data, headers)&#123;</span><br><span class="line">      var pager = JSON.parse(data);</span><br><span class="line">      return pager.content;</span><br><span class="line">    &#125;    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//调用</span><br><span class="line">Topics.page(function(data)&#123;</span><br><span class="line">  //此时data已经是转换过的数组了</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>当然上述转换，也可以在响应函数中进行相关的数据格式处理。</p>
+<p>类似响应重写，你还可以设置请求转换transformRequest。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/05/09/FE/ng/AngularJS学习--Resource/" data-id="cjemvlw0b0017tccmm38rmc7l" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/ng/AngularJS学习--UI-Route" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/09/FE/ng/AngularJS学习--UI-Route/" class="article-date">
+  <time datetime="2016-05-09T06:24:08.000Z" itemprop="datePublished">2016-05-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/09/FE/ng/AngularJS学习--UI-Route/">AngularJS学习--UI-Router</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="什么是UI-Router？"><a href="#什么是UI-Router？" class="headerlink" title="什么是UI-Router？"></a>什么是UI-Router？</h1><p>AngularJS 是一种富客户端单页面应用框架，所以要在一个页面呈现不同的视图，路由起到了至关重要的作用。 UI-Router是Angular-UI提供的客户端路由框架，它解决了原生的ng-route的不足(视图不能嵌套，同一URL下不支持多个视图)。例如实际的单页面应用中，导航栏用一个视图，内容部分用另一个视图，就是比较常见的。<br>UI-Router提出了$state的概念。一个$state是一个当前导航和UI的状态，每个$state需要绑定一个URL Pattern。 在控制器和模板中，通过改变$state来进行URL的跳转和路由。</p>
+<h1 id="如何使用UI-Router"><a href="#如何使用UI-Router" class="headerlink" title="如何使用UI-Router"></a>如何使用UI-Router</h1><p>UI-Router模块是一个可选的angularJS模块，如果需要使用，我们要单独引用js。具体应用示例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;script src=&quot;lib/angular.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;lib/angular-ui-router.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;helloworld.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;style&gt;.active &#123; color: red; font-weight: bold; &#125;&lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body ng-app=&quot;helloworld&quot;&gt;</span><br><span class="line">    &lt;a ui-sref=&quot;hello&quot; ui-sref-active=&quot;active&quot;&gt;Hello&lt;/a&gt;</span><br><span class="line">    &lt;a ui-sref=&quot;about&quot; ui-sref-active=&quot;active&quot;&gt;About&lt;/a&gt;</span><br><span class="line">    &lt;ui-view&gt;&lt;/ui-view&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">var myApp = angular.module(&apos;helloworld&apos;, [&apos;ui.router&apos;]);</span><br><span class="line"></span><br><span class="line">myApp.config(function($stateProvider) &#123;</span><br><span class="line">  var helloState = &#123;</span><br><span class="line">    name: &apos;hello&apos;,</span><br><span class="line">    url: &apos;/hello&apos;,</span><br><span class="line">    template: &apos;&lt;h3&gt;hello world!&lt;/h3&gt;&apos;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  var aboutState = &#123;</span><br><span class="line">    name: &apos;about&apos;,</span><br><span class="line">    url: &apos;/about&apos;,</span><br><span class="line">    template: &apos;&lt;h3&gt;Its the UI-Router hello world app!&lt;/h3&gt;&apos;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  $stateProvider.state(helloState);</span><br><span class="line">  $stateProvider.state(aboutState);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="路由加载的三种方法"><a href="#路由加载的三种方法" class="headerlink" title="路由加载的三种方法"></a>路由加载的三种方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//1、·调用$state.go方法   </span><br><span class="line">$state.go(&apos;detail&apos;, &#123;id: 1&#125;);   </span><br><span class="line">$state.go(&apos;index&apos;);</span><br><span class="line"></span><br><span class="line">//2、点击包含ui-sref指令的链接</span><br><span class="line">&lt;a ui-sref=&quot;contacts&quot;&gt;Contacts&lt;/a&gt;</span><br><span class="line">&lt;a ui-sref=&quot;contacts.detail(&#123;contactId: 42&#125;)&quot;&gt;Contact 42&lt;/a&gt;</span><br><span class="line"> </span><br><span class="line">//3、url跳转</span><br><span class="line">&lt;a href=&quot;#/index&quot; &gt;index&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="视图嵌套"><a href="#视图嵌套" class="headerlink" title="视图嵌套"></a>视图嵌套</h2><p>ui-router的视图可以嵌套，视图嵌套通常对应着$state的嵌套。 index.detail是index的子$state，index_detail.html也将作为index.html的子页面。ui-view可以配合$state进行任意层级的嵌套， 即index_detail.html中仍然可以包含一个ui-view，它的$state可能是index.detail.hobbies。</p>
+<h2 id="视图命名"><a href="#视图命名" class="headerlink" title="视图命名"></a>视图命名</h2><p>在ui-router中，一个$state下可以有多个视图，它们有各自的模板和控制器。如上面的示例代码，hello和about就是两个独立的视图，有各自的末班和控制器。</p>
+<h2 id="参数说明："><a href="#参数说明：" class="headerlink" title="参数说明："></a>参数说明：</h2><ul>
+<li>url：默认相对路径（以^开头的是绝对路径）</li>
+<li>views：每个子视图可以包含自己的模板、控制器和预载入数据。 (后2项选填,控制器可以在view中绑定)</li>
+<li>abstract：抽象模板不能被激活 </li>
+<li>template: HTML字符串或者返回HTML字符串的函数</li>
+<li>templateUrl: HTML模板的路径或者返回HTML模板路径的函数</li>
+<li>templateProvider：返回HTML字符串的函数</li>
+<li>controller、controllerProvider：指定任何已经被注册的控制器或者一个作为控制器的函数</li>
+<li>resolve：在路由到达前预载入一系列依赖或者数据，然后注入到控制器中。 </li>
+<li>data：数据不会被注入到控制器中，用途是从父状态传递数据到子状态。 </li>
+<li>onEnter/onExit：进入或者离开当前状态的视图时会调用这两个函数.</li>
+<li>resolve 为控制器提供可选的依赖注入项。是由 key/value 组成的键值对象。<pre><code>key – {string}：注入控制器的依赖项名称。
+value - {string|function}：
+    string：一个服务的别名
+    function：函数的返回值将作为依赖注入项，如果函数是一个耗时的操作，那么控制器必须等待该函数执行完成（be resolved）才会被实例化。
+    比如,视图都需要用户登录后才能访问,那么判断是否登录就可以做成一个控制器依赖
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resolve: &#123;authentication:[&apos;topicAuth&apos;, &apos;$q&apos;, function(topicAuth, $q)&#123;</span><br><span class="line">        return $q.when().then(function()&#123;</span><br><span class="line">            return topicAuth.authentication();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;]&#125;</span><br></pre></td></tr></table></figure>
+</code></pre></li>
+</ul>
+<h2 id="动态加载模板-内容"><a href="#动态加载模板-内容" class="headerlink" title="动态加载模板/内容"></a>动态加载模板/内容</h2><p>在实际使用时往往需要根据参数动态加载不同模板/内容。此时可以通过如下两种方式实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//1、用参数作为文件名，拼接文件名加载</span><br><span class="line">templateUrl: function ($stateParams)&#123;</span><br><span class="line">    return &apos;/topic/detail_&apos; + $stateParams.type + &apos;.html&apos;;</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">//2、用参数赋值，修改内容</span><br><span class="line">templateProvider: function ($timeout, $stateParams) &#123;</span><br><span class="line">    return $timeout(function () &#123;</span><br><span class="line">        return &apos;&lt;h1&gt;&apos; + $stateParams.topicId + &apos;&lt;/h1&gt;&apos;</span><br><span class="line">  &#125;, 100);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="路由参数："><a href="#路由参数：" class="headerlink" title="路由参数："></a>路由参数：</h2><p>ui-router同样支持切换视图时传递参数。默认有如下两种方式传递参数：</p>
+<ol>
+<li>通过$stateParams传递。传递的参数是一个object。传递的方法有：<ul>
+<li>ui-sref=”index.detail({id:22})“</li>
+<li>$state.go(‘index.detail’, {id: 22});</li>
+</ul>
+</li>
+<li>通过$location来获取和设置URL。直接在controller里引入$stateParams 和$location即可。</li>
+</ol>
+<h2 id="state-为view-controller提供自定义数据。"><a href="#state-为view-controller提供自定义数据。" class="headerlink" title="state 为view controller提供自定义数据。"></a>state 为view controller提供自定义数据。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$stateProvider.state(&apos;blog.index&apos;, &#123;</span><br><span class="line">        templateUrl: ’templates/blog_index.html&apos;,</span><br><span class="line">        data: &#123;</span><br><span class="line">            currentPage: 1,</span><br><span class="line">            pageSize: 20</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<p>上面 data 对象就是自定义数据,里面定义了页面的当前页和显示内容条数。在视图对应的 controller 中我们就可以通过下面的方法来获取自定义数据.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log($state.current.data.currentPage);  // 1</span><br><span class="line">console.log($state.current.data.pageSize);  // 20</span><br></pre></td></tr></table></figure></p>
+<h2 id="如何判断选中视图选中"><a href="#如何判断选中视图选中" class="headerlink" title="如何判断选中视图选中"></a>如何判断选中视图选中</h2><ol>
+<li><p>$state.includes<br> 返回 true / false，查看当前状态是否在某父状态内，比如 $state.includes(‘contacts’)</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 包含在 /contacts 状态内部，即其作为 parant state --&gt;</span><br><span class="line">&lt;li ng-class=&quot;&#123;active: $state.includes(&apos;contacts&apos;)&#125;&quot;&gt;</span><br><span class="line">    &lt;a ui-serif=&quot;contacts.list&quot;&gt;Contacts&lt;/a&gt;</span><br><span class="line">&lt;/li&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ui-sref-active<br> 查看当前激活状态并设置 Class。例如</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li ui-sref-active=&quot;active&quot;&gt;&lt;a ui-sref=&quot;about&quot;&gt;About&lt;/a&gt;&lt;/li&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="控制器引入的集中方法"><a href="#控制器引入的集中方法" class="headerlink" title="控制器引入的集中方法"></a>控制器引入的集中方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$stateProvider.state(&apos;contacts&apos;, &#123;//直接定义</span><br><span class="line">  template:&apos;&lt;h1&gt;test&lt;/h1&gt;&apos;,</span><br><span class="line">  controller: function($scope)&#123;</span><br><span class="line">    $scope.title = &apos;My Contacts&apos;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).state(&apos;contacts1&apos;, &#123;//直接名称引用</span><br><span class="line">  template:&apos;&lt;h1&gt;test&lt;/h1&gt;&apos;,</span><br><span class="line">  controller: &apos;ContactsCtrl&apos;</span><br><span class="line">&#125;).state(&apos;contacts2&apos;, &#123;//直接定义并且定义别名</span><br><span class="line">  template:&apos;&lt;h1&gt;test&lt;/h1&gt;&apos;,</span><br><span class="line">  controller: function()&#123;</span><br><span class="line">    this.title = &apos;My Contacts&apos;;</span><br><span class="line">  &#125;,</span><br><span class="line">  controllerAs: &apos;contact&apos;</span><br><span class="line">&#125;).state(&apos;contacts3&apos;, &#123; //控制器名称并且定义别名</span><br><span class="line">  template:&apos;&lt;h1&gt;test&lt;/h1&gt;&apos;,</span><br><span class="line">  controller: &apos;ContactsCtrl as contact&apos;</span><br><span class="line">&#125;).state(&apos;contacts4&apos;, &#123; //根据state动态加载</span><br><span class="line">  template:&apos;&lt;h1&gt;test&lt;/h1&gt;&apos;,</span><br><span class="line">  controllerProvider: function($stateParams) &#123;</span><br><span class="line">      var ctrlName = $stateParams.type + &quot;Controller&quot;;</span><br><span class="line">      return ctrlName;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>注意：如果未定义template，controller将不会被实例化<br>更多说明：参考 <a href="https://github.com/angular-ui/ui-router/wiki" target="_blank" rel="noopener">https://github.com/angular-ui/ui-router/wiki</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/05/09/FE/ng/AngularJS学习--UI-Route/" data-id="cjemvlw0b001btccmrcdgybxw" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/ng/AngularJS学习--Directives" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/02/FE/ng/AngularJS学习--Directives/" class="article-date">
+  <time datetime="2016-04-02T04:24:08.000Z" itemprop="datePublished">2016-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/02/FE/ng/AngularJS学习--Directives/">AngularJS学习--Directives</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Directives是什么？"><a href="#Directives是什么？" class="headerlink" title="Directives是什么？"></a>Directives是什么？</h1><p>AngularJS Directives是DOM元素(例如属性，元素名，注释或CSS类)上的标记，它告诉AngularJS的 html 编译器($compile) 把特定的操作连接到DOM元素或转化为DOM元素及其子元素，使元素拥有某些特定的行为。指令是所有AngularJS应用最重要的部分。尽管AngularJS已经提供了非常丰富的指令，但还是经常需要创建应用特定的指令。</p>
+<h2 id="什么时候需要用Directives？"><a href="#什么时候需要用Directives？" class="headerlink" title="什么时候需要用Directives？"></a>什么时候需要用Directives？</h2><p>不要滥用Directives，如下一些场合需要考虑使用：</p>
+<ol>
+<li>当某些元素或者元素组合以及其行为，需要在多个页面或者位置重复使用时；</li>
+<li>引用其他jQuery组件，并且在加载数据后需要进行初始化时；</li>
+</ol>
+<p>##使用Directives的好处</p>
+<ol>
+<li>去除重复代码</li>
+<li>使得HTML更具可读性 例如：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//未使用指令时，无法知道该文本框的作用，需要查看JS代码。</span><br><span class="line">&lt;input type=&quot;text&quot; /&gt;</span><br><span class="line">//使用指令后，根据指令可得知是时间输入框。显然后者更清晰明了。</span><br><span class="line">&lt;input type=&quot;text&quot; data-date-picker /&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>注意：如果不涉及DOM定义，也可以考虑使用serivces</p>
+<h1 id="Directives有哪些形式？"><a href="#Directives有哪些形式？" class="headerlink" title="Directives有哪些形式？"></a>Directives有哪些形式？</h1><p>AngularJS中有四种类型的自定义指令：</p>
+<ol>
+<li><p>元素指令  E </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;data-my-directive&gt;&lt;/ data-my-directive&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>属性指令   A </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div data-my-attr&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CSS class 指令 C</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;my-class&quot;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注释指令 M </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!– directive:my-comment -- &gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="Directives的命名"><a href="#Directives的命名" class="headerlink" title="Directives的命名"></a>Directives的命名</h1><p>如果要符合HTML5的规范，可以在元素前面添加 x- 或者 data-的前缀。在匹配指令的时候，Angular会在元素或者属性的名字中剔除 x- 或者 data- 前缀。 然后将 – 或者 : 连接的字符串转换成驼峰(camelCase)现形式，然后再与注册过的指令进行匹配。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//指令定义</span><br><span class="line">app.directive(&apos;helloWorld&apos;, function() &#123;&#125;)</span><br><span class="line"></span><br><span class="line">//指令应用</span><br><span class="line">&lt;div data-hello-world&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>当然，如果不需要符合HTML5规范，不可以加x- 或者 data- 前缀，一样可以正常使用。</p>
+<h1 id="Directives初体验"><a href="#Directives初体验" class="headerlink" title="Directives初体验"></a>Directives初体验</h1><p>指令示例如下，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//指令定义</span><br><span class="line">angular.module(‘app‘,[])</span><br><span class="line">.directive(&apos;helloWorld&apos;, function() &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">      restrict: &apos;AE&apos;,</span><br><span class="line">      replace: &apos;true&apos;,</span><br><span class="line">      template: &apos;&lt;h3&gt;Hello World!!&lt;/h3&gt;&apos;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//指令应用</span><br><span class="line">&lt;div hello-world&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Directive的基本属性说明："><a href="#Directive的基本属性说明：" class="headerlink" title="Directive的基本属性说明："></a>Directive的基本属性说明：</h2><ul>
+<li>restrict – 这个属性用来指定指令的类型，可用类型：A E C M。</li>
+<li>template – 这个属性规定了指令被Angular编译和链接后生成的HTML字符串。可以包含其他的指令，以及表达式({ { } })等。</li>
+<li>templateUrl—模板文件（template属性的HTML字符串保存成HTML文件）的URL地址，元素内容复杂的情况下推荐使用。</li>
+<li>replace – 这个属性指明生成的HTML内容是否会替换掉定义此指令的HTML元素。默认是false，templat内容直接插入到该元素里。</li>
+<li>transclude –说明指令是否复制原始标记中的内容。默认为false。注意：当前指令元素无子元素只有文本内容时，会自动添加span元素。<h2 id="Directive的属性——link："><a href="#Directive的属性——link：" class="headerlink" title="Directive的属性——link："></a>Directive的属性——link：</h2>如果我们要为DOM元素添加事件监听、监听模型属性变化、以及更新DOM等等行为时，就需要使用link属性。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">link: function(scope, element , attrs)  &#123;</span><br><span class="line">        //dosomething</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>参数说明：</p>
+<ul>
+<li>scope – 指令的scope。在我们的例子中，指令的scope就是父controller的scope。</li>
+<li>element – 指令的jQLite(jQuery的子集)包装DOM元素。如果你在引入AngularJS之前引入了jQuery，那么这个元素就是jQuery元素，而不是jQLite元素。由于这个元素已经被jQuery/jQLite包装了，所以我们就在进行DOM操作的时候就不需要再使用 $()来进行封装，可直接调用。 element .css(‘cursor’, ‘pointer’);</li>
+<li>attrs  一个包含了指令所在元素的属性的标准化的参数对象。举个例子，你给一个HTML元素添加了一些属性，那么可以在 link 函数中通过 attrs.attributename 来使用它。</li>
+</ul>
+<h2 id="Directive的属性——compile："><a href="#Directive的属性——compile：" class="headerlink" title="Directive的属性——compile："></a>Directive的属性——compile：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">compile: function(element, attrs) &#123;</span><br><span class="line">    //dosomething</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>compile 函数在 link 函数被执行之前用来做一些DOM改造。它接收下面的参数：</p>
+<ul>
+<li>element – 指令所在的元素</li>
+<li>attrs– 元素上赋予的参数的标准化列表</li>
+</ul>
+<p>要注意的是 compile 函数不能访问 scope，并且必须返回一个 link 函数。但是如果没有设置 compile 函数，你可以正常地配置 link 函数，（有了compile，就不能用link，link函数由compile返回）。</p>
+<p>大多数的情况下，你只需要使用 link 函数。这是因为大部分的指令只需要考虑注册事件监听、监视模型、以及更新DOM等，这些都可以在 link 函数中完成。 但是对于像 ng-repeat 之类的指令，需要克隆和重复 DOM 元素多次，在 link 函数执行之前由 compile 函数来完成。这就带来了一个问题，为什么我们需要两个分开的函数来完成生成过程，为什么不能只使用一个？要回答好这个问题，我们需要理解指令在Angular中是如何被编译的。</p>
+<h3 id="指令是如何被编译的？"><a href="#指令是如何被编译的？" class="headerlink" title="指令是如何被编译的？"></a>指令是如何被编译的？</h3><p>当应用引导启动的时候，Angular开始使用 $compile 服务遍历DOM元素。这个服务基于注册过的指令在标记文本中搜索指令。一旦所有的指令都被识别后，Angular执行他们的 compile 方法。如前面所讲的，compile 方法返回一个 link 函数，被添加到稍后执行的 link 函数列表中。这被称为编译阶段。如果一个指令需要被克隆很多次（比如 ng-repeat），compile函数只在编译阶段被执行一次，复制这些模板，但是link 函数会针对每个被复制的实例被执行。所以分开处理，让我们在性能上有一定的提高。这也说明了为什么在 compile 函数中不能访问到scope对象。 在编译阶段之后，就开始了链接（linking）阶段。在这个阶段，所有收集的 link 函数将被一一执行。指令创造出来的模板会在正确的scope下被解析和处理，然后返回具有事件响应的真实的DOM节点。</p>
+<h2 id="Directive的属性——scope："><a href="#Directive的属性——scope：" class="headerlink" title="Directive的属性——scope："></a>Directive的属性——scope：</h2><p>创建指令的作用范围，scope在指令中作为属性标签传递。scope 是创建可以复用指令的必要条件，每个指令（不论是处于嵌套指令的哪一级）都有其唯一的作用域，它不依赖于父scope。<br>scope与父scope的关系可以分为隔离和继承两种。</p>
+<ul>
+<li>继承（默认就是继承）： scope: true,</li>
+<li>完全隔离：scope :  {},</li>
+<li>部分隔离： scope :  {name=‘@userName’}</li>
+</ul>
+<p>非完全隔离场景下又存在如下3种继承关系：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scope: &#123;</span><br><span class="line">    name : &apos;@&apos;,</span><br><span class="line">    age : &apos;=&apos;,</span><br><span class="line">    doUpdate : &apos;&amp;&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>“@” 单向绑定，数值可以从父scope传递到子scope，反之则不行。</li>
+<li>“=” 双向绑定，数值可以在父scope，子scope之间互相传递</li>
+<li>“&amp;“  引用，类似函数指针，使得子scope可以直接调用父scope函数，从而修改父scope的变量。<br>上述举例中，是属性和scope成员变量名称一致的情况。如果不一致，需要在符号后添加原始属性名称。例如：name:’@enName’</li>
+</ul>
+<p>注意：指令应用时，继承的属性名称必须使用-连接单词，不能用驼峰命名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div my-directive do-update=&quot;doUpdate&quot;&gt;&lt;div&gt;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/04/02/FE/ng/AngularJS学习--Directives/" data-id="cjemvlw0b0015tccm92waqadi" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/ng/AngularJS学习--Services" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/02/FE/ng/AngularJS学习--Services/" class="article-date">
+  <time datetime="2016-04-02T04:24:08.000Z" itemprop="datePublished">2016-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/02/FE/ng/AngularJS学习--Services/">AngularJS学习--Services</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Services是什么？"><a href="#Services是什么？" class="headerlink" title="Services是什么？"></a>Services是什么？</h1><p>AngularJS里Services主要负责提供一个接口把特定功能的方法放在一起。类似封装好的类库供其他controller和directive调用。同时可以在应用中的不同作用域之间共享数据。Services作为单例对象在需要使用的时候被创建，只有在应用生命周期结束的时候（关闭浏览器）才会被清除。而controllers在不需要的时候就会被销毁。Service都是单例的，就是说在一个应用中，每一个Serice对象只会被实例化一次（用$injector服务)。</p>
+<h1 id="Services类型"><a href="#Services类型" class="headerlink" title="Services类型"></a>Services类型</h1><p>AngularJS带来了很多类型的Services定义方法。每个方法都会它自己不同的使用场景。下面我们会分别介绍。</p>
+<h2 id="1、Constant"><a href="#1、Constant" class="headerlink" title="1、Constant"></a>1、Constant</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.constant(&apos;myConfig&apos;, &#123;</span><br><span class="line">    isLoad : true,</span><br><span class="line">    des : &quot;default config&quot;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Constant就是常量，赋值后不能被修改，常用于对directive等做配置信息。所以当你想创建一个directive，并且你希望能够做一些配置信息，同时给些默认的配置，constant是个不错的的选择。常量可以是基础类型或object对象。</p>
+<h2 id="2、Value"><a href="#2、Value" class="headerlink" title="2、Value"></a>2、Value</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.value(&apos;myConfig&apos;, &#123;</span><br><span class="line">    isLoad : true,</span><br><span class="line">    des : &quot;default config&quot;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Value和Constant很相似，唯一区别是其在赋值后还可以被改变。它也被常用于directive配置信息。也可以理解为全局变量。</p>
+<h2 id="3、Factory"><a href="#3、Factory" class="headerlink" title="3、Factory"></a>3、Factory</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">app.factory(&apos;myFactor&apos;, function() &#123;</span><br><span class="line">	var name = &quot;myFactor&quot;;</span><br><span class="line">	function getName() &#123;</span><br><span class="line">		return name;</span><br><span class="line">	&#125;</span><br><span class="line">	return &#123;</span><br><span class="line">		des: &quot;This is factory service&quot;,</span><br><span class="line">		getName: getName</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Factory是我们最常用的service,会返回一个object对象。可以理解为工厂模式。Factory创建可以有多种方式，下面的代码就是另外一种创建方式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">app.factory(&apos;myFactor&apos;, function() &#123;</span><br><span class="line">	var myInstance= &#123;</span><br><span class="line">        var des = &quot;This is factory service&quot;;</span><br><span class="line">	    var name = &quot;myFactor&quot;;</span><br><span class="line">	    function getName() &#123;</span><br><span class="line">            return name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">	return myInstance;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="4、Service"><a href="#4、Service" class="headerlink" title="4、Service"></a>4、Service</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.service(&apos;myService&apos;, function() &#123;</span><br><span class="line">    var name = &quot;myService&quot;;</span><br><span class="line">    this.des = &quot;This is factory service&quot;;</span><br><span class="line">    this.getName = function() &#123;</span><br><span class="line">	return name;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>service和factory工作原理一样，只是service接收的是一个构造函数，当第一次使用service的时候，angular会new MyService() 来初始化这个对象。后续使用的时候返回的都是同一个对象。下面是factory等价的写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function MyService() &#123;</span><br><span class="line">	var name = &quot;myService&quot;;</span><br><span class="line">	this.des = &quot;This is service&quot;;</span><br><span class="line">	this.getName = function() &#123;</span><br><span class="line">		return this.name;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br><span class="line">app.factory(&apos;myService&apos;, function() &#123;</span><br><span class="line">	return new MyService();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="5、Provider"><a href="#5、Provider" class="headerlink" title="5、Provider"></a>5、Provider</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">app.provider(&apos;myProvider&apos;, function() &#123;</span><br><span class="line">        var name = &quot;myProvider&quot;;</span><br><span class="line">        return &#123;</span><br><span class="line">           //非$get返回内容，是唯一可以在config中访问的属性和方法</span><br><span class="line">            setName: function(newName) &#123;</span><br><span class="line">                name = newName;</span><br><span class="line">            &#125;,</span><br><span class="line">            //$get返回内容，是唯一可以在控制器中访问的属性和方法</span><br><span class="line">            $get: function() &#123;</span><br><span class="line">                function getName() &#123;</span><br><span class="line">                    return name;</span><br><span class="line">                &#125;</span><br><span class="line"> </span><br><span class="line">                return &#123;</span><br><span class="line">                    des: &quot;This is provider service&quot;,</span><br><span class="line">                    getName: getName</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<p>provider是唯一一种你可以传进 .config() 函数的service，factory和service都不可以。当你想要在 service 对象启用之前，先进行参数配置，那就应该用 provider。</p>
+<p>注意：config是传入参数为provider的名称后面加provider。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.config(function(myProviderProvider) &#123;</span><br><span class="line">    myProviderProvider.setName(&apos;myProviderProvider&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>参考资料：<br><a href="http://www.tuicool.com/articles/rABfUvm" target="_blank" rel="noopener">http://www.tuicool.com/articles/rABfUvm</a><br><a href="http://www.cnblogs.com/whitewolf/p/angular-services.html" target="_blank" rel="noopener">http://www.cnblogs.com/whitewolf/p/angular-services.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/04/02/FE/ng/AngularJS学习--Services/" data-id="cjemvlw0b001atccmyyf1akwl" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tool/sublime如何设置不同语言的缩进" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/09/tool/sublime如何设置不同语言的缩进/" class="article-date">
+  <time datetime="2015-12-09T11:39:06.000Z" itemprop="datePublished">2015-12-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/09/tool/sublime如何设置不同语言的缩进/">sublime如何设置不同语言的缩进</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先用sublime打开一个文件，比如要设置java语言的缩进，就打开一个java文件。</p>
+<p>菜单栏: Preferences -&gt; Settings - More -&gt; Syntax Specific - User，打开属性编辑页面，录入如下内容。保存即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &apos;tab_size&apos;: 2,</span><br><span class="line">    &apos;translate_tabs_to_spaces&apos;: true </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意：tab_size表示tab键转成几个空格，请根据自己团队的变成规范来设置。</p>
+<p>该设置文件会保存在如下路径\Sublime Text 2.0.2\Data\Packages\User。文件名为语言名+“.sublime-settings”后缀。比如java语言的配置文件就是Java.sublime-settings。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2015/12/09/tool/sublime如何设置不同语言的缩进/" data-id="cjemvlvz0000ltccmplzxmhit" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">__('next') &raquo;</a>
+  </nav>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>重复代码检测工具 | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="何谓重复代码简单说，就是指重复或近似的代码。程序猿在码代码时，往往使用CP（copy and paste）大法，飞快的完成开发任务。不经意间代码中充斥着大量的重复、相似的代码。重复代码不仅让代码量大增，造成编译速度慢，而且占用大量存储空间，更严重的后果是造成了代码可维护性差，代码质量下降。重复可能是软件中一切邪恶的根源，许多原则与实践规则都是为了控制与消除重复而创建。……软件开发领域的所有创新都是">
+<meta name="keywords" content="工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重复代码检测工具">
+<meta property="og:url" content="https://belllee.github.io/2015/05/10/tool/重复代码检测工具/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="何谓重复代码简单说，就是指重复或近似的代码。程序猿在码代码时，往往使用CP（copy and paste）大法，飞快的完成开发任务。不经意间代码中充斥着大量的重复、相似的代码。重复代码不仅让代码量大增，造成编译速度慢，而且占用大量存储空间，更严重的后果是造成了代码可维护性差，代码质量下降。重复可能是软件中一切邪恶的根源，许多原则与实践规则都是为了控制与消除重复而创建。……软件开发领域的所有创新都是">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:updated_time" content="2018-03-09T13:41:18.025Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重复代码检测工具">
+<meta name="twitter:description" content="何谓重复代码简单说，就是指重复或近似的代码。程序猿在码代码时，往往使用CP（copy and paste）大法，飞快的完成开发任务。不经意间代码中充斥着大量的重复、相似的代码。重复代码不仅让代码量大增，造成编译速度慢，而且占用大量存储空间，更严重的后果是造成了代码可维护性差，代码质量下降。重复可能是软件中一切邪恶的根源，许多原则与实践规则都是为了控制与消除重复而创建。……软件开发领域的所有创新都是">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tool/重复代码检测工具" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/10/tool/重复代码检测工具/" class="article-date">
+  <time datetime="2015-05-10T11:39:06.000Z" itemprop="datePublished">2015-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      重复代码检测工具
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="何谓重复代码"><a href="#何谓重复代码" class="headerlink" title="何谓重复代码"></a>何谓重复代码</h1><p>简单说，就是指重复或近似的代码。程序猿在码代码时，往往使用CP（copy and paste）大法，飞快的完成开发任务。不经意间代码中充斥着大量的重复、相似的代码。重复代码不仅让代码量大增，造成编译速度慢，而且占用大量存储空间，更严重的后果是造成了代码可维护性差，代码质量下降。<br>重复可能是软件中一切邪恶的根源，许多原则与实践规则都是为了控制与消除重复而创建。……软件开发领域的所有创新都是不断在尝试从源代码中消除重复。——《代码整洁之道》 马丁</p>
+<h1 id="重复代码都有哪些类型？"><a href="#重复代码都有哪些类型？" class="headerlink" title="重复代码都有哪些类型？"></a>重复代码都有哪些类型？</h1><p>最简单明了的是完全一样的代码片段。此外，还有如下类型的重复代码:</p>
+<ol>
+<li>类型Ⅰ，代码片段中除了空格、注释以及换行以外的内容完全一致</li>
+<li>类型Ⅱ，代码片段中除了空格、注释、换行以及变量名以外的内容完全一致</li>
+<li>类型Ⅲ，代码片段中除了空格、注释、换行以及变量名以外的语句可能有增删改，功能不变</li>
+<li>类型Ⅳ，两个或更多个代码段执行相同的运算，但通过不同的语法和变量来实现。</li>
+</ol>
+<p>不同的重复代码检测工具，由于在实现算法上有所不同，其所能检测的重复代码类型也不尽相同，如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>Simian</th>
+<th>PMD-CPD</th>
+<th>CloneDR</th>
+<th>CCCD</th>
+<th>CCFinder</th>
+<th>Bauhaus</th>
+<th>CodePro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>检测类型</td>
+<td>Ⅰ</td>
+<td>Ⅰ，Ⅱ</td>
+<td>Ⅰ，Ⅱ</td>
+<td>Ⅰ，Ⅱ</td>
+<td>Ⅰ</td>
+<td>Ⅰ，Ⅱ，Ⅲ</td>
+<td>Ⅰ，Ⅱ，Ⅲ</td>
+</tr>
+<tr>
+<td>支持语言</td>
+<td>C/C++，Java</td>
+<td>C/C++，Java</td>
+<td>C/C++，Java</td>
+<td>C，Java</td>
+<td>C/C++，Java</td>
+<td>C/C++，Java</td>
+<td>Java</td>
+</tr>
+<tr>
+<td>授权类型</td>
+<td>商用，可免费</td>
+<td>开源</td>
+<td>商用，可免费</td>
+<td>开源</td>
+<td>开源</td>
+<td>商用，可免费</td>
+<td>开源</td>
+</tr>
+<tr>
+<td>推荐星级</td>
+<td>**</td>
+<td><em>*</em></td>
+<td>**</td>
+<td>*</td>
+<td>*</td>
+<td>**</td>
+<td><em>*</em></td>
+</tr>
+</tbody>
+</table>
+<h1 id="怎么消除重复代码"><a href="#怎么消除重复代码" class="headerlink" title="怎么消除重复代码?"></a>怎么消除重复代码?</h1><p>《代码大全》在第七章“高质量的子程序”中指出，创建子程序是消除重复代码的有效方法。<br>在《重构——改善既有代码的设计》一书中，建议如下方法消除重复代码：</p>
+<ol>
+<li>提取类，如果多个类中含有相同或相似的成员变量，方法，可以定义一个新的类来实现这些功能。原有的类可以作为子类继承。</li>
+<li>提取函数，如果多个类中含有相同或相似的方法，可以把这些方法集中到新的类，供其他类调用。</li>
+<li>替换函数，相同或相似的代码可以通过调用实现该功能的函数来实现。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2015/05/10/tool/重复代码检测工具/" data-id="cjemvlvz0000stccmn1m7qtxt" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/05/10/other/企业知识管理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          企业知识管理
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

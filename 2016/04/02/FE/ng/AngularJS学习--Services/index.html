@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS学习--Services | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Services是什么？AngularJS里Services主要负责提供一个接口把特定功能的方法放在一起。类似封装好的类库供其他controller和directive调用。同时可以在应用中的不同作用域之间共享数据。Services作为单例对象在需要使用的时候被创建，只有在应用生命周期结束的时候（关闭浏览器）才会被清除。而controllers在不需要的时候就会被销毁。Service都是单例的，就">
+<meta name="keywords" content="JS,AngularJS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS学习--Services">
+<meta property="og:url" content="https://belllee.github.io/2016/04/02/FE/ng/AngularJS学习--Services/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="Services是什么？AngularJS里Services主要负责提供一个接口把特定功能的方法放在一起。类似封装好的类库供其他controller和directive调用。同时可以在应用中的不同作用域之间共享数据。Services作为单例对象在需要使用的时候被创建，只有在应用生命周期结束的时候（关闭浏览器）才会被清除。而controllers在不需要的时候就会被销毁。Service都是单例的，就">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:updated_time" content="2018-03-10T07:41:11.480Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS学习--Services">
+<meta name="twitter:description" content="Services是什么？AngularJS里Services主要负责提供一个接口把特定功能的方法放在一起。类似封装好的类库供其他controller和directive调用。同时可以在应用中的不同作用域之间共享数据。Services作为单例对象在需要使用的时候被创建，只有在应用生命周期结束的时候（关闭浏览器）才会被清除。而controllers在不需要的时候就会被销毁。Service都是单例的，就">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-FE/ng/AngularJS学习--Services" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/02/FE/ng/AngularJS学习--Services/" class="article-date">
+  <time datetime="2016-04-02T04:24:08.000Z" itemprop="datePublished">2016-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS学习--Services
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Services是什么？"><a href="#Services是什么？" class="headerlink" title="Services是什么？"></a>Services是什么？</h1><p>AngularJS里Services主要负责提供一个接口把特定功能的方法放在一起。类似封装好的类库供其他controller和directive调用。同时可以在应用中的不同作用域之间共享数据。Services作为单例对象在需要使用的时候被创建，只有在应用生命周期结束的时候（关闭浏览器）才会被清除。而controllers在不需要的时候就会被销毁。Service都是单例的，就是说在一个应用中，每一个Serice对象只会被实例化一次（用$injector服务)。</p>
+<h1 id="Services类型"><a href="#Services类型" class="headerlink" title="Services类型"></a>Services类型</h1><p>AngularJS带来了很多类型的Services定义方法。每个方法都会它自己不同的使用场景。下面我们会分别介绍。</p>
+<h2 id="1、Constant"><a href="#1、Constant" class="headerlink" title="1、Constant"></a>1、Constant</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.constant(&apos;myConfig&apos;, &#123;</span><br><span class="line">    isLoad : true,</span><br><span class="line">    des : &quot;default config&quot;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Constant就是常量，赋值后不能被修改，常用于对directive等做配置信息。所以当你想创建一个directive，并且你希望能够做一些配置信息，同时给些默认的配置，constant是个不错的的选择。常量可以是基础类型或object对象。</p>
+<h2 id="2、Value"><a href="#2、Value" class="headerlink" title="2、Value"></a>2、Value</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.value(&apos;myConfig&apos;, &#123;</span><br><span class="line">    isLoad : true,</span><br><span class="line">    des : &quot;default config&quot;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Value和Constant很相似，唯一区别是其在赋值后还可以被改变。它也被常用于directive配置信息。也可以理解为全局变量。</p>
+<h2 id="3、Factory"><a href="#3、Factory" class="headerlink" title="3、Factory"></a>3、Factory</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">app.factory(&apos;myFactor&apos;, function() &#123;</span><br><span class="line">	var name = &quot;myFactor&quot;;</span><br><span class="line">	function getName() &#123;</span><br><span class="line">		return name;</span><br><span class="line">	&#125;</span><br><span class="line">	return &#123;</span><br><span class="line">		des: &quot;This is factory service&quot;,</span><br><span class="line">		getName: getName</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Factory是我们最常用的service,会返回一个object对象。可以理解为工厂模式。Factory创建可以有多种方式，下面的代码就是另外一种创建方式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">app.factory(&apos;myFactor&apos;, function() &#123;</span><br><span class="line">	var myInstance= &#123;</span><br><span class="line">        var des = &quot;This is factory service&quot;;</span><br><span class="line">	    var name = &quot;myFactor&quot;;</span><br><span class="line">	    function getName() &#123;</span><br><span class="line">            return name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">	return myInstance;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="4、Service"><a href="#4、Service" class="headerlink" title="4、Service"></a>4、Service</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.service(&apos;myService&apos;, function() &#123;</span><br><span class="line">    var name = &quot;myService&quot;;</span><br><span class="line">    this.des = &quot;This is factory service&quot;;</span><br><span class="line">    this.getName = function() &#123;</span><br><span class="line">	return name;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>service和factory工作原理一样，只是service接收的是一个构造函数，当第一次使用service的时候，angular会new MyService() 来初始化这个对象。后续使用的时候返回的都是同一个对象。下面是factory等价的写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function MyService() &#123;</span><br><span class="line">	var name = &quot;myService&quot;;</span><br><span class="line">	this.des = &quot;This is service&quot;;</span><br><span class="line">	this.getName = function() &#123;</span><br><span class="line">		return this.name;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br><span class="line">app.factory(&apos;myService&apos;, function() &#123;</span><br><span class="line">	return new MyService();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="5、Provider"><a href="#5、Provider" class="headerlink" title="5、Provider"></a>5、Provider</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">app.provider(&apos;myProvider&apos;, function() &#123;</span><br><span class="line">        var name = &quot;myProvider&quot;;</span><br><span class="line">        return &#123;</span><br><span class="line">           //非$get返回内容，是唯一可以在config中访问的属性和方法</span><br><span class="line">            setName: function(newName) &#123;</span><br><span class="line">                name = newName;</span><br><span class="line">            &#125;,</span><br><span class="line">            //$get返回内容，是唯一可以在控制器中访问的属性和方法</span><br><span class="line">            $get: function() &#123;</span><br><span class="line">                function getName() &#123;</span><br><span class="line">                    return name;</span><br><span class="line">                &#125;</span><br><span class="line"> </span><br><span class="line">                return &#123;</span><br><span class="line">                    des: &quot;This is provider service&quot;,</span><br><span class="line">                    getName: getName</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<p>provider是唯一一种你可以传进 .config() 函数的service，factory和service都不可以。当你想要在 service 对象启用之前，先进行参数配置，那就应该用 provider。</p>
+<p>注意：config是传入参数为provider的名称后面加provider。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.config(function(myProviderProvider) &#123;</span><br><span class="line">    myProviderProvider.setName(&apos;myProviderProvider&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>参考资料：<br><a href="http://www.tuicool.com/articles/rABfUvm" target="_blank" rel="noopener">http://www.tuicool.com/articles/rABfUvm</a><br><a href="http://www.cnblogs.com/whitewolf/p/angular-services.html" target="_blank" rel="noopener">http://www.cnblogs.com/whitewolf/p/angular-services.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/04/02/FE/ng/AngularJS学习--Services/" data-id="cjemvlw0b001atccmyyf1akwl" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/02/FE/ng/AngularJS学习--Directives/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          AngularJS学习--Directives
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/09/tool/sublime如何设置不同语言的缩进/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">sublime如何设置不同语言的缩进</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

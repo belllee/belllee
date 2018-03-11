@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>代码量统计存在的问题和对策 | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文是针对当前业界代码量统计工具现状的分析以及对策。虽然用代码量来代表工作量历来被广大程序员所诟病，但是代码量数据背后确实能够反映出部分软件开发中存在的问题，特别是增量开发，以及维护旧版本的时候，代码增量是很重要的一项参考数据。 代码量统计工具现状目前研发代码量统计使用的工具是TextDiff和diffcount，主要用于代码量的总量统计和增量统计。但是这两个工具的功能不完善，很多情况下存在统计错">
+<meta name="keywords" content="工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码量统计存在的问题和对策">
+<meta property="og:url" content="https://belllee.github.io/2015/05/19/tool/代码量统计存在的问题和对策/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="本文是针对当前业界代码量统计工具现状的分析以及对策。虽然用代码量来代表工作量历来被广大程序员所诟病，但是代码量数据背后确实能够反映出部分软件开发中存在的问题，特别是增量开发，以及维护旧版本的时候，代码增量是很重要的一项参考数据。 代码量统计工具现状目前研发代码量统计使用的工具是TextDiff和diffcount，主要用于代码量的总量统计和增量统计。但是这两个工具的功能不完善，很多情况下存在统计错">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:updated_time" content="2018-03-09T13:55:16.760Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="代码量统计存在的问题和对策">
+<meta name="twitter:description" content="本文是针对当前业界代码量统计工具现状的分析以及对策。虽然用代码量来代表工作量历来被广大程序员所诟病，但是代码量数据背后确实能够反映出部分软件开发中存在的问题，特别是增量开发，以及维护旧版本的时候，代码增量是很重要的一项参考数据。 代码量统计工具现状目前研发代码量统计使用的工具是TextDiff和diffcount，主要用于代码量的总量统计和增量统计。但是这两个工具的功能不完善，很多情况下存在统计错">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tool/代码量统计存在的问题和对策" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/19/tool/代码量统计存在的问题和对策/" class="article-date">
+  <time datetime="2015-05-19T11:39:06.000Z" itemprop="datePublished">2015-05-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      代码量统计存在的问题和对策
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文是针对当前业界代码量统计工具现状的分析以及对策。虽然用代码量来代表工作量历来被广大程序员所诟病，但是代码量数据背后确实能够反映出部分软件开发中存在的问题，特别是增量开发，以及维护旧版本的时候，代码增量是很重要的一项参考数据。</p>
+<h1 id="代码量统计工具现状"><a href="#代码量统计工具现状" class="headerlink" title="代码量统计工具现状"></a>代码量统计工具现状</h1><p>目前研发代码量统计使用的工具是TextDiff和diffcount，主要用于代码量的总量统计和增量统计。但是这两个工具的功能不完善，很多情况下存在统计错误的情况，导致代码量的度量不准确，甚至偏差很大。</p>
+<h1 id="典型场景分析"><a href="#典型场景分析" class="headerlink" title="典型场景分析"></a>典型场景分析</h1><h2 id="文件重命名"><a href="#文件重命名" class="headerlink" title="文件重命名"></a>文件重命名</h2><p>这种情况实际代码没有变化，只是文件名变化，代码变化应该统计为0.实际上两个工具都会认为原有文件被删除，又新增文件。比如原文件1K，统计结果就是新增1K，删除1K。</p>
+<p>##文件移动<br>这种情况实际代码没有变化，只是文件的存放位置变化，代码变化应该统计为0.实际上两个工具都会认为原有文件被删除，又新增文件。比如原文件1K，统计结果就是新增1K，删除1K。</p>
+<h2 id="函数移动"><a href="#函数移动" class="headerlink" title="函数移动"></a>函数移动</h2><p>这种情况实际代码没有变化，只是函数在文件内部位置变化或者从文件1移动到文件2，代码变化应该统计为0.实际上两个工具都会认为原有函数被删除，又新增一个相同的函数。比如该函数是10行，统计结果就是新增10行，删除10行。<br>删注释</p>
+<h2 id="增删空格和换行"><a href="#增删空格和换行" class="headerlink" title="增删空格和换行"></a>增删空格和换行</h2><h2 id="子目录遍历"><a href="#子目录遍历" class="headerlink" title="子目录遍历"></a>子目录遍历</h2><h2 id="代码总量统计"><a href="#代码总量统计" class="headerlink" title="代码总量统计"></a>代码总量统计</h2><p>上述情况下，这两个工具都存在统计不准确的情况。特别是随着敏捷的推进，不断强化代码的重构，这种情况会更加突出。度量的基础是数据，只有在原始数据准确的前提下，度量才有意义。</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>有效代码行</th>
+<th>函数移动位置</th>
+<th>文件重命名</th>
+<th>文件移动位置</th>
+<th>增删注释</th>
+<th>空格换行</th>
+<th>子目录遍历</th>
+<th>代码总量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>textdiff</td>
+<td>不算{}</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>diffcount</td>
+<td>算{}</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>√</td>
+<td>√</td>
+</tr>
+</tbody>
+</table>
+<p>#解决方案<br>目前商用和开源代码量统计工具，均没有能完全解决上述问题的。建议自己开发工具。</p>
+<p>工具方案：将源代码解析成全局变量声明或者函数（类的方法）这一粒度后，进行比较。    虽然上述方案能最大程度接近真实情况，但是由于实际代码变化的复杂性，不可能完全解析数代码的真实变化情况，还是会存在误差。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2015/05/19/tool/代码量统计存在的问题和对策/" data-id="cjemvlvyl000gtccmyrmv3vta" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/09/tool/sublime如何设置不同语言的缩进/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          sublime如何设置不同语言的缩进
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/10/other/企业知识管理/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">企业知识管理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS学习--Directives | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Directives是什么？AngularJS Directives是DOM元素(例如属性，元素名，注释或CSS类)上的标记，它告诉AngularJS的 html 编译器($compile) 把特定的操作连接到DOM元素或转化为DOM元素及其子元素，使元素拥有某些特定的行为。指令是所有AngularJS应用最重要的部分。尽管AngularJS已经提供了非常丰富的指令，但还是经常需要创建应用特定的指">
+<meta name="keywords" content="JS,AngularJS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS学习--Directives">
+<meta property="og:url" content="https://belllee.github.io/2016/04/02/FE/ng/AngularJS学习--Directives/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="Directives是什么？AngularJS Directives是DOM元素(例如属性，元素名，注释或CSS类)上的标记，它告诉AngularJS的 html 编译器($compile) 把特定的操作连接到DOM元素或转化为DOM元素及其子元素，使元素拥有某些特定的行为。指令是所有AngularJS应用最重要的部分。尽管AngularJS已经提供了非常丰富的指令，但还是经常需要创建应用特定的指">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:updated_time" content="2018-03-10T07:10:39.744Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS学习--Directives">
+<meta name="twitter:description" content="Directives是什么？AngularJS Directives是DOM元素(例如属性，元素名，注释或CSS类)上的标记，它告诉AngularJS的 html 编译器($compile) 把特定的操作连接到DOM元素或转化为DOM元素及其子元素，使元素拥有某些特定的行为。指令是所有AngularJS应用最重要的部分。尽管AngularJS已经提供了非常丰富的指令，但还是经常需要创建应用特定的指">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-FE/ng/AngularJS学习--Directives" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/02/FE/ng/AngularJS学习--Directives/" class="article-date">
+  <time datetime="2016-04-02T04:24:08.000Z" itemprop="datePublished">2016-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS学习--Directives
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Directives是什么？"><a href="#Directives是什么？" class="headerlink" title="Directives是什么？"></a>Directives是什么？</h1><p>AngularJS Directives是DOM元素(例如属性，元素名，注释或CSS类)上的标记，它告诉AngularJS的 html 编译器($compile) 把特定的操作连接到DOM元素或转化为DOM元素及其子元素，使元素拥有某些特定的行为。指令是所有AngularJS应用最重要的部分。尽管AngularJS已经提供了非常丰富的指令，但还是经常需要创建应用特定的指令。</p>
+<h2 id="什么时候需要用Directives？"><a href="#什么时候需要用Directives？" class="headerlink" title="什么时候需要用Directives？"></a>什么时候需要用Directives？</h2><p>不要滥用Directives，如下一些场合需要考虑使用：</p>
+<ol>
+<li>当某些元素或者元素组合以及其行为，需要在多个页面或者位置重复使用时；</li>
+<li>引用其他jQuery组件，并且在加载数据后需要进行初始化时；</li>
+</ol>
+<p>##使用Directives的好处</p>
+<ol>
+<li>去除重复代码</li>
+<li>使得HTML更具可读性 例如：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//未使用指令时，无法知道该文本框的作用，需要查看JS代码。</span><br><span class="line">&lt;input type=&quot;text&quot; /&gt;</span><br><span class="line">//使用指令后，根据指令可得知是时间输入框。显然后者更清晰明了。</span><br><span class="line">&lt;input type=&quot;text&quot; data-date-picker /&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>注意：如果不涉及DOM定义，也可以考虑使用serivces</p>
+<h1 id="Directives有哪些形式？"><a href="#Directives有哪些形式？" class="headerlink" title="Directives有哪些形式？"></a>Directives有哪些形式？</h1><p>AngularJS中有四种类型的自定义指令：</p>
+<ol>
+<li><p>元素指令  E </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;data-my-directive&gt;&lt;/ data-my-directive&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>属性指令   A </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div data-my-attr&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CSS class 指令 C</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;my-class&quot;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注释指令 M </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!– directive:my-comment -- &gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="Directives的命名"><a href="#Directives的命名" class="headerlink" title="Directives的命名"></a>Directives的命名</h1><p>如果要符合HTML5的规范，可以在元素前面添加 x- 或者 data-的前缀。在匹配指令的时候，Angular会在元素或者属性的名字中剔除 x- 或者 data- 前缀。 然后将 – 或者 : 连接的字符串转换成驼峰(camelCase)现形式，然后再与注册过的指令进行匹配。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//指令定义</span><br><span class="line">app.directive(&apos;helloWorld&apos;, function() &#123;&#125;)</span><br><span class="line"></span><br><span class="line">//指令应用</span><br><span class="line">&lt;div data-hello-world&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>当然，如果不需要符合HTML5规范，不可以加x- 或者 data- 前缀，一样可以正常使用。</p>
+<h1 id="Directives初体验"><a href="#Directives初体验" class="headerlink" title="Directives初体验"></a>Directives初体验</h1><p>指令示例如下，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//指令定义</span><br><span class="line">angular.module(‘app‘,[])</span><br><span class="line">.directive(&apos;helloWorld&apos;, function() &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">      restrict: &apos;AE&apos;,</span><br><span class="line">      replace: &apos;true&apos;,</span><br><span class="line">      template: &apos;&lt;h3&gt;Hello World!!&lt;/h3&gt;&apos;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//指令应用</span><br><span class="line">&lt;div hello-world&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Directive的基本属性说明："><a href="#Directive的基本属性说明：" class="headerlink" title="Directive的基本属性说明："></a>Directive的基本属性说明：</h2><ul>
+<li>restrict – 这个属性用来指定指令的类型，可用类型：A E C M。</li>
+<li>template – 这个属性规定了指令被Angular编译和链接后生成的HTML字符串。可以包含其他的指令，以及表达式({ { } })等。</li>
+<li>templateUrl—模板文件（template属性的HTML字符串保存成HTML文件）的URL地址，元素内容复杂的情况下推荐使用。</li>
+<li>replace – 这个属性指明生成的HTML内容是否会替换掉定义此指令的HTML元素。默认是false，templat内容直接插入到该元素里。</li>
+<li>transclude –说明指令是否复制原始标记中的内容。默认为false。注意：当前指令元素无子元素只有文本内容时，会自动添加span元素。<h2 id="Directive的属性——link："><a href="#Directive的属性——link：" class="headerlink" title="Directive的属性——link："></a>Directive的属性——link：</h2>如果我们要为DOM元素添加事件监听、监听模型属性变化、以及更新DOM等等行为时，就需要使用link属性。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">link: function(scope, element , attrs)  &#123;</span><br><span class="line">        //dosomething</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>参数说明：</p>
+<ul>
+<li>scope – 指令的scope。在我们的例子中，指令的scope就是父controller的scope。</li>
+<li>element – 指令的jQLite(jQuery的子集)包装DOM元素。如果你在引入AngularJS之前引入了jQuery，那么这个元素就是jQuery元素，而不是jQLite元素。由于这个元素已经被jQuery/jQLite包装了，所以我们就在进行DOM操作的时候就不需要再使用 $()来进行封装，可直接调用。 element .css(‘cursor’, ‘pointer’);</li>
+<li>attrs  一个包含了指令所在元素的属性的标准化的参数对象。举个例子，你给一个HTML元素添加了一些属性，那么可以在 link 函数中通过 attrs.attributename 来使用它。</li>
+</ul>
+<h2 id="Directive的属性——compile："><a href="#Directive的属性——compile：" class="headerlink" title="Directive的属性——compile："></a>Directive的属性——compile：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">compile: function(element, attrs) &#123;</span><br><span class="line">    //dosomething</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>compile 函数在 link 函数被执行之前用来做一些DOM改造。它接收下面的参数：</p>
+<ul>
+<li>element – 指令所在的元素</li>
+<li>attrs– 元素上赋予的参数的标准化列表</li>
+</ul>
+<p>要注意的是 compile 函数不能访问 scope，并且必须返回一个 link 函数。但是如果没有设置 compile 函数，你可以正常地配置 link 函数，（有了compile，就不能用link，link函数由compile返回）。</p>
+<p>大多数的情况下，你只需要使用 link 函数。这是因为大部分的指令只需要考虑注册事件监听、监视模型、以及更新DOM等，这些都可以在 link 函数中完成。 但是对于像 ng-repeat 之类的指令，需要克隆和重复 DOM 元素多次，在 link 函数执行之前由 compile 函数来完成。这就带来了一个问题，为什么我们需要两个分开的函数来完成生成过程，为什么不能只使用一个？要回答好这个问题，我们需要理解指令在Angular中是如何被编译的。</p>
+<h3 id="指令是如何被编译的？"><a href="#指令是如何被编译的？" class="headerlink" title="指令是如何被编译的？"></a>指令是如何被编译的？</h3><p>当应用引导启动的时候，Angular开始使用 $compile 服务遍历DOM元素。这个服务基于注册过的指令在标记文本中搜索指令。一旦所有的指令都被识别后，Angular执行他们的 compile 方法。如前面所讲的，compile 方法返回一个 link 函数，被添加到稍后执行的 link 函数列表中。这被称为编译阶段。如果一个指令需要被克隆很多次（比如 ng-repeat），compile函数只在编译阶段被执行一次，复制这些模板，但是link 函数会针对每个被复制的实例被执行。所以分开处理，让我们在性能上有一定的提高。这也说明了为什么在 compile 函数中不能访问到scope对象。 在编译阶段之后，就开始了链接（linking）阶段。在这个阶段，所有收集的 link 函数将被一一执行。指令创造出来的模板会在正确的scope下被解析和处理，然后返回具有事件响应的真实的DOM节点。</p>
+<h2 id="Directive的属性——scope："><a href="#Directive的属性——scope：" class="headerlink" title="Directive的属性——scope："></a>Directive的属性——scope：</h2><p>创建指令的作用范围，scope在指令中作为属性标签传递。scope 是创建可以复用指令的必要条件，每个指令（不论是处于嵌套指令的哪一级）都有其唯一的作用域，它不依赖于父scope。<br>scope与父scope的关系可以分为隔离和继承两种。</p>
+<ul>
+<li>继承（默认就是继承）： scope: true,</li>
+<li>完全隔离：scope :  {},</li>
+<li>部分隔离： scope :  {name=‘@userName’}</li>
+</ul>
+<p>非完全隔离场景下又存在如下3种继承关系：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scope: &#123;</span><br><span class="line">    name : &apos;@&apos;,</span><br><span class="line">    age : &apos;=&apos;,</span><br><span class="line">    doUpdate : &apos;&amp;&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>“@” 单向绑定，数值可以从父scope传递到子scope，反之则不行。</li>
+<li>“=” 双向绑定，数值可以在父scope，子scope之间互相传递</li>
+<li>“&amp;“  引用，类似函数指针，使得子scope可以直接调用父scope函数，从而修改父scope的变量。<br>上述举例中，是属性和scope成员变量名称一致的情况。如果不一致，需要在符号后添加原始属性名称。例如：name:’@enName’</li>
+</ul>
+<p>注意：指令应用时，继承的属性名称必须使用-连接单词，不能用驼峰命名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div my-directive do-update=&quot;doUpdate&quot;&gt;&lt;div&gt;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/04/02/FE/ng/AngularJS学习--Directives/" data-id="cjemvlw0b0015tccm92waqadi" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/09/FE/ng/AngularJS学习--UI-Route/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          AngularJS学习--UI-Router
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/02/FE/ng/AngularJS学习--Services/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">AngularJS学习--Services</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

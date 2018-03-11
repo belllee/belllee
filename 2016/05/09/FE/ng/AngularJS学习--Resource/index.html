@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS学习--Resource | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="AngularJS提供了$resourceService来更方便地与RESTful服务进行交互，可以方便地定义一个REST资源，而不必手动声明CRUD方法。 如何使用Resource？具体步骤如下：  引入angular-resource.min.js文件  在模块中依赖ngResourece, 在服务中注入$resource  示例代码如下：123456789101112131415161718">
+<meta name="keywords" content="JS,AngularJS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS学习--Resource">
+<meta property="og:url" content="https://belllee.github.io/2016/05/09/FE/ng/AngularJS学习--Resource/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="AngularJS提供了$resourceService来更方便地与RESTful服务进行交互，可以方便地定义一个REST资源，而不必手动声明CRUD方法。 如何使用Resource？具体步骤如下：  引入angular-resource.min.js文件  在模块中依赖ngResourece, 在服务中注入$resource  示例代码如下：123456789101112131415161718">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:updated_time" content="2018-03-11T06:19:32.141Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS学习--Resource">
+<meta name="twitter:description" content="AngularJS提供了$resourceService来更方便地与RESTful服务进行交互，可以方便地定义一个REST资源，而不必手动声明CRUD方法。 如何使用Resource？具体步骤如下：  引入angular-resource.min.js文件  在模块中依赖ngResourece, 在服务中注入$resource  示例代码如下：123456789101112131415161718">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-FE/ng/AngularJS学习--Resource" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/09/FE/ng/AngularJS学习--Resource/" class="article-date">
+  <time datetime="2016-05-09T06:24:08.000Z" itemprop="datePublished">2016-05-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS学习--Resource
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>AngularJS提供了$resourceService来更方便地与RESTful服务进行交互，可以方便地定义一个REST资源，而不必手动声明CRUD方法。</p>
+<h1 id="如何使用Resource？"><a href="#如何使用Resource？" class="headerlink" title="如何使用Resource？"></a>如何使用Resource？</h1><p>具体步骤如下：</p>
+<ol>
+<li>引入angular-resource.min.js文件 </li>
+<li>在模块中依赖ngResourece,</li>
+<li>在服务中注入$resource</li>
+</ol>
+<p>示例代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//定义</span><br><span class="line">var Topic = angular.module(&apos;Topic&apos;,[&apos;ngResource&apos;]);</span><br><span class="line">Topic.factory(&apos;topicResource&apos;,function($resource)&#123;</span><br><span class="line">  return $resource(&apos;/topic/:id&apos;,</span><br><span class="line">    &#123;</span><br><span class="line">      id:&apos;@id&apos;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      close:&#123;</span><br><span class="line">        method:&apos;POST&apos;,</span><br><span class="line">        params:&#123;close:true&#125;,</span><br><span class="line">        isArray:false</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//调用,对id为123的topic执行close操作</span><br><span class="line">topicResource.close(&#123;id:123&#125;, successFn, errorFn)</span><br></pre></td></tr></table></figure></p>
+<h1 id="resource的参数说明"><a href="#resource的参数说明" class="headerlink" title="$resource的参数说明"></a>$resource的参数说明</h1><p>$resource(url,{url参数},{自定义方法})</p>
+<ol>
+<li>url: 必填, 资源的基础url，url中带有’:’项的是根据第二个参数来进行配置的。</li>
+<li>url参数: 选填，配置url中的带有’:’ 项的参数。例如: (‘/card/user/:userID/:id’, {userID:123,id:’@id’}), 那么userID会被配置为123.。另外,在调用$resource()的方法的时候(比如get,query…),可以传入参数覆盖这里对url参数的配置。</li>
+<li>自定义方法: 选填，使用$resource获取到的资源,或者通过$resource实例化的资源,资源本身会具有一些方法,比如$save,第三个参数用于给资源添加自定义的方法。</li>
+</ol>
+<h1 id="resource的方法"><a href="#resource的方法" class="headerlink" title="$resource的方法"></a>$resource的方法</h1><p>$resource()默认有如下5个方法:</p>
+<ol>
+<li>get: {method:’GET’}  一般用于获取某个资源.</li>
+<li>query: {method:’GET’,isArray:true},一般用于获取一整套的资源,isArray参数，用以设置返回数据格式，是否是数组。默认是true。</li>
+<li>save: {method:’POST’},一般用于保存某个资源,有可能是新建的资源,也有可能是更新现有的资源</li>
+<li>remove: {method:’DELETE’},一般用于删除某个资源</li>
+<li>delete:  {method:’DELETE’} , 一般用于删除某个资源</li>
+</ol>
+<h1 id="resource的响应方法"><a href="#resource的响应方法" class="headerlink" title="$resource的响应方法"></a>$resource的响应方法</h1><p> Resource.action([parameters], [success], [error])</p>
+<ol>
+<li>[parameters]: 可选. 一个json对象,用于配置url里的参数,比如这里写了{id:cardID},那么提交的请求url就是 ‘/card/user/123/cardID’. 可以不填,不填就直接按照$resource()里的url来提交,注意,不填的话,不需要给个空,可以直接写success回调,angular能够判断出它没有填第一个参数,而不是死板的按照顺序来解读参数.</li>
+<li>[success]:可选. 请求成功后的回调函数.回调接受2个参数(注意这里和$http有所不同)function(data, responseHeaders)</li>
+<li>[error]:可选. 请求失败后的回调.回调接受1个参数 function(httpResponse){   }<br>注意：凡是通过$resource返回的对象,一定是json格式的,如果后台返回的数据不是json,$resource也会按照自己的方式处理成json格式.不能返回null,因为$resource必须返回json格式,所以要返回{}<br>#响应转换<br>有时基于既定的后台设计，无法提供完全RESTful的API，比如返回的是一个分页器对象，而非数组。此时，我们仍然可以使用$resource，但需要设置响应转换回调。例如：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">API返回的是一个分页对象，需要读取其中的数组数据。</span><br><span class="line">&#123;</span><br><span class="line">  currentPage : 1,</span><br><span class="line">  totalPage : 20,</span><br><span class="line">  pageSize : 2,</span><br><span class="line">  content : [</span><br><span class="line">    &#123;</span><br><span class="line">      id : 1,</span><br><span class="line">      body : &apos;hello&apos;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      id : 2,</span><br><span class="line">      body : &apos;world&apos;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">//定义</span><br><span class="line">var Topics = $resouce(&apos;/topic/list/page/:pageid&apos;, null, &#123; </span><br><span class="line">  page: &#123;</span><br><span class="line">    method : &apos;GET&apos;,</span><br><span class="line">    transformResponse: function(data, headers)&#123;</span><br><span class="line">      var pager = JSON.parse(data);</span><br><span class="line">      return pager.content;</span><br><span class="line">    &#125;    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//调用</span><br><span class="line">Topics.page(function(data)&#123;</span><br><span class="line">  //此时data已经是转换过的数组了</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>当然上述转换，也可以在响应函数中进行相关的数据格式处理。</p>
+<p>类似响应重写，你还可以设置请求转换transformRequest。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/05/09/FE/ng/AngularJS学习--Resource/" data-id="cjemvlw0b0017tccmm38rmc7l" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/09/java/spring boot开发经验汇总/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          spring boot开发经验汇总
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/09/FE/ng/AngularJS学习--UI-Route/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">AngularJS学习--UI-Router</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

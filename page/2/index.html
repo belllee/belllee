@@ -71,6 +71,230 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-FE/js/高性能JavaScript-JS加载和执行" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/FE/js/高性能JavaScript-JS加载和执行/" class="article-date">
+  <time datetime="2018-01-10T13:28:07.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/FE/js/高性能JavaScript-JS加载和执行/">高性能JavaScript--JS加载和执行</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>随着前端技术的不断发展，JS在web应用中的作用越来越来大，同时也意味着JS越来越成为前端的瓶颈。写出高性能的JS代码，也成为了前端开发者必备的技能。这里分享一下《高性能JavaScript》的读书心得，以便大家更好的理解JS，写出更高效的JS代码。  </p>
+<h2 id="JS加载和执行"><a href="#JS加载和执行" class="headerlink" title="JS加载和执行"></a>JS加载和执行</h2><h3 id="JS的加载"><a href="#JS的加载" class="headerlink" title="JS的加载"></a>JS的加载</h3><ol>
+<li>地球人都知道，为了不阻塞页面的加载和渲染，JS文件一般放在html的底部加载。</li>
+<li>减少加载的JS脚本数量，一般采用合并文件的方式</li>
+<li>减小JS文件大小，压缩JS文件，开启GZIP压缩  </li>
+</ol>
+<h3 id="无阻塞的脚本"><a href="#无阻塞的脚本" class="headerlink" title="无阻塞的脚本"></a>无阻塞的脚本</h3><p>避免一次加载一个很大的JS文件，避免阻塞浏览器。主要采用延迟加载技术，具体实现方法包括：</p>
+<ol>
+<li>利用script标签的延迟加载属性defer(需注意兼容性，可以在<a href="http://caniuse.com/" target="_blank" rel="noopener"></a>上查看)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;file1.js&quot; defer&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>带有defer属性的script标签，可以放在文档的任何位置。对应的JS文件将在script标签解析时下载，但代码不会被执行，直到DOM加载完成（onload事件触发之前）才会执行。JS文件下载时不会阻塞页面的其他处理过程。</p>
+<ol>
+<li>动态创建script元素,通过src加载脚本 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var script= document.createElement (&quot;script&quot;);</span><br><span class="line">script.type= &quot;text/javascript&quot;;</span><br><span class="line">script.src= &quot;file1.js&quot;;</span><br><span class="line">document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>特点：无论在何处启动下载，文件的下载和运行都不会阻塞页面的其他处理过程。如需控制狂态和加载顺序，需要自己添加监听事件处理.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//Internet Explorer</span><br><span class="line">script.onreadystatechange =function()&#123;...&#125;</span><br><span class="line">//Firefox,Opera, Chrome,Safari3+</span><br><span class="line">script.onload = function()&#123;...&#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">3. XMLHttpRequest脚本注入，通过XHR获取JS字符串，填入script元素。</span><br></pre></td></tr></table></figure></p>
+<p>var xhr= newXMLHttpRequest();<br>xhr.open(“get”,”file1.js”,true);<br>xhr.onreadystatechange= function(){<br>    if (xhr.readyState==4){<br>        if (xhr.status&gt;=200&amp;&amp;xhr.status<300|| xhr.status="=" 304){="" varscript="document.createElement("script");" script.type="text/javascript" ;="" script.text="xhr.responseText;" document.body.appendchild(script);="" }="" };="" xhr.send(null)="" <figure="" class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">特点：下载后可以不用立即添加script元素，从而控制执行时间。</span><br><span class="line">### 推荐的无阻塞模式</span><br><span class="line">先加载必要的JS文件，然后再执行load函数，再加载其他功能所需的脚本。</span><br></pre></td></tr></table></300||></p>
+<p><script type="text/javascript" src="loader.js"></script></p>
+<p><script type="text/javascript"><br>    loadScript(“the-rest.js”,function(){<br>        Application.init();<br>    });<br></script><br>```<br>目前各主流的延迟加载类库，也是采用这些技术。比如，图片懒加载，动态给img元素的src赋值。requireJS是使用动态创建script元素实现的。  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/FE/js/高性能JavaScript-JS加载和执行/" data-id="cjc95ci42000m80cm8gmyfauf" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能/">性能</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/test/基于karma-jasmine的web前端自动化测试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/FE/test/基于karma-jasmine的web前端自动化测试/" class="article-date">
+  <time datetime="2018-01-10T13:24:35.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/FE/test/基于karma-jasmine的web前端自动化测试/">基于karma+jasmine的web前端自动化测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文介绍了基于karma+jasmine的web前端自动化测试的方案和详细操作指导。</p>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><ol>
+<li>Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。Node.js 使用了一个事件驱动、非阻塞式 I/O 的模型，使其轻量又高效。Node.js 的包管理器 npm，是全球最大的开源库生态系统。</li>
+<li>Karma是一个基于Node.js的JavaScript测试执行过程管理工具（Test Runner）。该工具可用于测试所有主流Web浏览器，也可集成到CI（Continuous integration）工具，也可和其他代码编辑器一起使用。这个测试工具的一个强大特性就是，它可以监控(Watch)文件的变化，然后自行执行，通过console.log显示测试结果。</li>
+<li>Jasmine 是一个简易的JS单元测试框架。Jasmine 不依赖于任何浏览器、DOM、或者是任何 JavaScript 而存在。它适用于所有网站、Node.js 项目，或者是任何能够在 JavaScript 上面运行的程序。</li>
+</ol>
+<h3 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h3><ol>
+<li>首先必须安装执行环境nodejs</li>
+<li>安装浏览器，推荐chrome（用于运行监听程序，监听js文件变化，自动触发测试执行）</li>
+<li>安装karma+jasmine<pre><code>npm install karma -g
+npm install karma-jasmine -g
+npm install karma-chrome-launcher -g 
+npm install karma-cli -g 
+npm install karma-coverage -g 
+npm install karma-html-reporter -g 
+</code></pre></li>
+<li>安装完成后执行karma -v，检查安装是否正常</li>
+</ol>
+<h3 id="工程配置"><a href="#工程配置" class="headerlink" title="工程配置"></a>工程配置</h3><ol>
+<li>可以使用karma init，自动生成配置文件，完成部分参数的设置，然后再手动修改。</li>
+<li>当然最快的配置方法，复制下面的配置<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line">		<span class="comment">// Karma configuration</span></span><br><span class="line">		<span class="comment">// Generated on Tue Nov 01 2016 14:17:00 GMT+0800 (中国标准时间)</span></span><br><span class="line"></span><br><span class="line">		<span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">config</span>) </span>&#123;</span><br><span class="line">		  config.set(&#123;</span><br><span class="line">		  <span class="comment">// base path that will be used to resolve all patterns (eg. files, exclude)</span></span><br><span class="line">			basePath: <span class="string">''</span>,</span><br><span class="line"></span><br><span class="line">        <span class="comment">// frameworks to use</span></span><br><span class="line">        <span class="comment">// available frameworks: https://npmjs.org/browse/keyword/karma-adapter</span></span><br><span class="line">        frameworks: [<span class="string">'jasmine'</span>],</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// list of files / patterns to load in the browser</span></span><br><span class="line">        <span class="comment">//需要加载入浏览器的js文件，包括基础的类库，被测试js文件和测试用例js文件</span></span><br><span class="line">        <span class="comment">//如果需要测试angular代码，比如引入angular-mock.js，给angular代码进行mock。</span></span><br><span class="line">        <span class="comment">//注意angular-mock的版本一定要和angular版本一致。可在cdn网站对应的angular版本列表中寻找</span></span><br><span class="line">        files: [</span><br><span class="line">            <span class="string">'../webapp/vender/jquery/jquery-1.10.2.min.js'</span>,</span><br><span class="line">            <span class="string">'../webapp/vender/angular/angular.min.js'</span>,</span><br><span class="line">            <span class="string">'../webapp/vender/angular/angular-ui-router.min.js'</span>,</span><br><span class="line">            <span class="string">'lib/angular-mocks.js'</span>,</span><br><span class="line">            <span class="string">'../webapp/common/*.js'</span>,</span><br><span class="line">            <span class="string">'../webapp/commont/template/*.html'</span>,</span><br><span class="line">            <span class="string">'tc/ut/**/*.js'</span></span><br><span class="line">        ],</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// list of files to exclude</span></span><br><span class="line">        exclude: [</span><br><span class="line">          <span class="comment">//'../webapp/vender/**/*.js'</span></span><br><span class="line">        ],</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// test results reporter to use</span></span><br><span class="line">        <span class="comment">// possible values: 'dots', 'progress'</span></span><br><span class="line">        <span class="comment">// available reporters: https://npmjs.org/browse/keyword/karma-reporter</span></span><br><span class="line">        <span class="comment">//这里定义输出的报告</span></span><br><span class="line">        <span class="comment">//html对应karma-html-reporter组件，输出测试用例执行报告</span></span><br><span class="line">        <span class="comment">//coverage对应karma-coverage组件，输出测试用例执行报告</span></span><br><span class="line">        reporters: [<span class="string">'progress'</span>, <span class="string">'html'</span>, <span class="string">'junit'</span>, <span class="string">'coverage'</span>],</span><br><span class="line">        junitReporter: &#123;  </span><br><span class="line">               <span class="comment">// will be resolved to basePath (in the same way as files/exclude patterns)  </span></span><br><span class="line">              outputFile: <span class="string">'report/ut/test-results.xml'</span>,</span><br><span class="line">              suite: <span class="string">'UT'</span>,</span><br><span class="line">              useBrowserName: <span class="literal">false</span> </span><br><span class="line">        &#125;,  </span><br><span class="line">        htmlReporter: &#123;</span><br><span class="line">          outputDir: <span class="string">'report/ut'</span>,</span><br><span class="line">          reportName: <span class="string">'result'</span> <span class="comment">//outputDir+reportName组成完整的输出报告格式，如没有定义，会自动生成浏览器+OS信息的文件夹，不方便读取报告</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">//定义需要统计覆盖率的文件</span></span><br><span class="line">        preprocessors: &#123;</span><br><span class="line">            <span class="string">'../webapp/common/*.js'</span>:<span class="string">'coverage'</span>, </span><br><span class="line">            <span class="string">'../webapp/common/template/*.html'</span>: <span class="string">'ng-html2js'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        coverageReporter: &#123;  </span><br><span class="line">            type: <span class="string">'html'</span>, <span class="comment">//将覆盖率报告类型type设置为cobertura 或者 html</span></span><br><span class="line">            subdir:<span class="string">'coverage'</span>, <span class="comment">//dir+subdir组成完整的输出报告格式，如没有定义，会自动生成浏览器+OS信息的文件夹，不方便读取报告</span></span><br><span class="line">            dir: <span class="string">'report/ut/'</span>  <span class="comment">//代码覆盖率报告生成地址</span></span><br><span class="line">        &#125;,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// web server port</span></span><br><span class="line">        port: <span class="number">9876</span>,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// enable / disable colors in the output (reporters and logs)</span></span><br><span class="line">        colors: <span class="literal">true</span>,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// level of logging</span></span><br><span class="line">        <span class="comment">// possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG</span></span><br><span class="line">        logLevel: config.LOG_INFO,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// enable / disable watching file and executing tests whenever any file changes</span></span><br><span class="line">        <span class="comment">//karma自动自动监视被测试文件和测试用用例文件，如有修改，自动重新执行测试</span></span><br><span class="line">        autoWatch: <span class="literal">true</span>,</span><br><span class="line">        <span class="comment">// Continuous Integration mode</span></span><br><span class="line">        <span class="comment">// if true, Karma captures browsers, runs the tests and exits</span></span><br><span class="line">        <span class="comment">//上一个参数为true，本参数为false，，则自动监视才生效。否则执行完测试用例后自动退出</span></span><br><span class="line">        singleRun: <span class="literal">true</span>,</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// start these browsers</span></span><br><span class="line">        <span class="comment">// available browser launchers: https://npmjs.org/browse/keyword/karma-launcher</span></span><br><span class="line">        <span class="comment">//用来执行自动监听的浏览器，推荐chrome</span></span><br><span class="line">        browsers: [<span class="string">'Chrome'</span>],</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// Concurrency level</span></span><br><span class="line">        <span class="comment">// how many browser should be started simultaneous</span></span><br><span class="line">        concurrency: <span class="literal">Infinity</span>，</span><br><span class="line">       <span class="comment">//自动将模板文件路径转换页面引入路径，以便注入用例中</span></span><br><span class="line">        ngHtml2JsPreprocessor: &#123;</span><br><span class="line">             cacheIdFromPath: <span class="function"><span class="keyword">function</span>(<span class="params">filepath</span>) </span>&#123;</span><br><span class="line">                 <span class="keyword">var</span> cacheId = filepath.substr(filepath.lastIndexOf(<span class="string">'/webapp/'</span>)+<span class="number">7</span>);</span><br><span class="line">                 <span class="comment">// console.log(cacheId);</span></span><br><span class="line">                 <span class="keyword">return</span> cacheId;</span><br><span class="line">               &#125;,</span><br><span class="line">           moduleName: <span class="string">'template'</span></span><br><span class="line">        &#125;</span><br><span class="line">		&#125;)</span><br><span class="line">		&#125;</span><br><span class="line"><span class="string">``</span><span class="string">`    </span></span><br><span class="line"><span class="string">3. 保存配置文件到测试目录</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">### 测试用例编写</span></span><br><span class="line"><span class="string">#### 1、用例怎么写</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>javascript</span><br><span class="line">describe(<span class="string">"A suite of Common/common.js"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	</span><br><span class="line">	beforeAll(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'beforeAll'</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">   describe(<span class="string">"extends of String"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;	</span><br><span class="line">	   <span class="keyword">var</span> expected;</span><br><span class="line">		beforeEach(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			expected = <span class="string">'abcd'</span>;</span><br><span class="line">		&#125;);</span><br><span class="line">		it(<span class="string">"trim"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			expect(expected).toEqual((<span class="string">" abcd "</span>).trim());</span><br><span class="line">		&#125;);</span><br><span class="line">		it(<span class="string">"ltrim"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			expect(expected).toEqual((<span class="string">" abcd"</span>).ltrim());</span><br><span class="line">		&#125;);</span><br><span class="line">		it(<span class="string">"rtrim"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			expect(expected).toEqual((<span class="string">"abcd "</span>).rtrim());</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>上述例子中，<br>a. describe相当于一个测试套，可以嵌套。<br>b. it(‘tc name’,function(){})是一个测试用例。<br>c. beforeAll和beforeEach是预置条件，前者一个测试套执行一次，后者每个测试用例执行一次。<br>d. 当然还会有afterAll和afterEach<br>e. expect是断言</p>
+<h4 id="2、-断言都有那些比较"><a href="#2、-断言都有那些比较" class="headerlink" title="2、 断言都有那些比较"></a>2、 断言都有那些比较</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Matcher实现了断言的比较操作，将Expectation传入的实际值和Matcher传入的期望值比较。任何Matcher都能通过在expect调用Matcher前加上not来实现一个否定的断言（expect(a).not().toBe(<span class="literal">false</span>);）。</span><br><span class="line">常用的Matchers有：</span><br><span class="line">toBe()：相当于= =比较。</span><br><span class="line">toNotBe():相当于! =比较。</span><br><span class="line">toBeDefined()：检查变量或属性是否已声明且赋值。</span><br><span class="line">toBeUndefined()</span><br><span class="line">toBeNull()：是否是<span class="literal">null</span>。</span><br><span class="line">toBeTruthy()：如果转换为布尔值，是否为<span class="literal">true</span>。</span><br><span class="line">toBeFalsy()</span><br><span class="line">toBeLessThan()：数值比较，小于。</span><br><span class="line">toBeGreaterThan()：数值比较，大于。</span><br><span class="line">toEqual()：相当于==，注意与toBe()的区别。一个新建的<span class="built_in">Object</span>不是（not to be）另一个新建的<span class="built_in">Object</span>，但是它们是相等（to equal）的。</span><br><span class="line">expect(&#123;&#125;).not().toBe(&#123;&#125;);</span><br><span class="line">expect(&#123;&#125;).toEqual(&#123;&#125;);</span><br><span class="line">toNotEqual()</span><br><span class="line">toContain()：数组中是否包含元素（值）。只能用于数组，不能用于对象。</span><br><span class="line">toBeCloseTo()：数值比较时定义精度，先四舍五入后再比较。</span><br><span class="line">toHaveBeenCalled()</span><br><span class="line">toHaveBeenCalledWith()</span><br><span class="line">toMatch()：按正则表达式匹配。</span><br><span class="line">toNotMatch()</span><br><span class="line">toThrow()：检验一个函数是否会抛出一个错误</span><br></pre></td></tr></table></figure>
+<h4 id="3、-angular代码怎么写"><a href="#3、-angular代码怎么写" class="headerlink" title="3、 angular代码怎么写"></a>3、 angular代码怎么写</h4><p>先看例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">describe(<span class="string">'Apply MainCtrl'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> $scope,</span><br><span class="line">      $controller,</span><br><span class="line">      $httpBackend;</span><br><span class="line">     <span class="keyword">var</span> MainCtrl;</span><br><span class="line"></span><br><span class="line">  beforeEach(<span class="built_in">module</span>(<span class="string">'applyApp'</span>));</span><br><span class="line"></span><br><span class="line">  beforeEach(inject(<span class="function"><span class="keyword">function</span>(<span class="params">_$controller_, $rootScope,  _$httpBackend_</span>) </span>&#123;</span><br><span class="line">    $scope = $rootScope.$<span class="keyword">new</span>();</span><br><span class="line">    $httpBackend = _$httpBackend_;</span><br><span class="line">    $controller = _$controller_;</span><br><span class="line">    $httpBackend.when(<span class="string">'POST'</span>, /\/api\/wxcop\/common\/record.*<span class="regexp">/).respond(&#123;&#125;);      </span></span><br><span class="line"><span class="regexp">  &#125;));</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    it('Check $scope assignments.', function() &#123;</span></span><br><span class="line"><span class="regexp">      MainCtrl = $controller('MainController', &#123;</span></span><br><span class="line"><span class="regexp">            $scope: $scope</span></span><br><span class="line"><span class="regexp">        &#125;);      </span></span><br><span class="line"><span class="regexp">      $httpBackend.flush();</span></span><br><span class="line"><span class="regexp">      $scope.gotoApplyHome();</span></span><br><span class="line"><span class="regexp">      $scope.judgeLogin();</span></span><br><span class="line"><span class="regexp">      expect($scope.typeSelect).toEqual(["单行文本","多行文本","单选","多选"]);</span></span><br><span class="line"><span class="regexp">      expect($scope.getItemItems("1,2，3")).toEqual(["1","2","3"]);</span></span><br><span class="line"><span class="regexp">    &#125;);</span></span><br><span class="line"><span class="regexp">&#125;);</span></span><br></pre></td></tr></table></figure>
+<p>注意，要测试angular必须引入angular-mock。<br>说明</p>
+<ol>
+<li>beforeEach(module(‘applyApp’));  引入module ‘applyApp’</li>
+<li>beforeEach(inject(function(<em>$controller</em>, $rootScope,  <em>$httpBackend</em>)  依赖注入和http测试打桩</li>
+<li>$controller(‘MainController’,  )初始化controller</li>
+<li>直接调用scope，然后执行断言</li>
+</ol>
+<h4 id="5、-angular的相关特性如何测试"><a href="#5、-angular的相关特性如何测试" class="headerlink" title="5、 angular的相关特性如何测试"></a>5、 angular的相关特性如何测试</h4><h5 id="1、测试函数"><a href="#1、测试函数" class="headerlink" title="1、测试函数"></a>1、测试函数</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$scope.functionTriger = <span class="literal">false</span>;</span><br><span class="line">$scope.doTest = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	$scope.functionTriger = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'function'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;    </span><br><span class="line">    expect($scope.functionTriger).toBeFalsy();</span><br><span class="line">    $scope.doTest();</span><br><span class="line">    expect($scope.functionTriger).toBeTruthy();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="2、测试监听"><a href="#2、测试监听" class="headerlink" title="2、测试监听"></a>2、测试监听</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$scope.watchVar = <span class="literal">false</span>;</span><br><span class="line">$scope.watchedTrigeIndex = <span class="number">0</span>;</span><br><span class="line">$scope.$watch(<span class="string">'watchVar'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    $scope.watchedTrigeIndex++;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'watch'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;    </span><br><span class="line">    expect($scope.watchedTrigeIndex).toBe(<span class="number">0</span>);</span><br><span class="line">    $scope.watchVar = <span class="literal">true</span>;</span><br><span class="line">    $scope.$digest();</span><br><span class="line">    expect($scope.watchedTrigeIndex).toBe(<span class="number">1</span>);</span><br><span class="line">    $scope.watchVar = <span class="literal">false</span>;</span><br><span class="line">    $scope.$digest();</span><br><span class="line">    expect($scope.watchedTrigeIndex).toBe(<span class="number">2</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="3、测试广播"><a href="#3、测试广播" class="headerlink" title="3、测试广播"></a>3、测试广播</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$scope.isHaveTriger = <span class="literal">false</span>;</span><br><span class="line">$scope.$on(<span class="string">'ngRepeatFinished'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    $scope.isHaveTriger = <span class="literal">true</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'broadcast'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;    </span><br><span class="line">  expect($scope.isHaveTriger).toBeFalsy();</span><br><span class="line">  $scope.$broadcast(<span class="string">'ngRepeatFinished'</span>);</span><br><span class="line">  expect($scope.isHaveTriger).toBeTruthy();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="4、测试路由切换"><a href="#4、测试路由切换" class="headerlink" title="4、测试路由切换"></a>4、测试路由切换</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.config([<span class="string">'$stateProvider'</span>, <span class="string">'$urlRouterProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider, $urlRouterProvider</span>)</span>&#123;</span><br><span class="line">    $urlRouterProvider.otherwise(<span class="string">"/detail"</span>);</span><br><span class="line">    $stateProvider.state(<span class="string">'detail'</span>, &#123;</span><br><span class="line">        url:<span class="string">'/detail'</span>,</span><br><span class="line">        template:<span class="string">'&lt;p&gt;&lt;/p&gt;'</span>,</span><br><span class="line">        controller:<span class="string">'MainCtrl'</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;])</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'route'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">    inject(<span class="function"><span class="keyword">function</span> (<span class="params">_$injector_</span>) </span>&#123;</span><br><span class="line">      $state = _$injector_.get(<span class="string">'$state'</span>);</span><br><span class="line">    &#125;);  </span><br><span class="line">    <span class="keyword">var</span> curState = $state.get(<span class="string">'detail'</span>);</span><br><span class="line">    expect(curState.name).toEqual(<span class="string">'detail'</span>);</span><br><span class="line">    expect(curState.url).toEqual(<span class="string">'/detail'</span>);</span><br><span class="line">    expect(curState.controller).toEqual(<span class="string">'MainCtrl'</span>);</span><br><span class="line">    expect(curState.template).toEqual(<span class="string">'&lt;p&gt;&lt;/p&gt;'</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="5、测试过滤器"><a href="#5、测试过滤器" class="headerlink" title="5、测试过滤器"></a>5、测试过滤器</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.filter(<span class="string">'myFilter'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;    </span><br><span class="line">        <span class="keyword">return</span> data + <span class="string">'lzw'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'filter'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  inject(<span class="function"><span class="keyword">function</span> (<span class="params">_$injector_</span>) </span>&#123;</span><br><span class="line">    $filter = _$injector_.get(<span class="string">'$filter'</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="6、测试service"><a href="#6、测试service" class="headerlink" title="6、测试service"></a>6、测试service</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">.service(<span class="string">'foo'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> thisIsPrivate = <span class="string">"Private"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">getPrivate</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> thisIsPrivate;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        variable: <span class="string">"This is public"</span>,</span><br><span class="line">        getPrivate: getPrivate</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'service'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> foo;</span><br><span class="line">    inject(<span class="function"><span class="keyword">function</span>(<span class="params">_foo_</span>) </span>&#123;</span><br><span class="line">        foo = _foo_;</span><br><span class="line">    &#125;);</span><br><span class="line">    expect(foo.variable).toBe(<span class="string">'This is public'</span>);</span><br><span class="line">    expect(foo.getPrivate()).toBe(<span class="string">'Private'</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="7、测试指令"><a href="#7、测试指令" class="headerlink" title="7、测试指令"></a>7、测试指令</h5><p>a.  被测试代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">.directive(<span class="string">'myDirective'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        restrict: <span class="string">'A'</span>,</span><br><span class="line">        replace: <span class="literal">true</span>,</span><br><span class="line">        template: <span class="string">'&lt;p&gt;11&lt;/p&gt;'</span>,</span><br><span class="line">        link: <span class="function"><span class="keyword">function</span>(<span class="params">scope</span>) </span>&#123;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)</span><br><span class="line">.directive(<span class="string">'dirButton'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        template: <span class="string">'&lt;button&gt;Increment value!&lt;/button&gt;'</span>,</span><br><span class="line">        link: <span class="function"><span class="keyword">function</span> (<span class="params">scope, elem</span>) </span>&#123;</span><br><span class="line">            elem.find(<span class="string">'button'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                scope.value++;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)</span><br><span class="line">.directive(<span class="string">'dirScope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        scope:&#123;</span><br><span class="line">            config: <span class="string">'='</span>,</span><br><span class="line">            notify: <span class="string">'@'</span>,</span><br><span class="line">            onChange:<span class="string">'&amp;'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        link: <span class="function"><span class="keyword">function</span>(<span class="params">scope</span>)</span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>b. 测试用例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">it(<span class="string">'directive'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;    </span><br><span class="line">    <span class="keyword">var</span> link = $compile(<span class="string">'&lt;p my-directive&gt;&lt;/p&gt;'</span>);</span><br><span class="line">    <span class="keyword">var</span> element = link($scope);</span><br><span class="line">    expect($(element).html()).toBe(<span class="string">'11'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  it(<span class="string">'button directive'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> directiveElem = $compile(<span class="string">'&lt;button dir-button&gt;&lt;/button&gt;'</span>)($scope);</span><br><span class="line">    $scope.value=<span class="number">10</span>;</span><br><span class="line">    <span class="keyword">var</span> button = directiveElem.find(<span class="string">'button'</span>);</span><br><span class="line">    button.triggerHandler(<span class="string">'click'</span>);</span><br><span class="line">    $scope.$digest();</span><br><span class="line">    expect($scope.value).toEqual(<span class="number">11</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  it(<span class="string">'scope directive'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    $scope.config = &#123;</span><br><span class="line">      prop: <span class="string">'value'</span></span><br><span class="line">    &#125;;</span><br><span class="line">    $scope.notify = <span class="literal">true</span>;</span><br><span class="line">    $scope.onChange = jasmine.createSpy(<span class="string">'onChange'</span>);</span><br><span class="line">    <span class="keyword">var</span> directiveElem = $compile(angular.element(<span class="string">'&lt;p dir-scope config="config" notify="notify" on-change="onChange()"&gt;&lt;/p&gt;'</span>))($scope);</span><br><span class="line">    $scope.$digest();</span><br><span class="line">    <span class="keyword">var</span> isolatedScope = directiveElem.isolateScope();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//test =    </span></span><br><span class="line">    isolatedScope.config.prop = <span class="string">"value2"</span>;</span><br><span class="line">    expect($scope.config.prop).toEqual(<span class="string">'value2'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//test @</span></span><br><span class="line">    isolatedScope.notify = <span class="literal">false</span>;</span><br><span class="line">    expect($scope.notify).toEqual(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//test &amp;</span></span><br><span class="line">    expect(<span class="keyword">typeof</span>(isolatedScope.onChange)).toEqual(<span class="string">'function'</span>);</span><br><span class="line">    isolatedScope.onChange();</span><br><span class="line">    expect($scope.onChange).toHaveBeenCalled();</span><br><span class="line">	</span><br><span class="line">   <span class="comment">//调用指令的父controller。</span></span><br><span class="line">   directiveElem.scope().doFunction();</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="关于mock"><a href="#关于mock" class="headerlink" title="关于mock"></a>关于mock</h3><h4 id="httpBackend"><a href="#httpBackend" class="headerlink" title="$httpBackend"></a>$httpBackend</h4><p>$httpBackend对于代码中的http请求进行mock。常用方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$httpBackend.when(method, url, [data], [headers]);</span><br><span class="line">$httpBackend.expect(method, url, [data], [headers]);</span><br></pre></td></tr></table></figure></p>
+<p>when和expect都有对应的快捷方法:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">whenGET(url, [headers]);</span><br><span class="line">whenHEAD(url, [headers]);</span><br><span class="line">whenDELETE(url, [headers]);</span><br><span class="line">whenPOST(url, [data], [headers]);</span><br><span class="line">whenPUT(url, [data], [headers]);</span><br><span class="line">whenJSONP(url);</span><br><span class="line">expectGET(url, [headers]);</span><br><span class="line">expectHEAD(url, [headers]);</span><br><span class="line">expectDELETE(url, [headers]);</span><br><span class="line">expectPOST(url, [data], [headers]);</span><br><span class="line">expectPUT(url, [data], [headers]);</span><br><span class="line">expectPATCH(url, [data], [headers]);</span><br><span class="line">expectJSONP(url);</span><br></pre></td></tr></table></figure></p>
+<p>url支持正则，比如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$httpBackend.when(<span class="string">'POST'</span>, /\/api\/wxcop\/common\/record.*<span class="regexp">/).respond(&#123;&#125;);</span></span><br></pre></td></tr></table></figure></p>
+<p>注意：<br>$httpBackend.when与$httpBackend.expect的区别在于：$httpBackend.expect的伪后台只能被调用一次(调用一次后会被清除)，第二次调用就会报错，而且$httpBackend.resetExpectations可以移除所有的expect而对when没有影响。</p>
+<h3 id="常见异常处理"><a href="#常见异常处理" class="headerlink" title="常见异常处理"></a>常见异常处理</h3><h5 id="Argument-‘MainCtrl’-is-not-a-function-got-undefined"><a href="#Argument-‘MainCtrl’-is-not-a-function-got-undefined" class="headerlink" title="Argument ‘MainCtrl’ is not a function, got undefined"></a>Argument ‘MainCtrl’ is not a function, got undefined</h5><p>无法找到MainCtrl。可能原因：controller定义错误，app注入失败。</p>
+<h5 id="Disconnected-because-no-message-in-10000-ms"><a href="#Disconnected-because-no-message-in-10000-ms" class="headerlink" title="Disconnected, because no message in 10000 ms."></a>Disconnected, because no message in 10000 ms.</h5><p>ajax请求超时。原因：$httpBackend.flush();要放在ajax发起请求后执行。</p>
+<h5 id="指令采用templateUrl方式加载模板失败"><a href="#指令采用templateUrl方式加载模板失败" class="headerlink" title="指令采用templateUrl方式加载模板失败"></a>指令采用templateUrl方式加载模板失败</h5><p>可采用karma-ng-html2js-preprocessor插件自动注入。也可以采用$templateCache注入。注意，这两种方式都不支持模糊匹配</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://www.sitepoint.com/angular-testing-tips-testing-directives/" title="《AngularJS Testing Tips: Testing Directives》" target="_blank" rel="noopener">《AngularJS Testing Tips: Testing Directives》</a><br><a href="https://www.sitepoint.com/unit-testing-angularjs-services-controllers-providers/" target="_blank" rel="noopener">《Unit Testing in AngularJS: Services, Controllers &amp; Providers》</a><br><a href="https://nathanleclaire.com/blog/2014/04/12/unit-testing-services-in-angularjs-for-fun-and-for-profit/" target="_blank" rel="noopener">《Unit Testing Services in AngularJS for Fun and for Profit》</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/FE/test/基于karma-jasmine的web前端自动化测试/" data-id="cjc95ci4e000r80cm915rhvhc" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试/">测试</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/test/使用Protractor进行web功能测试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/FE/test/使用Protractor进行web功能测试/" class="article-date">
+  <time datetime="2018-01-10T13:21:34.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/FE/test/使用Protractor进行web功能测试/">使用Protractor进行web功能测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文介绍了使用Protractor对AngularJS开发的web应用进行自动化功能测试的方案和详细操作指导。</p>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>Protractor是AngularJS团队发布的一款开源的端到端web测试运行工具。它可以模拟用户的实际交互，帮助验证Angular应用的实际运行状况。Protractor使用Jasmine测试框架来定义测试用例。Protractor为不同的页面交互提供一套健壮的API。相对于其他的端到端的工具，Protractor有着自己的优势，它知道怎么和AngularJS的代码一起运行，特别是应对$digest循环。</p>
+<h3 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h3><ol>
+<li>首先必须安装执行环境nodejs</li>
+<li>安装浏览器，推荐chrome</li>
+<li>安装protractor+webdriver<pre><code>npm install protractor -g
+webdriver-manager update 
+</code></pre></li>
+<li>安装完成后执行protractor –version，检查安装是否正常</li>
+<li>在命令行控制台启动Selenium测试服务器。<pre><code>webdriver-manager start
+//默认情况下，Selenium测试服务器接入地址为：http://localhost:4444/wd/hub
+</code></pre></li>
+<li>输出测试报告需要安装相关插件<pre><code>//输出html报告
+npm install protractor-jasmine2-html-reporter -g
+//输出junit格式的xml报告
+npm install jasmine-reporters -g
+//由于需要在config文件中加载。一般把这两个插件放在根目录的node_modules 目录下
+</code></pre></li>
+</ol>
+<h3 id="工程配置"><a href="#工程配置" class="headerlink" title="工程配置"></a>工程配置</h3><p>配置文件举例如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Jasmine2HtmlReporter = <span class="built_in">require</span>(<span class="string">'./node_modules/protractor-jasmine2-html-reporter'</span>);</span><br><span class="line"><span class="keyword">var</span> report = <span class="built_in">require</span>(<span class="string">'./node_modules/jasmine-reporters'</span>);</span><br><span class="line">exports.config = &#123;</span><br><span class="line">  <span class="comment">// Selenium server 测试服务器接入地址</span></span><br><span class="line">  SeleniumAddress: <span class="string">'http://localhost:4444/wd/hub'</span>,</span><br><span class="line">  <span class="comment">// 测试服务器的配置信息</span></span><br><span class="line">  multiCapabilities: [&#123;</span><br><span class="line">    browserName: <span class="string">'firefox'</span></span><br><span class="line">  &#125;,&#123;</span><br><span class="line">    browserName: <span class="string">'chrome'</span>,</span><br><span class="line">    <span class="string">'chromeOptions'</span>: &#123;</span><br><span class="line">            <span class="string">'args'</span>: [<span class="string">'incognito'</span>, <span class="string">'disable-extensions'</span>, <span class="string">'start-maximized'</span>]</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;],</span><br><span class="line">  <span class="comment">// 需要运行的测试程序代码文件列表</span></span><br><span class="line">  suites: &#123;</span><br><span class="line">    scan: <span class="string">'tc/e2e/scan.js'</span>,</span><br><span class="line">    app: <span class="string">'tc/e2e/app.js'</span>,</span><br><span class="line">    hppd: <span class="string">'tc/e2e/hppd.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 选择使用 jasmine 作为JavaScript语言的测试框架</span></span><br><span class="line">  framework: <span class="string">'jasmine'</span>,</span><br><span class="line">  jasmineNodeOpts: &#123;</span><br><span class="line">    showColors: <span class="literal">true</span>,</span><br><span class="line">    defaultTimeoutInterval: <span class="number">30000</span>,</span><br><span class="line">    isVerbose: <span class="literal">true</span>,</span><br><span class="line">    includeStackTrace: <span class="literal">false</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">//输出测试报告</span></span><br><span class="line">  onPrepare: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    jasmine.getEnv().addReporter(</span><br><span class="line">        <span class="keyword">new</span> Jasmine2HtmlReporter(&#123;</span><br><span class="line">          savePath: <span class="string">'report/e2e/'</span>,</span><br><span class="line">          takeScreenshots: <span class="literal">true</span>,  <span class="comment">//是否截屏</span></span><br><span class="line">          takeScreenshotsOnlyOnFailures: <span class="literal">true</span> <span class="comment">//测试用例执行失败时才截屏</span></span><br><span class="line">        &#125;)</span><br><span class="line">      );</span><br><span class="line">    jasmine.getEnv().addReporter(</span><br><span class="line">      <span class="keyword">new</span> report.JUnitXmlReporter(&#123;</span><br><span class="line">          savePath: <span class="string">'report/tc/e2e/'</span>,</span><br><span class="line">          consolidateAll: <span class="literal">false</span>,</span><br><span class="line">          filePrefix:<span class="string">''</span>,</span><br><span class="line">          package:<span class="string">'E2E'</span></span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h3 id="测试用例怎么写"><a href="#测试用例怎么写" class="headerlink" title="测试用例怎么写"></a>测试用例怎么写</h3><p>测试用例是基于jasmine框架，关于用例描述和断言比较，请参考上一篇帖子<a href="https://my.oschina.net/u/2492371/blog/796382" title="《基于karma+jasmine的web前端自动化测试》" target="_blank" rel="noopener">《基于karma+jasmine的web前端自动化测试》</a>，这里不再赘述了<br>这里举一个简单的例子。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> DOMAIN = <span class="string">'127.0.0.1'</span>;</span><br><span class="line"><span class="keyword">var</span> TARGET_ROOT = <span class="string">'http://'</span>+DOMAIN;</span><br><span class="line">describe(<span class="string">'scan all app'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	beforeAll(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 设置cookie</span></span><br><span class="line">        <span class="keyword">var</span> cookieObj = &#123;</span><br><span class="line">            <span class="string">"real_name"</span>:<span class="string">"放松一下"</span>,</span><br><span class="line">            <span class="string">"dept_name"</span>:<span class="string">"开发部"</span>,</span><br><span class="line">            <span class="string">"avatar"</span>:<span class="string">"/images/u15.png"</span>,</span><br><span class="line">            <span class="string">"message"</span>:<span class="string">"22"</span></span><br><span class="line">        &#125;;</span><br><span class="line">        browser.get(TARGET_ROOT + <span class="string">'/index/about.html'</span>);</span><br><span class="line">        browser.manage().deleteAllCookies().then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">               	browser.manage().addCookie(<span class="string">"login_user"</span>,<span class="built_in">JSON</span>.stringify(<span class="built_in">JSON</span>.stringify(cookieObj)), <span class="string">'/'</span>, DOMAIN);</span><br><span class="line">        &#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">    </span><br><span class="line">    it(<span class="string">'app.code'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	browser.get(TARGET_ROOT + <span class="string">'/app/code/'</span>);        </span><br><span class="line">    	expect(element.all(by.binding(<span class="string">"project['name']"</span>)).count()).toBeGreaterThan(<span class="number">1</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">   </span><br><span class="line">    it(<span class="string">'app.ci'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	browser.get(TARGET_ROOT + <span class="string">'/app/ci/'</span>);        </span><br><span class="line">    	expect(element(by.binding(<span class="string">'userInfo.realName'</span>)).getText()).toEqual(<span class="string">'李忠伟10183089'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>上述事例主要使用了如下接口：</p>
+<ol>
+<li>browser.get(url) 访问url指定的web页面</li>
+<li>browser.manage().deleteAllCookies() 删除所有cookie</li>
+<li>browser.manage().addCookie(key,value) 添加cookie</li>
+<li>element.all(locator) 查找locator描述的所有元素</li>
+<li>element(locator)  查找locator描述的单个元素</li>
+</ol>
+<h3 id="浏览器的相关操作"><a href="#浏览器的相关操作" class="headerlink" title="#浏览器的相关操作"></a>#浏览器的相关操作</h3><p>这里举例常用的几个操作，详细的请见参考资料。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">browser.get(url)   <span class="comment">//访问url指定的web页面</span></span><br><span class="line">browser.close()   <span class="comment">//关闭当前窗口</span></span><br><span class="line">browser.sleep(ms)   <span class="comment">//等待，单位毫秒</span></span><br><span class="line">browser.pause()  <span class="comment">//暂停执行，停止在当前页面，主要用于调试</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="如何定位元素"><a href="#如何定位元素" class="headerlink" title="#如何定位元素"></a>#如何定位元素</h3><p>上述示例中提到的by.binding，用于定位元素，被称为定位器locator。Protractor中常用的定位器有如下几种：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">by.id(<span class="string">'myElement'</span>)   <span class="comment">//id为myElement的元素</span></span><br><span class="line">by.css(<span class="string">'[class="element"]'</span>)   <span class="comment">//根据元素的属性定位元素，此例为样式class为element的元素。同时也支持jquery的selector语法来定位元素，例如（by.css('.element')）。</span></span><br><span class="line">by.binding(<span class="string">'list.title'</span>)    <span class="comment">//绑定了ng-bind="list.title"的元素</span></span><br><span class="line">by.repeater(<span class="string">'modules.content'</span>)    <span class="comment">//绑定了ng-repeat="module in modules.content"的元素</span></span><br><span class="line">by.model(<span class="string">'person.name'</span>)  <span class="comment">//绑定了ng-model="person.nam"的元素</span></span><br></pre></td></tr></table></figure></p>
+<p>更多定位器请见参考资料。</p>
+<h3 id="定位的元素如何操作"><a href="#定位的元素如何操作" class="headerlink" title="定位的元素如何操作"></a>定位的元素如何操作</h3><p>Protractor中使用element(locator)和element.all(locator)来定位元素，前者是定位单个元素，后者是定位所有符合条件的元素。定位到元素后能做哪些操作？常用操作举例如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">element.all(by.binding(<span class="string">'list.title'</span>)).count()   <span class="comment">//返回查找到的元素的个数</span></span><br><span class="line">element.all(by.css(<span class="string">'.element'</span>)).get(<span class="number">1</span>)  <span class="comment">//返回定查找到的元素中的第二个元素</span></span><br><span class="line">element(by.css(<span class="string">'.myname'</span>)).getText()  <span class="comment">//返回查找到的元素的text</span></span><br><span class="line">element(by.id(<span class="string">'user_name'</span>).sendKeys(<span class="string">'user1'</span>)    <span class="comment">//向查找到的元素输入'user1'</span></span><br><span class="line">element(by.id(<span class="string">'user_desc'</span>).sendKeys(protractor.Key.ENTER);    <span class="comment">//向查找到的元素输入回车键</span></span><br><span class="line">element(by.id(<span class="string">'user_desc'</span>).sendKeys(protractor.Key.TAB);    <span class="comment">//向查找到的元素输入TAB键</span></span><br><span class="line">element(by.id(<span class="string">'user_name'</span>)).clear();   <span class="comment">//清空查找到的元素的内容</span></span><br><span class="line">element(by.id(<span class="string">'submit'</span>)).clear();   <span class="comment">//点击查找到的元素</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="http://www.protractortest.org/" title="Protractor官网，不过被墙了，你懂的。" target="_blank" rel="noopener">Protractor官网，不过被墙了，你懂的。</a><br><a href="http://ramonvictor.github.io/protractor/slides/#/1" title="《Protractor入门》推荐！有可能被墙" target="_blank" rel="noopener">《Protractor入门》推荐！有可能被墙</a><br><a href="http://timothymartin.azurewebsites.net/protractor-cheat-sheet/" title="示例比较多的指导书" target="_blank" rel="noopener">示例比较多的指导书</a><br><a href="http://definitelytyped.org/docs/angular-protractor--angular-protractor/classes/protractor.protractor.html" title="《浏览器相关接口文档》" target="_blank" rel="noopener">《浏览器r相关接口文档》</a><br><a href="http://definitelytyped.org/docs/angular-protractor--angular-protractor/classes/protractor.webelement.html" title="《元素操作的相关接口文档》" target="_blank" rel="noopener">《元素操作的相关接口文档》</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/10/FE/test/使用Protractor进行web功能测试/" data-id="cjc95ci4e000q80cm97orzr7v" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试/">测试</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-tool/编码新利器--Visual-Studio-Code" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/10/tool/编码新利器--Visual-Studio-Code/" class="article-date">
@@ -124,6 +348,47 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tool/Jenkins脚本调用firefox失败的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/08/tool/Jenkins脚本调用firefox失败的解决办法/" class="article-date">
+  <time datetime="2018-01-08T08:54:08.000Z" itemprop="datePublished">2018-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/08/tool/Jenkins脚本调用firefox失败的解决办法/">Jenkins脚本调用firefox失败的解决办法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>jenkins执行的shell脚本里，调用karma进行UT测试，日志显示Cannot start Firefox。karma设置的浏览器是firefox，由于firefox无法启动导致用例无法执行。</p>
+<h3 id="定位过程"><a href="#定位过程" class="headerlink" title="定位过程"></a>定位过程</h3><p>1、开始怀疑是jenkins没有权限，无法调用firefox，给jenkins配置为root权限。可以在脚本中增加 whoami 命令来打印当前用户名称。结果错误依然存在。<br>2、在在脚本里直接调用firefox，显示错误信息：Error: GDK_BACKEND does not match available displays。经查询，发现是调用firefox时没有传递display ID，导致firefox无法显示界面。<br>3、原因分析：由于CI服务器上调用jenkins使用的命令是：(java -jar /home/data/jenkins/jenkins.war&amp;) 。此种方式调用jenkins，直接后台进行运行，没有分配显示资源，而且关闭命令窗口，程序依然可以正常执行。但是由于没有display ID，导致firefox无法运行。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>直接在命令窗口中运行jenkins，保持命令窗口。命令为：java -jar /home/data/jenkins/jenkins.war</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/08/tool/Jenkins脚本调用firefox失败的解决办法/" data-id="cjemvlvyl000btccmn0cp28o6" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
 
     </footer>
   </div>
@@ -217,10 +482,359 @@
 
 
   
+    <article id="post-FE/js/高性能JavaScript--DOM操作" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/12/FE/js/高性能JavaScript--DOM操作/" class="article-date">
+  <time datetime="2017-12-12T04:24:08.000Z" itemprop="datePublished">2017-12-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/12/FE/js/高性能JavaScript--DOM操作/">高性能JavaScript--DOM操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>用JS进行DOM操作的代价是昂贵的，它是富web应用中最常见的性能瓶颈。</p>
+<h3 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h3><p>文档对象模型（DOM）是一个独立于语言的，用于操作XML和HTML文档的程序接口（API）。通常在浏览器中DOM和JS都是独立的，因为彼此独立，所以JS操作DOM，性能开销就很大。</p>
+<h3 id="提升性能最佳实践"><a href="#提升性能最佳实践" class="headerlink" title="提升性能最佳实践"></a>提升性能最佳实践</h3><ul>
+<li><p>减少操作<br>典型场景，循环操作DOM，改成循环拼接，最后操作DOM。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//循环操作DOM15000次</span><br><span class="line">function innerHTMLLoop()&#123;</span><br><span class="line">	for(var count = 0; count &lt; 15000; count++)&#123;</span><br><span class="line">		document.getElementById(&apos;here&apos;).innerHTML += &apos;a&apos;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">//只操作1次DOM，在IE8中性能提升273倍</span><br><span class="line">function innerHTMLLoop()&#123;</span><br><span class="line">	var content = &apos;&apos;;</span><br><span class="line">	for(var count = 0; count &lt; 15000; count++)&#123;</span><br><span class="line">		content += &apos;a&apos;;</span><br><span class="line">	&#125;</span><br><span class="line">	document.getElementById(&apos;here&apos;).innerHTML = content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>增加新元素时innerHTML性能高于DOM方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var newDiv = &quot;&lt;div&gt;&lt;/div&gt;&quot;;</span><br><span class="line">document.getElementById(&apos;here&apos;).innerHTML = newDiv;</span><br><span class="line">//</span><br><span class="line">var newElement = document.createElement(&apos;div&apos;);</span><br><span class="line">document.getElementById(&apos;here&apos;).appendChild(newElement);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用节点clone</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var newElement1 = document.createElement(&apos;div&apos;);</span><br><span class="line">var newElementN = newElement1.cloneNode(true);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>HTML集合使用array代替<br>DOM查询方法（getElementByName，getElementByClassName，getElementByTagName），以及部分属性（images,links,forms,elements）返回值是HTML集合（类似数组，有length和下标访问，无push，slice）。这些集合要避免重复访问，因为每次访问都会重新执行查询。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//由于每次添加div后，长度增加，此循环是死循环</span><br><span class="line">var divList= document.getElementByName(&apos;div&apos;)；</span><br><span class="line">for(var count = 0; count &lt; divList.length; count++)&#123;</span><br><span class="line">	document.body.appendChild(document.createElement(&apos;div&apos;));</span><br><span class="line">&#125;</span><br><span class="line">//集合保存到变量，避免重复查询</span><br><span class="line">for(var count = 0; count &lt; document.getElementByName(&apos;div&apos;).length; count++)&#123;</span><br><span class="line">	//do something</span><br><span class="line">&#125;</span><br><span class="line">var divList= document.getElementByName(&apos;div&apos;)；</span><br><span class="line">var len = divList.length</span><br><span class="line">var arr = toArray(divList); //toArray是自定义的函数，将集合转成array</span><br><span class="line">for(var count = 0; count &lt; len; count++)&#123;</span><br><span class="line">	//do something</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>注意：此方法会额外增加一次遍历操作，长度小的集合可能不会提升反而下降</p>
+<ul>
+<li><p>局部变量替代</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for(var i = 0; i &lt; document.getElementsByTagName(&quot;a&quot;).length; i++)&#123;</span><br><span class="line">		document.getElementsByTagName(&quot;a&quot;)[i].class = &apos;active&apos;</span><br><span class="line">&#125;</span><br><span class="line">//改进后</span><br><span class="line">var list = document.getElementsByTagName(&quot;a&quot;);</span><br><span class="line">var len = list.length;</span><br><span class="line">for(var i = 0; i &lt; len; i++)&#123;</span><br><span class="line">		list[i].class = &apos;active&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>IE6、7中遍历DOM，nextSibling性能高于childNode</p>
+</li>
+<li>遍历元素节点优选元素节点属性<br>childNodes,firstChild和nextSibling这些属性并不区分元素节点和其他类型节点（比如注释和文本节点）。如果只需要查询元素节点，优先使用如下方法代替。（注意：IE6-8只支持children属性）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>元素节点属性名</th>
+<th style="text-align:center">被替代的属性名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>children</td>
+<td style="text-align:center">childNodes</td>
+</tr>
+<tr>
+<td>childElementCount</td>
+<td style="text-align:center">childNodes.length</td>
+</tr>
+<tr>
+<td>firstElementChild</td>
+<td style="text-align:center">firstChild</td>
+</tr>
+<tr>
+<td>lastElementChild</td>
+<td style="text-align:center">lastChild</td>
+</tr>
+<tr>
+<td>nextElementSibling</td>
+<td style="text-align:center">nextSibling</td>
+</tr>
+<tr>
+<td>previousElementSibling</td>
+<td style="text-align:center">previousSibling</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>利用CSS选择器提高查找效率<br>querySelectorAll()方法使用CSS选择器作为参数，并且返回匹配节点的类数组对象。不会返回HTML集合，不会对应实时的文档结构，避免了之前讨论的HTML集合引起的性能和逻辑问题。代码示例如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//改进前</span><br><span class="line">var els = document.getElementsById(&quot;menu&quot;).getElementsByTagName(&quot;a&quot;);</span><br><span class="line">//改进后</span><br><span class="line">var els = document.querySelectorAll(&quot;#menu a&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如果是组合查询，querySelectorAll()方法更具优势。对比一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//改进前</span><br><span class="line">var els = [];</span><br><span class="line">var divs = document.getElementsByTagName(&quot;div&quot;);</span><br><span class="line">var className = &quot;&quot;;</span><br><span class="line">for(var i = 0,len = divs.length; i&lt;len;i++)&#123;</span><br><span class="line">	className = divs[i].className;</span><br><span class="line">	if(className === &apos;warning&apos; || className === &apos;notice&apos;)&#123;</span><br><span class="line">		els.push(divs[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">//改进后</span><br><span class="line">var els = document.querySelectorAll(&quot;div.warning, div.notice&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>推荐使用querySelector()方法，查询第一个匹配的节点。</p>
+<h2 id="重绘与重排"><a href="#重绘与重排" class="headerlink" title="重绘与重排"></a>重绘与重排</h2><p>浏览器下载完所有的组件文件（html、js、css、图片）之后，会解析这些组件，并生成两个数据结构：</p>
+<ol>
+<li>DOM树：表示页面结构</li>
+<li>渲染树：表示DOM节点如何显示<br>DOM树中的每一个需要显示的节点在渲染树中至少存在一个对应的节点（隐藏的DOM元素在渲染树中没有对应的节点）。渲染树中的节点被称为“帧”或者“盒”，具有内边距padding，外边距margin，边框border和位置position（IE盒模型的高度和宽度包括边框和内边距，W3C只是内容部分。W3C盒模型可使用box-sizing:border-box改成IE盒模型）。一旦DOM树和渲染树构建完成，浏览器就开始显示（绘制）页面元素。<br>当DOM的变化影响了元素的几何属性（宽和高），浏览器需要重新计算元素的集合属性，同事其他元素的集合属性和位置也会受到影响。浏览器会使渲染树中受到影响的部分失效，并重新构造渲染树。这个过程被称为“重排reflow”。完成重排后，浏览器会重新绘制受影响的部分到平路中，该过程被称为“重绘repaint”。<br>并不是所有的DOM变化都会影响几何属性，比如改变背景色，此时只会执行重绘而不会触发重排。重绘和重排都是代价昂贵的操作，需要尽量避免。  </li>
+</ol>
+<h3 id="触发重排的操作"><a href="#触发重排的操作" class="headerlink" title="触发重排的操作"></a>触发重排的操作</h3><ol>
+<li>添加和删除可见的DOM元素</li>
+<li>元素位置改变</li>
+<li>元素尺寸变化</li>
+<li>内容改变</li>
+<li>页面渲染器初始化</li>
+<li>浏览器窗口尺寸改变</li>
+<li>滚动条的出现和消失会触发整个页面的重排</li>
+</ol>
+<h3 id="渲染树变化的排队与刷新"><a href="#渲染树变化的排队与刷新" class="headerlink" title="渲染树变化的排队与刷新"></a>渲染树变化的排队与刷新</h3><p>由于重排消耗大，大多数浏览器都会通过队列化修改并批量执行来优化重排过程。获取布局的如下操作会导致队列刷新：</p>
+<ul>
+<li>offsetTop，offsetLeft，offsetWidth，offsetHeight</li>
+<li>scrollTop，scrollLeft，scrollWidth，scrollHeight</li>
+<li>clientTop，clientLeft，clientWidth，clientHeight</li>
+<li>getCumputedStyle()(currentStyle in IE)<br>执行这些属性和方法需要返回最新的布局信息，因此浏览器会执行渲染队列中的操作，已获得最新的布局信息。因此不需要避免频繁执行这些属性和方法。<h3 id="最小化重排和重绘"><a href="#最小化重排和重绘" class="headerlink" title="最小化重排和重绘"></a>最小化重排和重绘</h3>为减少重排或者重绘，应该合并多次对DOM和样式的修改，然后一次性处理。<h4 id="修改样式"><a href="#修改样式" class="headerlink" title="修改样式"></a>修改样式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//优化前,执行了三次重排。大部分现代浏览器进行了优化，可能只执行一次</span><br><span class="line">var el = document.getElementById(&apos;mydiv&apos;);</span><br><span class="line">el.style.borderLeft=&apos;1px&apos;;</span><br><span class="line">el.style.borderRight=&apos;2px&apos;;</span><br><span class="line">el.style.padding=&apos;5px&apos;;</span><br><span class="line">//优化后，只执行一次</span><br><span class="line">var el = document.getElementById(&apos;mydiv&apos;);</span><br><span class="line">el.style.ccsText=&apos;border-left:1px;border-right:2px;padding:5px;&apos;;</span><br><span class="line">//第二种优化方法</span><br><span class="line">var el = document.getElementById(&apos;mydiv&apos;);</span><br><span class="line">el.className=&apos;active&apos;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="批量修改DOM"><a href="#批量修改DOM" class="headerlink" title="批量修改DOM"></a>批量修改DOM</h4><p>可以通过如下步骤减少重绘和重排次数：</p>
+<ol>
+<li>使元素脱离文档流</li>
+<li>对其应用多重改变</li>
+<li>把元素待会文档中<br>这样操作后只会在1和3补执行两次重排，忽略了步骤2中可能的N次重排。<br>使元素脱离文档流的方法有如下三种：</li>
+<li>隐藏元素，应用修改，重新显示</li>
+<li>使用文档片段在当前DOM之外构建一个子树，执行完修改后再把它拷贝回文档</li>
+<li>讲原始元素拷贝到一个脱离文档的节点中，修改这个副本，完成后再替换原始元素。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function appendDataToElement(appendToElement, data) &#123;</span><br><span class="line">	var a, li;</span><br><span class="line">	for (var i = 0, max = data.length; i &lt; max; i++) &#123;</span><br><span class="line">		a = document.createElement(&apos;a&apos;);</span><br><span class="line">		a.href = data[i].url;</span><br><span class="line">		a.appendChild(document.createTextNode(data[i].name));</span><br><span class="line">		li = document.createElement(&apos;li&apos;);</span><br><span class="line">		li.appendChild(a);</span><br><span class="line">		appendToElement.appendChild(li);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line">//优化前,循环内N次重排</span><br><span class="line">var ul = document.getElementById(&apos;mylist&apos;);</span><br><span class="line">appendDataToElement(ul, data);</span><br><span class="line">//第一种，异常和显示</span><br><span class="line">var ul = document.getElementById(&apos;mylist&apos;);</span><br><span class="line">ul.style.display = &apos;none&apos;;</span><br><span class="line">appendDataToElement(ul, data);</span><br><span class="line">ul.style.display = &apos;block&apos;;</span><br><span class="line">//第二种，文档片段</span><br><span class="line">var fragment = document.createDocumentFragment();</span><br><span class="line">appendDataToElement(fragment, data);</span><br><span class="line">document.getElementById(&apos;mylist&apos;).appendChild(fragment);</span><br><span class="line">//第三种，元素替换</span><br><span class="line">var old = document.getElementById(&apos;mylist&apos;);</span><br><span class="line">var clone = old.cloneNode(true);</span><br><span class="line">appendDataToElement(clone, data);</span><br><span class="line">old.parentNode.replaceChild(clone, old);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>推荐第二种方案，其产生的DOM遍历和重排次数最少。</p>
+<h3 id="缓存布局信息"><a href="#缓存布局信息" class="headerlink" title="缓存布局信息"></a>缓存布局信息</h3><p>当查询布局信息（例如offsets,scroll,client等），浏览器为返回最新值，会刷新队列并应用所有变更。所哟尽量减少布局信息的获取次数，获取后赋值给局部变量，然后再操作局部变量。<br>例如移动元素的例子，timeout循环部分<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//改进前</span><br><span class="line">myElement.style.left = 1 + myElement.offsetLeft + &apos;px&apos;;</span><br><span class="line">myElement.style.top = 1 + myElement.offsetTop + &apos;px&apos;;</span><br><span class="line">if (myElement.offsetLeft &gt;= 500) &#123;</span><br><span class="line">	stopAnimation();</span><br><span class="line">&#125;</span><br><span class="line">//改进后，先一次性获取初始位置</span><br><span class="line">var current = myElement.offsetLeft;</span><br><span class="line">//然后循环执行操作</span><br><span class="line">current++</span><br><span class="line">myElement.style.left = current + &apos;px&apos;;</span><br><span class="line">myElement.style.top = current + &apos;px&apos;;</span><br><span class="line">if (current &gt;= 500) &#123;</span><br><span class="line">	stopAnimation();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="让元素脱离动画流"><a href="#让元素脱离动画流" class="headerlink" title="让元素脱离动画流"></a>让元素脱离动画流</h3><p>采用绝对位置定位，可以减少元素尺寸变化时，对其他元素造成的重排影响。<br>例如折叠/展开这种交互方式，每次变化都会导致下方所有元素的移动。如果把这部分元素使用绝对位置定位，覆盖其他部分。这样就能避免下方元素的重排和重绘，减少开销。</p>
+<h3 id="IE和-hover"><a href="#IE和-hover" class="headerlink" title="IE和:hover"></a>IE和:hover</h3><p>从IE7开始，IE允许任何元素上使用:hover这个CSS伪选择器。如果大量使用:hover，响应速度下降明显。特别是IE8。</p>
+<h3 id="事件委托"><a href="#事件委托" class="headerlink" title="事件委托"></a>事件委托</h3><p>如果进行大量的DOM元素事件绑定，会引入性能问题。一个简单的解决方案是事件委托。只需给最外层的元素绑定事件，利用事件逐层冒泡并能被父级元素捕获，就可以处理所有子元素上触发的事件。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2017/12/12/FE/js/高性能JavaScript--DOM操作/" data-id="cjemvlw0b0013tccmoqompymz" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能/">性能</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-db/centos安装mysql过程记录" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/10/db/centos安装mysql过程记录/" class="article-date">
+  <time datetime="2017-01-10T11:39:06.000Z" itemprop="datePublished">2017-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/10/db/centos安装mysql过程记录/">centos安装mysql过程记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>软件版本：centos7，mysql5.6</p>
+<p>具体安装过程：</p>
+<h1 id="1、通过ssh上传rpm安装文件"><a href="#1、通过ssh上传rpm安装文件" class="headerlink" title="1、通过ssh上传rpm安装文件"></a>1、通过ssh上传rpm安装文件</h1><h1 id="2、由于centos默认安装了mariadb，需要先卸载。"><a href="#2、由于centos默认安装了mariadb，需要先卸载。" class="headerlink" title="2、由于centos默认安装了mariadb，需要先卸载。"></a>2、由于centos默认安装了mariadb，需要先卸载。</h1><pre><code>查询是否已安装：
+
+ $ rpm -qa |grep mariadb 
+
+如果已经安装，则卸载：
+
+$ rpm -e --nodeps mariadb-libs-5.5.47-1.el7_2.x86_64
+</code></pre><h1 id="3、分别安装mysql-server-client-devel。"><a href="#3、分别安装mysql-server-client-devel。" class="headerlink" title="3、分别安装mysql server/client/devel。"></a>3、分别安装mysql server/client/devel。</h1><pre><code>切换到安装包目录：    
+
+$ cd /usr/local/sw/MySql5.6
+
+ 执行安装命令：
+
+$ rpm -ivh MySQL-server-5.6.13-1.el6.x86_64.rpm
+
+ $ rpm -ivh MySQL-client-5.6.13-1.el6.x86_64.rpm
+
+ $ rpm -ivh MySQL-devel-5.6.13-1.el6.x86_64.rpm
+</code></pre><h1 id="4、复制服务启动文件"><a href="#4、复制服务启动文件" class="headerlink" title="4、复制服务启动文件"></a>4、复制服务启动文件</h1><pre><code>$ cp /usr/share/mysql/mysql.server /etc/init.d/mysqld
+</code></pre><h1 id="5、启动mysql服务"><a href="#5、启动mysql服务" class="headerlink" title="5、启动mysql服务"></a>5、启动mysql服务</h1><pre><code>$ /etc/init.d/mysqld start
+
+检查mysql 是否已经启动:$ netstat -atln | grep 3306
+</code></pre><h1 id="6、把mysql加入开机自启动"><a href="#6、把mysql加入开机自启动" class="headerlink" title="6、把mysql加入开机自启动:"></a>6、把mysql加入开机自启动:</h1><pre><code>$ chkconfig  --add mysqld  
+</code></pre><h1 id="7、设置账号密码"><a href="#7、设置账号密码" class="headerlink" title="7、设置账号密码"></a>7、设置账号密码</h1><pre><code>关闭mysql：$ /etc/init.d/mysql stop
+
+进入mysql安全模式: $ mysqld_safe --user=mysql --skip-grant-tables --skip-networking &amp;
+
+设置root账号密码，允许root远程连接，开发所有权限：
+
+mysql -u root
+
+mysql&gt; use mysql;
+
+mysql&gt; UPDATE user SET Password=PASSWORD(&apos;newpassword&apos;) where USER=&apos;root&apos;;
+
+mysql&gt; INSERT INTO mysql.user (Host,User,Password,ssl_cipher,x509_issuer,x509_subject) VALUES (&apos;%&apos;,&apos;root&apos;,PASSWORD(&apos;newpassword&apos;),&quot;&quot;,&quot;&quot;,&quot;&quot;); 
+
+mysql&gt; GRANT ALL PRIVILEGES ON *.* TO &apos;root&apos;@&apos;%&apos; IDENTIFIED BY &apos;newpassword&apos; WITH GRANT OPTION;
+
+mysql&gt; FLUSH PRIVILEGES;
+
+mysql&gt; quit
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2017/01/10/db/centos安装mysql过程记录/" data-id="cjemvlvyl0004tccmipsgh3kz" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FE/web前端介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/16/FE/web前端介绍/" class="article-date">
+  <time datetime="2016-10-16T11:39:06.000Z" itemprop="datePublished">2016-10-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/16/FE/web前端介绍/">WEB前端介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1、WEB前端是神马"><a href="#1、WEB前端是神马" class="headerlink" title="1、WEB前端是神马"></a><strong>1、WEB前端是神马</strong></h2><p>Web前端开发是从网页制作演变而来的，名称上有很明显的时代特征。在互联网的演化进程中，网页制作是Web1.0时代的产物，那时网站的主要内容都是静态的，用户使用网站的行为也以浏览为主。2005年以后，互联网进入Web2.0时代，各种类似桌面软件的Web应用大量涌现，网站的前端由此发生了翻天覆地的变化。网页不再只是承载单一的文字和图片，各种富媒体让网页的内容更加生动，网页上软件化的交互形式为用户提供了更好的使用体验，这些都是基于前端技术实现的。 以前会Photoshop和Dreamweaver就可以制作网页，现在只掌握这些已经远远不够了。无论是开发难度上，还是开发方式上，现在的网页制作都更接近传统的网站后台开发，所以现在不再叫网页制作，而是叫Web前端开发。Web前端开发在产品开发环节中的作用变得越来越重要，而且需要专业的前端工程师才能做好。Web前端开发是一项很特殊的工作，涵盖的知识面非常广，既有具体的技术，又有抽象的理念。简单地说，它的主要职能就是把网站（Web App网页应用和Hybrid App混合应用）的界面更好地呈现给用户。</p>
+<h2 id="2、前端技术"><a href="#2、前端技术" class="headerlink" title="2、前端技术"></a><strong>2、前端技术</strong></h2><h3 id="W3C标准"><a href="#W3C标准" class="headerlink" title="W3C标准"></a><strong>W3C标准</strong></h3><p>W3C标准不是某一个标准，而是一系列标准的集合。网页主要由三部分组成：结构（Structure）、表现（Presentation）和行为（Behavior）。对应的标准也分三方面：结构化标准语言主要包括HTML，表现标准语言主要包括CSS，行为标准主要包括对象模型（如W3C DOM）、ECMAScript等。</p>
+<p>简单来说就是： html（结构） + css（表现） + js（行为）</p>
+<p>学习资源：<a href="http://www.w3school.com.cn/" target="_blank" rel="noopener">http://www.w3school.com.cn/</a><br>名词解释：W3C——万维网联盟（World Wide Web Consortium）</p>
+<h3 id="HTML——WEB应用的基石"><a href="#HTML——WEB应用的基石" class="headerlink" title="HTML——WEB应用的基石"></a><strong>HTML——WEB应用的基石</strong></h3><p>HyperText Markup Language 超文本标记语言。超文本是用超链接的方法，将各种不同空间的信息组织在一起的网状文本。信息可以包含图片、链接，甚至音乐、程序等非文字元素。</p>
+<h3 id="html文件示例如下："><a href="#html文件示例如下：" class="headerlink" title="html文件示例如下："></a><strong>html文件示例如下：</strong></h3><p><img src="https://upload-images.jianshu.io/upload_images/4944427-b0e4fe78a10f1245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="标签的基本格式如下："><a href="#标签的基本格式如下：" class="headerlink" title="标签的基本格式如下："></a><strong>标签的基本格式如下：</strong></h3><p><img src="https://upload-images.jianshu.io/upload_images/4944427-200c7bc7b8a12f73.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>示例中的标签是个闭合标签，有部分标签不是闭合标签。例如：<input type="text" name="test" value="test"></p>
+<p>一个标准的html文件主要包括如下常用的标签：</p>
+<ul>
+<li>!DOCTYPE:文档类型声明，它的目的是要告诉浏览器，它应该使用什么样的文档类型定义来解析文档。示例中所示的文档类型是html5。文档类型一般是向下兼容的，html5基本兼容html4.01.</li>
+<li>html：文档的根节点。<html> 与 </html> 标签限定了文档的开始点和结束点，在它们之间是文档的头部和主体。</li>
+<li>head：<head> 标签用于定义文档的头部，它是所有头部元素的容器。<head> 中的元素可以引用脚本、指示浏览器在哪里找到样式表、提供元信息等等。</head></head></li>
+<li>meta：<meta> 元素可提供有关页面的元信息（meta-information），比如针对搜索引擎的关键词，文件编码类型，浏览器版本等。</li>
+<li>title：文档标题，浏览器的标签页显示的内容。</li>
+<li>link：<link>标签定义文档与外部资源的关系，最常见的用途是链接样式表（css文件），ICON。</li>
+<li>script：<script>标签用于定义客户端脚本，比如 JavaScript。既可以包含脚本语句，也可以通过 src 属性指向外部脚本文件。</li>
+<li>style：<style> 标签用于为 HTML 文档定义样式信息。</li>
+<li>body:body 元素定义文档的主体。</li>
+<li>h1~h6：<h1> 定义最大的标题。<h6> 定义最小的标题。</li>
+<li>div：<div> 可定义文档中的分区或节，可以把文档分割为独立的、不同的部分</li>
+<li>p：<p> 标签定义段落。</li>
+<li>span：<span> 标签被用来组合文档中的行内元素。</li>
+<li>a:<a> 标签定义超链接，用于从一张页面链接到另一张页面，最重要的属性是 href 属性，它指示链接的目标。</li>
+<li>button：<button> 标签定义一个按钮。</li>
+<li>img：img 元素向网页中嵌入一幅图像。</li>
+<li>input：<input> 标签用于搜集用户信息。根据不同的 type 属性值，输入字段拥有很多种形式。输入字段可以是文本字段、复选框、单选按钮、按钮等等。</li>
+</ul>
+<p>其他更多标签，请见：<a href="#/_blank">http://www.w3school.com.cn/tags/tag_doctype.asp</a></p>
+<h3 id="文档流"><a href="#文档流" class="headerlink" title="文档流"></a><strong>文档流</strong></h3><p><img src="https://upload-images.jianshu.io/upload_images/4944427-cc38e0d5778d1508.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>冷知识：W3C规范中没有document flow这个概念，只有normal-flow, 文档流的叫法主要还是多数中文译者的翻译方式问题。据说来源于报纸的排版。</p>
+<p>什么是文档流？简单说就是元素按照其在HTML中决定标签位置顺序排布的过程。并且这种过程遵循标准的描述。html的文档流规则是将窗体自上而下分成一行行, 并在每行中按从左至右的顺序排放元素。</p>
+<h3 id="块级标签和内联标签"><a href="#块级标签和内联标签" class="headerlink" title="块级标签和内联标签"></a><strong>块级标签和内联标签</strong></h3><p>HTML中的标签主要是块级标签或内联标签。块级标签一般是其他标签的容器标签，能容纳其他块标签或内联标签。简单来说，块标签就好比一个四方块，可以放其他的四方块，并可以呈现在页面上任何地方。默认情况下块标签，是独占一行的。常见的块标签：div、h1-h6标题、form（只能用来容纳其他块标签）、hr、p、table、ul、ol等。内联标签也叫内嵌标签或行内标签，一般都是基于语义级(semantic)的基本标签。内联标签只能容纳文本或者其他内联标签，常见内联标签有a和span。 </p>
+<p>块标签与内联标签的区别？ </p>
+<ol>
+<li>块级标签，总是在新行上开始；内联标签，和其他标签都在一行上。</li>
+<li>块级标签，能容纳其他块标签或内联标签；内联标签，只能容纳文本或者其他内联标签。 </li>
+<li>块级标签中高度，行高以及顶和底边距都可控制；内联标签中高，行高及顶和底边距不可改变。</li>
+</ol>
+<p>在实际应用中，可以通过CSS修改标签的display属性转变标签的性质，进行相互转换。建议按照原始性质使用，尽量不进行转换。</p>
+<h3 id="如何设计html？"><a href="#如何设计html？" class="headerlink" title="如何设计html？"></a><strong>如何设计html？</strong></h3><p>如下图，通常先设计好结构图，然后根据结构图再进行标签的书写。<br><img src="https://upload-images.jianshu.io/upload_images/4944427-b5704c57de05413d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="HTML5"><a href="#HTML5" class="headerlink" title="HTML5"></a><strong>HTML5</strong></h2><p>HTML4.01版本诞生于 1999 年。自从那以后，Web 世界已经经历了巨变。多媒体的大量应用，各类app不断涌现。不同于HTML4.01完全由W3C制定。HTML5 是 W3C 与 WHATWG 合作的结果。WHATWG 致力于 web 表单和应用程序，而 W3C 专注于 XHTML 2.0。HTML5草案的前身名为 Web Applications 1.0，于2004年被WHATWG提出，于2007年被W3C接纳，并成立了新的 HTML 工作团队。HTML5 的第一份正式草案已于2008年1月22日公布。最终在2014年定稿。</p>
+<p>注：W3C 指 World Wide Web Consortium，万维网联盟。<br>注：WHATWG 指 Web Hypertext Application Technology Working Group，Web超文本应用技术工作组。</p>
+<h3 id="HTML5建立的一些规则："><a href="#HTML5建立的一些规则：" class="headerlink" title="HTML5建立的一些规则："></a><strong>HTML5建立的一些规则：</strong></h3><ol>
+<li>新特性应该基于 HTML、CSS、DOM 以及 JavaScript。</li>
+<li>减少对外部插件的需求（比如 Flash）</li>
+<li>更优秀的错误处理</li>
+<li>更多取代脚本的标记</li>
+<li>HTML5应该独立于设备</li>
+</ol>
+<h3 id="HTML5中的新特性"><a href="#HTML5中的新特性" class="headerlink" title="HTML5中的新特性"></a><strong>HTML5中的新特性</strong></h3><ol>
+<li>用于绘画的 canvas 元素</li>
+<li>用于多媒体的 video 和 audio 元素</li>
+<li>对本地离线存储的更好的支持</li>
+<li>新的特殊内容元素，比如 article、footer、header、nav、section</li>
+<li>新的表单控件，比如 calendar、date、time、email、url、search</li>
+</ol>
+<h3 id="浏览器支持"><a href="#浏览器支持" class="headerlink" title="浏览器支持"></a><strong>浏览器支持</strong></h3><p>最新版本的 Chrome、Firefox、Safari 以及 Opera 基本上完全支持 HTML5 特性。IE9开始支持某些 HTML5 特性。详细对比：<br><a href="#/_blank">http://caniuse.com/#comparison</a><br><a href="#/_blank">http://html5test.com/compare/browser/firefoxmobile-35/chrome-39/ie-8.html</a></p>
+<h3 id="HTML4-01和HTML5结构区别"><a href="#HTML4-01和HTML5结构区别" class="headerlink" title="HTML4.01和HTML5结构区别"></a><strong>HTML4.01和HTML5结构区别</strong></h3><p> <img src="https://upload-images.jianshu.io/upload_images/4944427-86ac4ec9e255f77a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="HTML5新特性简单示例"><a href="#HTML5新特性简单示例" class="headerlink" title="HTML5新特性简单示例"></a><strong>HTML5新特性简单示例</strong></h3><h3 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a><strong>canvas</strong></h3><p>canvas标签使用 JavaScript 在网页上绘制图像。画布是一个矩形区域，您可以控制其每一像素。canvas 拥有多种绘制路径、矩形、圆形、字符以及添加图像的方法。<br>代码示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line"> &lt;html&gt;</span><br><span class="line">     &lt;body&gt;</span><br><span class="line">         &lt;canvas id=&quot;myCanvas&quot; width=&quot;200&quot; height=&quot;100&quot; style=&quot;border:1px solid #c3c3c3;&quot;&gt;</span><br><span class="line">             Your browser does not support the canvas element.</span><br><span class="line">         &lt;/canvas&gt;</span><br><span class="line">         &lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">             var c=document.getElementById(&quot;myCanvas&quot;);</span><br><span class="line">             var cxt=c.getContext(&quot;2d&quot;);//指定二维绘图，目前只支持2D绘图，后续可能会支持3D</span><br><span class="line">             cxt.moveTo(10,10);//绘制起点。（0，0）对应左上角，向右和向下递增</span><br><span class="line">             cxt.lineTo(150,50);//画一条直线（10,10）到（150,50）</span><br><span class="line">             cxt.lineTo(10,50);//画一条直线（150,50）到（10,50）</span><br><span class="line">             cxt.strokeStyle=&quot;green&quot;; //指定线条颜色</span><br><span class="line">             cxt.stroke();//显示绘图结果</span><br><span class="line">         &lt;/script&gt;</span><br><span class="line">     &lt;/body&gt;</span><br><span class="line"> &lt;/html&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="vedio-audio"><a href="#vedio-audio" class="headerlink" title="vedio/audio"></a><strong>vedio/audio</strong></h3><p>在HTML5以前，如果您想在网页中嵌入在线观看的视频，一般都需要使用Flash视频流，通过使用 <object> 和 <embed> 标签，就可以通过浏览器播放swf、flv等格式视频文件，但是前提是浏览器必须安装第三方插件：Adobe Flash Player。而现代智能手机和iPad等一般都不支持Flash，所以无法浏览网页上的视频。而 HTML 5 改变了这一事实，Web开发者只需要使用 <video> 标签就可以轻松加载视频文件，而不需要任何第三方插件。</p>
+<p>vedio支持的视频格式有三种：</p>
+<ol>
+<li>Ogg  带有 Theora 视频编码和 Vorbis 音频编码的 Ogg 文件</li>
+<li>MPEG4（MP4）带有 H.264 视频编码和 AAC 音频编码的 MPEG 4 文件</li>
+<li>WebM  带有 VP8 视频编码和 Vorbis 音频编码的 WebM 文件</li>
+</ol>
+<p>代码示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> &lt;video id=&quot;coures-video&quot; class=&quot;vjs-tech&quot; preload=&quot;none&quot; </span><br><span class="line">     poster=&quot;http://demo.com/upload/course/20160104/1451886552971.jpg&quot;</span><br><span class="line">     controls=&quot;controls&quot; loop=&quot;loop&quot; width=&quot;640px&quot; height=&quot;480px;&quot;&gt; </span><br><span class="line">      &lt;source src=&quot;http://demo.com/upload/course/20160104/1451886551972.mp4&quot; type=&quot;video/mp4&quot;&gt;</span><br><span class="line"> &lt;/video&gt;</span><br></pre></td></tr></table></figure></p>
+<p>audio与vedio基本相同,不再赘述。</p>
+<h3 id="Drag-和-Drop"><a href="#Drag-和-Drop" class="headerlink" title="Drag 和 Drop"></a><strong>Drag 和 Drop</strong></h3><p>拖放是一种常见的特性，即抓取对象以后拖到另一个位置。在 HTML5 中，拖放是标准的一部分，任何元素都能够拖放。只需要简单的几个属性和响应函数即可实现拖放。</p>
+<p>代码示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;div1&quot; ondrop=&quot;drop(event)&quot; ondragover=&quot;allowDrop(event)&quot;&gt;</span><br><span class="line">     &lt;img src=&quot;http://demo.com/images/11.jpg&quot; draggable=&quot;true&quot;     ondragstart=&quot;drag(event)&quot; id=&quot;drag1&quot; /&gt;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line"> &lt;div id=&quot;div2&quot; ondrop=&quot;drop(event)&quot; ondragover=&quot;allowDrop(event)&quot;&gt;&lt;/div&gt;</span><br><span class="line">```</span><br></pre></td></tr></table></figure></p>
+<p> //ondragover 事件规定在何处放置被拖动的数据。<br> function allowDrop(ev){<br>     ev.preventDefault();<br> }<br> //移动响应事件，获取正在移动的标签ID<br> function drag(ev){<br>     ev.dataTransfer.setData(“Text”,ev.target.id);<br> }<br> //进行放置 响应事件<br> function drop(ev) {<br>     ev.preventDefault();<br>     var data=ev.dataTransfer.getData(“Text”);<br>     ev.target.appendChild(document.getElementById(data));<br> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">### **INPUT新类型**</span><br><span class="line">HTML5 拥有多个新的表单输入类型，这些新特性提供了更好的输入控制和验证。email，url，number，range，Date pickers (date, month, week, time, datetime, datetime-local)，search，color 。</span><br><span class="line">- email 类型用于应该包含 e-mail 地址的输入域，在提交表单时，会自动验证 email 域的值：</span><br><span class="line">    &lt;input type=&quot;email&quot; name=&quot;user_email&quot; /&gt;</span><br><span class="line">- number 类型用于应该包含数值的输入域，还能够设定对所接受的数字的限定：</span><br><span class="line">   &lt;input type=&quot;number&quot; name=&quot;points&quot; min=&quot;1&quot; max=&quot;10&quot; /&gt;</span><br><span class="line">- Date Pickers（日期选择器）拥有多个可供选取日期和时间的新输入类型：</span><br><span class="line">date - 选取日、月、年</span><br><span class="line">month - 选取月、年</span><br><span class="line">week - 选取周和年</span><br><span class="line">time - 选取时间（小时和分钟）</span><br><span class="line">datetime - 选取时间、日、月、年（UTC 时间）</span><br><span class="line">datetime-local - 选取时间、日、月、年（本地时间）</span><br><span class="line"> &lt;input type=&quot;date&quot; name=&quot;user_date&quot; /&gt;</span><br><span class="line"></span><br><span class="line">### **本地存储**</span><br><span class="line">说到本地存储，真是历尽千辛万苦才走到HTML5这一步，之前的历史大概如下图所示：</span><br><span class="line">![](https://upload-images.jianshu.io/upload_images/4944427-e930aa1ef64979c9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line"></span><br><span class="line">最早的Cookies大小约4KB，而且IE6只支持每个域名20个cookies。优势就是大家都支持，而且支持得还比较好。后来IE又推出了userData，现在用的比较多的是Flash，空间是Cookie的25倍，基本够用。再之后Google推出了Gears，虽然没有限制，但是要装额外的插件。到了HTML5把这些都统一了，官方建议是每个网站5MB。所有支持的浏览器目前都采用的5MB，尽管有一些浏览器可以让用户设置，但对于网页制作者来说，目前的形势就5MB来考虑是比较适合的。</span><br><span class="line"></span><br><span class="line">对于重复的数据，HTML5可以直接从本地存储中读取数据，不必每次都向服务器发起请求从服务器获取。从而大幅提高网站性能和支持离线运行。对于不同的网站，数据存储于不同的区域，并且一个网站只能访问其自身的数据。</span><br><span class="line"></span><br><span class="line">HTML5 提供了两种在客户端存储数据的方法：</span><br><span class="line">1. localStorage - 没有时间限制的数据存储</span><br><span class="line">2. sessionStorage - 针对一个 session 的数据存储</span><br><span class="line"></span><br><span class="line">HTML5 使用 JavaScript 来存储和访问数据。使用方法如下：</span><br></pre></td></tr></table></figure></p>
+<p>if (localStorage.pagecount){<br>    localStorage.pagecount=Number(localStorage.pagecount) +1;<br> } else {<br>     localStorage.pagecount=1;<br> }<br> document.write(“Visits: “ + localStorage.pagecount + “ time(s).”);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## **CSS**</span><br><span class="line">层叠样式表 (Cascading Style Sheets)是一种用来表现HTML或XML等文件样式的计算机语言。CSS目前最新版本为CSS3，是能够真正做到网页表现与内容分离的一种样式设计语言。相对于传统HTML的表现而言，CSS能够对网页中的对象的位置排版进行像素级的精确控制，支持几乎所有的字体字号样式，拥有对网页对象和模型样式编辑的能力，并能够进行初步交互设计，有较强的易读性，被称为程序员的画笔。</span><br><span class="line">### **如何使用样式表？**</span><br><span class="line"></span><br><span class="line">有三种方法可以在网页上使用样式表：</span><br><span class="line"></span><br><span class="line">1.  外联式Linking（也叫外部样式）</span><br><span class="line">当样式需要被应用到很多页面的时候，外部样式表将是理想的选择。使用外部样式表，你就可以通过更改一个文件来改变整个站点的外观。</span><br></pre></td></tr></table></figure></p>
+<p><head></p>
+<p><link rel="stylesheet" type="text/css" href="mystyle.css"><br></head><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2. 嵌入式Embedding（也叫内页样式）</span><br><span class="line">当单个文件需要特别样式时，就可以使用内部样式表。你可以在 head 部分通过 &lt;style&gt; 标签定义内部样式表。</span><br></pre></td></tr></table></figure></p>
+<p><head><br>  <style type="text/css"><br>    body {background-color: red}<br>    p {margin-left: 20px}<br>  </style><br></head><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3. 内联式Inline（也叫行内样式）</span><br><span class="line">当特殊的样式需要应用到个别元素时，就可以使用内联样式。 使用内联样式的方法是在相关的标签中使用样式属性。样式属性可以包含任何 CSS 属性。以下实例显示出如何改变段落的颜色和左外边距。</span><br></pre></td></tr></table></figure></p>
+<p><p style="color: red; margin-left: 20px"><br>This is a paragraph<br></p><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">### **如何定义样式表**</span><br><span class="line"></span><br><span class="line">CSS 规则由两个主要的部分构成：选择器，以及一条或多条声明。如下图所示</span><br><span class="line"></span><br><span class="line">![](https://upload-images.jianshu.io/upload_images/4944427-df91f0bb24f4066a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### **选择器类型：**</span><br><span class="line">1. 标签选择器 p  &lt;p&gt;&lt;/p&gt;</span><br><span class="line">2. 类选择器 .my-class  &lt;p class=&quot;my-class&quot;&gt;&lt;/p&gt;</span><br><span class="line">3. ID选择器 #myDiv  &lt;div id=&quot;myDiv&quot;&gt;&lt;/div&gt;</span><br><span class="line">4. 属性选择器 [type=&quot;radio&quot;] &lt;input type=&quot;radio&quot; /&gt;</span><br><span class="line">5. 伪类/伪元素选择器 a:hover</span><br><span class="line">6. 以及上述各种选择器的组合。</span><br><span class="line"></span><br><span class="line">更多介绍，详见：[http://www.w3school.com.cn/cssref/css_selectors.asp](#/_blank)</span><br><span class="line"></span><br><span class="line">### **盒模型**</span><br><span class="line">网页设计中常听的属性名：内容(content)、填充(padding)、边框(border)、边界(margin)。这些属性我们可以把它转移到我们日常生活中的盒子（箱子）上来理解，日常生活中所见的盒子也就是能装东西的一种箱子，也具有这些属性，所以叫它盒子模式。CSS盒子模型就是在网页设计中经常用到的CSS技术所使用的一种思维模型。盒模型的模型如下图</span><br><span class="line">![](https://upload-images.jianshu.io/upload_images/4944427-57b0c88cb9d4c137.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line"></span><br><span class="line">![](https://upload-images.jianshu.io/upload_images/4944427-1ba2ba1a7fb9259f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line"></span><br><span class="line">### **display属性**</span><br><span class="line">display 属性规定了元素应该生成的框的类型。在上面html章节中我们提到了块级标签和内联标签，这只是默认属性，通过CSS中的display进行修改。还可以通过display控制标签是否显示。</span><br><span class="line">display常见的属性值如下：</span><br><span class="line">| 值 | 描述|</span><br><span class="line">|--|--|</span><br><span class="line">|none|此元素不会被显示。 |</span><br><span class="line">|block|此元素将显示为块级元素，此元素前后会带有换行符。|</span><br><span class="line">|inline|默认。此元素会被显示为内联元素，元素前后没有换行符。 |</span><br><span class="line">|inline-block|行内块元素。（CSS2.1 新增的值）|</span><br><span class="line">|table|此元素会作为块级表格来显示（类似 &lt;table&gt;），表格前后带有换行符。|</span><br><span class="line"></span><br><span class="line">### **position属性**</span><br><span class="line"></span><br><span class="line">position 属性规定元素的定位类型。这个属性定义建立元素布局所用的定位机制。任何元素都可以定位，不过绝对或固定元素会生成一个块级框，而不论该元素本身是什么类型。相对定位元素会相对于它在文档流中的默认位置偏移。</span><br><span class="line">| 值 | 描述 |</span><br><span class="line">|--|--|</span><br><span class="line">| absolute | 生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。元素的位置通过 &quot;left&quot;, &quot;top&quot;, &quot;right&quot; 以及 &quot;bottom&quot; 属性进行规定。|</span><br><span class="line">| fixed | 生成绝对定位的元素，相对于浏览器窗口进行定位。元素的位置通过 &quot;left&quot;, &quot;top&quot;, &quot;right&quot; 以及 &quot;bottom&quot; 属性进行规定。 |</span><br><span class="line">|relative | 生成相对定位的元素，相对于其正常位置进行定位。因此，&quot;left:20&quot; 会向元素的 LEFT 位置添加 20 像素。 |</span><br><span class="line">| static | 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。 |</span><br><span class="line">| inherit | 规定应该从父元素继承 position 属性的值。 |</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">![](https://upload-images.jianshu.io/upload_images/4944427-41ae02b45dade8ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line"></span><br><span class="line">![](https://upload-images.jianshu.io/upload_images/4944427-40d3d157ccdd74d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line">参考资料：[http://blog.jobbole.com/49320/](#/_blank)</span><br><span class="line"></span><br><span class="line">### **float属性**</span><br><span class="line">float 属性定义元素在哪个方向浮动。以往这个属性总应用于图像，使文本围绕在图像周围，不过在 CSS 中，任何元素都可以浮动。浮动元素会生成一个块级框，而不论它本身是何种元素。如果浮动非替换元素，则要指定一个明确的宽度；否则，它们会尽可能地窄。假如在一行之上只有极少的空间可供浮动元素，那么这个元素会跳至下一行，这个过程会持续到某一行拥有足够的空间为止。</span><br><span class="line">|值|描述| </span><br><span class="line">|--|--| </span><br><span class="line">|left|元素向左浮动。|</span><br><span class="line">|right|元素向右浮动。 |</span><br><span class="line">| none| 默认值。元素不浮动，并会显示在其在文本中出现的位置。 |</span><br><span class="line">| inherit | 规定应该从父元素继承 float 属性的值。|</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line"></span><br><span class="line">- 正常文档流</span><br><span class="line">![](https://upload-images.jianshu.io/upload_images/4944427-aa0d8c1aa75d3d99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line">- 设置float，浏览器的宽度“不够长”时 ![图片18.png](https://upload-images.jianshu.io/upload_images/4944427-423465a304018193.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line">- 设置float，浏览器的宽度“足够长”时</span><br><span class="line">![图片19.png](https://upload-images.jianshu.io/upload_images/4944427-7a9ebd1861bad959.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">参考资料：[http://www.cnblogs.com/polk6/archive/2013/07/25/3142187.html](#/_blank)</span><br><span class="line"></span><br><span class="line">### **浮动子标签撑开父标签**</span><br><span class="line"></span><br><span class="line">子标签如果都设置为float，会导致父标签没有高度值。导致结构错乱。</span><br><span class="line"></span><br><span class="line">如下两种方法可以解决：</span><br><span class="line"></span><br><span class="line">1. 添加一个空的div，设置clear属性为both</span><br><span class="line">![](https://upload-images.jianshu.io/upload_images/4944427-bc7177b5998354f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line">2. 父标签增加伪类，设置clear属性为both</span><br><span class="line">![图片21.png](https://upload-images.jianshu.io/upload_images/4944427-c2171dea0bb5eeec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line"></span><br><span class="line">### **其他常用属性**</span><br></pre></td></tr></table></figure></p>
+<p> background-color: gray;  /<em>背景颜色</em>/<br>border: 2px solid #e4e4e4; /<em>边框尺寸、类型、颜色</em>/<br> font-family: 宋体;  /<em>字体</em>/<br>color: #234567; /<em>文字颜色</em>/<br>font-size: 13px;  /<em>文字大小</em>/<br>width: 70px;  /<em>宽度</em>/<br>height: 70px;  /<em>高度</em>/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">### **CSS优先级**</span><br><span class="line">由于CSS选择器可以有多种形式，可以继承，可以重复定义。所以具体哪个样式生效需要计算优先级。注意：优先级相同时，晚定义的样式有效。</span><br><span class="line">通常情况下，给每个选择器设置一个数值，数值越大，优先级越高。实际没有这个数值，只是一种近似。</span><br><span class="line">html标签 （1）</span><br><span class="line">class  （10）</span><br><span class="line">id  （100）</span><br><span class="line">计算示例：</span><br><span class="line">div p     1+1 = 2</span><br><span class="line">span.test 1+10 = 11</span><br><span class="line">#id.test     100 + 10 = 110</span><br><span class="line">不同引入方式引入的CSS，优先级也不同。排序规则如下：!important &gt; inline &gt;id &gt; class &gt; tag</span><br><span class="line"></span><br><span class="line">### **CSS3**</span><br><span class="line">CSS3是CSS技术的升级版本，CSS3语言开发是朝着模块化发展的。以前的规范作为一个模块实在是太庞大而且比较复杂，所以，把它分解为一些小的模块，更多新的模块也被加入进来。这些模块包括： 盒子模型、列表模块、超链接方式 、语言模块 、背景和边框 、文字特效 、多栏布局等。</span><br><span class="line"></span><br><span class="line">参考：[http://www.w3school.com.cn/css3/](#/_blank)</span><br><span class="line"></span><br><span class="line">## **javascript**</span><br><span class="line"></span><br><span class="line">**java ≠ javascript  就像 马 ≠ 海马**</span><br><span class="line"></span><br><span class="line">JavaScript是一种属于网络的脚本语言,已经被广泛用于Web应用开发,常用来为网页添加各式各样的动态功能,为用户提供更流畅美观的浏览效果。JavaScript是甲骨文公司的注册商标，最初由Netscape的Brendan Eich设计。Netscape在最初将其脚本语言命名为LiveScript，后来Netscape在与Sun合作之后将其改名为JavaScript。JavaScript最初受Java启发而开始设计的，目的之一就是“看上去像Java”，因此语法上有类似之处，一些名称和命名规范也借自Java。但JavaScript的主要设计原则源自Self和Scheme。JavaScript与Java名称上的近似，是当时Netscape为了营销考虑与Sun微系统达成协议的结果。</span><br><span class="line"></span><br><span class="line">JavaScript脚本语言具有以下特点:</span><br><span class="line">1. 脚本语言。JavaScript是一种解释型的脚本语言,C、C++等语言先编译后执行,而JavaScript是在程序的运行过程中逐行进行解释。</span><br><span class="line">2. 基于对象。JavaScript是一种基于对象的脚本语言,它不仅可以创建对象,也能使用现有的对象。</span><br><span class="line">3. 简单。JavaScript语言中采用的是弱类型的变量类型,对使用的数据类型未做出严格的要求,是基于Java基本语句和控制的脚本语言,其设计简单紧凑。</span><br><span class="line">4. 动态性。JavaScript是一种采用事件驱动的脚本语言,它不需要经过Web服务器就可以对用户的输入做出响应。在访问一个网页时,鼠标在网页中进行鼠标点击或上下移、窗口移动等操作JavaScript都可直接对这些事件给出相应的响应。</span><br><span class="line">5. 跨平台性。JavaScript脚本语言不依赖于操作系统,仅需要浏览器的支持。因此一个JavaScript脚本在编写后可以带到任意机器上使用，部署成本小。</span><br><span class="line"></span><br><span class="line">不同于服务器端脚本语言，例如PHP与ASP，JavaScript主要被作为客户端脚本语言在用户的浏览器上运行，不需要服务器的支持。所以在早期程序员比较青睐于JavaScript以减少对服务器的负担，而与此同时也带来另一个问题：安全性。</span><br><span class="line"></span><br><span class="line">而随着服务器的强壮，虽然程序员更喜欢运行于服务端的脚本以保证安全，但JavaScript仍然以其跨平台、容易上手等优势大行其道。同时，有些特殊功能（如AJAX）必须依赖Javascript在客户端进行支持。随着引擎如V8和框架如Node.js的发展，及其事件驱动及异步IO等特性，JavaScript逐渐被用来编写服务器端程序。</span><br><span class="line"></span><br><span class="line">JavaScript被Netscape公司提交给ECMA(European Computer Manufacturers Association)制定为标准，称之为ECMAScript，标准编号ECMA-262。目前最新版为2015年发布的ECMAScript 6。</span><br><span class="line"></span><br><span class="line">下面对javascript的常用操作进行举例：</span><br><span class="line"></span><br><span class="line">### **写入 HTML 输出**</span><br></pre></td></tr></table></figure></p>
+<p>document.write(“<h1>This is a heading</h1>“);<br>document.write(“<p>This is a paragraph</p>“);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">### **对事件作出反应**</span><br></pre></td></tr></table></figure></p>
+<p><button type="button" onclick="alert('Welcome!')">点击这里</button><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">alert() 函数在 JavaScript 中并不常用，但它对于代码测试非常方便。</span><br><span class="line">onclick 鼠标点击事件。</span><br><span class="line"></span><br><span class="line">### **改变 HTML 内容**</span><br></pre></td></tr></table></figure></p>
+<p>x=document.getElementById(“demo”)  //查找元素<br>x.innerHTML=”Hello JavaScript”;    //改变内容<br>var img=document.getElementById(“myImg”)  //查找元素<br>img.src=”/i/eg_bulbon.gif”;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">您会经常看到 document.getElementByID(&quot;some id&quot;)。这个方法是 HTML DOM 中定义的。DOM（文档对象模型）是用以访问 HTML 元素的正式 W3C 标准。</span><br><span class="line"></span><br><span class="line">### **改变 HTML 样式**</span><br></pre></td></tr></table></figure></p>
+<p>x=document.getElementById(“demo”)  //找到元素<br>x.style.color=”#ff0000”;           //改变样式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">### **验证输入**</span><br></pre></td></tr></table></figure></p>
+<p>if isNaN(x) {alert(“Not Numeric”)};<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">详细的语言特性，参考：[http://www.w3school.com.cn/js/index.asp](#/_blank)</span><br><span class="line"></span><br><span class="line">### **jQuery**</span><br><span class="line"></span><br><span class="line">JQuery一个优秀的轻量级的Javascript库。它兼容CSS3，还兼容各种浏览器（IE 6.0+, FF 1.5+, Safari 2.0+, Opera 9.0+），jQuery2.0及后续版本不再支持IE6/7/8浏览器。jQuery使用户能更方便地处理HTML、events、实现动画效果，并且方便地为网站提供AJAX交互。jQuery还有一个比较大的优势是，它的文档说明很全，而且各种应用也说得很详细，同时还有许多成熟的插件可供选择。目前，绝大多数网站都在使用jQuery。</span><br><span class="line"></span><br><span class="line">示例：</span><br></pre></td></tr></table></figure></p>
+<p>$(“#h01”).attr(“style”,”color:red”).html(“Hello jQuery”)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">详细的语言特性，参考：[http://www.w3school.com.cn/jquery/](#/_blank)</span><br><span class="line"></span><br><span class="line">## **浏览器兼容**</span><br><span class="line"></span><br><span class="line">浏览器兼容性问题又被称为网页兼容性或网站兼容性问题，指网页在各种浏览器上的显示效果可能不一致而产生浏览器和网页间的兼容问题。在网站的设计和制作中，做好浏览器兼容，才能够让网站在不同的浏览器下都正常显示。因为不同浏览器使用内核及所支持的HTML，JS，CSS标准不同；以及用户客户端的环境不同（如分辨率不同）造成的显示效果不能达到理想效果。最常见的问题就是网页元素位置混乱，错位，动态效果失效等等。</span><br><span class="line"></span><br><span class="line">举例：</span><br><span class="line">1. IE的盒模型与W3C标准不符。</span><br><span class="line">2. IE8不支持html5的vedio，只能使用flash播放视频。</span><br><span class="line">3. IE8不支持图片圆角</span><br><span class="line">4. DOM 个别操作不一致</span><br></pre></td></tr></table></figure></p>
+<p>var obj = document.getElementById(‘objId’);<br>obj.setAttribute(‘onclick’,’funcitonname();’); //FIREFOX支持，IE不支持<br>obj.onclick=function(){fucntionname();}; //都支持<br>```</p>
+<h2 id="前端调试工具"><a href="#前端调试工具" class="headerlink" title="前端调试工具"></a><strong>前端调试工具</strong></h2><p>推荐使用Chrome devtools。</p>
+<h2 id="关于UX和前端"><a href="#关于UX和前端" class="headerlink" title="关于UX和前端"></a><strong>关于UX和前端</strong></h2><p>在前端开发过程中一般会引入比较成熟的前端框架，例如：Bootstarp（<a href="#/_blank">http://v3.bootcss.com/getting-started/</a>）。所以在UI设计时需要进行沟通，一旦选择了框架，尽量能和框架风格保持一致。当然也可以完全重新定义风格和自己开发。</p>
+<p>同样在图标使用上，一般也会选择成熟的图标库，例如：Font Awesome，Glyphicons。（<a href="#/_blank">http://www.bootcss.com/p/font-awesome/</a>）</p>
+<p>上面提到的兼容性设计问题。如果要支持IE8这类古董浏览器。再设计时很多新特性都无法支持，如果一定要支持，成本会很大。</p>
+</script></li></ul>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/10/16/FE/web前端介绍/" data-id="cjemvlvxp0000tccml2nsc0dh" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">__('next') &raquo;</a>
   </nav>
 </section>
         
@@ -233,7 +847,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
     </div>
   </div>
 
@@ -243,7 +857,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/工具/" style="font-size: 16.67px;">工具</a> <a href="/tags/性能/" style="font-size: 16.67px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 13.33px;">测试</a> <a href="/tags/自动化/" style="font-size: 13.33px;">自动化</a>
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
     </div>
   </div>
 
@@ -252,7 +866,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
     </div>
   </div>
 
@@ -265,23 +879,23 @@
       <ul>
         
           <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
             <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
           </li>
         
           <li>
             <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
-          </li>
-        
-          <li>
-            <a href="/2018/01/10/db/mongodb的internalQueryExecMaxBlockingSortBytes异常修复/">mongodb的internalQueryExecMaxBlockingSortBytes异常修复</a>
-          </li>
-        
-          <li>
-            <a href="/2018/01/10/java/非maven的jar包怎么引入maven工程/">非maven的jar包怎么引入maven工程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/01/10/swe/也谈TDD/">也谈TDD</a>
           </li>
         
       </ul>

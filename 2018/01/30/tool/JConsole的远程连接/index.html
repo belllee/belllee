@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JConsole的远程连接 | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="JConsole介绍JConsole是JDK自带的Java性能分析器，用来监听Java应用程序性能和跟踪代码。默认安装在JDK的bin目录（例如：C:\Program Files\Java\jdk1.8.0_144\bin），直接双击运行即可。JConsole可以监听本地的应用，也可以监听远程的应用。在新建连接界面上选择本地应用，或者输入远程连接地址，格式是ip:port，注意这个port是监听端">
+<meta name="keywords" content="工具,linux，java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JConsole的远程连接">
+<meta property="og:url" content="https://belllee.github.io/2018/01/30/tool/JConsole的远程连接/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="JConsole介绍JConsole是JDK自带的Java性能分析器，用来监听Java应用程序性能和跟踪代码。默认安装在JDK的bin目录（例如：C:\Program Files\Java\jdk1.8.0_144\bin），直接双击运行即可。JConsole可以监听本地的应用，也可以监听远程的应用。在新建连接界面上选择本地应用，或者输入远程连接地址，格式是ip:port，注意这个port是监听端">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4944427-73420e670c475117.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4944427-23976ac232a8d753.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-03-11T14:12:55.318Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JConsole的远程连接">
+<meta name="twitter:description" content="JConsole介绍JConsole是JDK自带的Java性能分析器，用来监听Java应用程序性能和跟踪代码。默认安装在JDK的bin目录（例如：C:\Program Files\Java\jdk1.8.0_144\bin），直接双击运行即可。JConsole可以监听本地的应用，也可以监听远程的应用。在新建连接界面上选择本地应用，或者输入远程连接地址，格式是ip:port，注意这个port是监听端">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/4944427-73420e670c475117.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tool/JConsole的远程连接" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/30/tool/JConsole的远程连接/" class="article-date">
+  <time datetime="2018-01-30T06:16:08.000Z" itemprop="datePublished">2018-01-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JConsole的远程连接
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="JConsole介绍"><a href="#JConsole介绍" class="headerlink" title="JConsole介绍"></a>JConsole介绍</h3><p>JConsole是JDK自带的Java性能分析器，用来监听Java应用程序性能和跟踪代码。默认安装在JDK的bin目录（例如：C:\Program Files\Java\jdk1.8.0_144\bin），直接双击运行即可。<br>JConsole可以监听本地的应用，也可以监听远程的应用。在新建连接界面上选择本地应用，或者输入远程连接地址，格式是ip:port，注意这个port是监听端口不是服务端口。<br><img src="http://upload-images.jianshu.io/upload_images/4944427-73420e670c475117.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="连接1.jpg"></p>
+<p>连接完成后进入监听界面，可以查看内存、线程、类、JVM等相关信息。<br><img src="http://upload-images.jianshu.io/upload_images/4944427-23976ac232a8d753.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="监听1.jpg"></p>
+<h3 id="关于远程连接"><a href="#关于远程连接" class="headerlink" title="关于远程连接"></a>关于远程连接</h3><p>测试环境部署在RedHat6.5服务器上，一般说明增加如下参数即可允许远程连接。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-Dcom.sun.management.jmxremote.port=<span class="number">8999</span></span><br><span class="line">-Dcom.sun.management.jmxremote.authenticate=<span class="keyword">false</span></span><br><span class="line">-Dcom.sun.management.jmxremote.ssl=<span class="keyword">false</span></span><br></pre></td></tr></table></figure></p>
+<p>但是实际测试无法连接，经过查询资料，最后配置如下，实现了远程连接。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(java -jar -Dcom.sun.management.jmxremote  -Dcom.sun.management.jmxremote.port=<span class="number">8999</span> -Dcom.sun.management.jmxremote.rmi.port=<span class="number">9999</span> -Dcom.sun.management.jmxremote.ssl=<span class="keyword">false</span> -Dcom.sun.management.jmxremote.authenticate=<span class="keyword">false</span> app-<span class="number">1.0</span>.jar&amp;)</span><br></pre></td></tr></table></figure></p>
+<p>同时还需要注意服务器的端口是否被屏蔽，hosts是否配置了实际IP。可以使用hostname -i命令来查询ip是否生效。例如实际ip是10.10.10.101，计算机名是mycomputer。hosts配置如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10.10</span>.10.101   mycomputer</span><br><span class="line"><span class="number">10.10</span>.10.101   localhost localhost.localdomain localhost4 localhost4.localdomain4</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2018/01/30/tool/JConsole的远程连接/" data-id="cjemvlvyl000dtccmag4vhotg" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          ZUUL路由服务遇到的坑
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">linux上使用publickey访问gerrit异常</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

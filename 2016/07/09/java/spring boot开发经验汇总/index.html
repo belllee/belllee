@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>spring boot开发经验汇总 | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文记录了Spring boot开发过程中遇到的一些坑，整理一下，希望能够帮助大家 spring boot工程在Eclipse中发布导出jar包方式（以demo工程为例）  工程右键，选择export-》java-》Runnbale JAR file 选择launch configuration,设置输出目标文件，勾选依赖库导入到单独目录（demo_lib） 将工程属性文件，例如applicati">
+<meta name="keywords" content="java,spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring boot开发经验汇总">
+<meta property="og:url" content="https://belllee.github.io/2016/07/09/java/spring boot开发经验汇总/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="本文记录了Spring boot开发过程中遇到的一些坑，整理一下，希望能够帮助大家 spring boot工程在Eclipse中发布导出jar包方式（以demo工程为例）  工程右键，选择export-》java-》Runnbale JAR file 选择launch configuration,设置输出目标文件，勾选依赖库导入到单独目录（demo_lib） 将工程属性文件，例如applicati">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4944427-43adf772b1f7a9b5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-03-11T07:19:34.672Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring boot开发经验汇总">
+<meta name="twitter:description" content="本文记录了Spring boot开发过程中遇到的一些坑，整理一下，希望能够帮助大家 spring boot工程在Eclipse中发布导出jar包方式（以demo工程为例）  工程右键，选择export-》java-》Runnbale JAR file 选择launch configuration,设置输出目标文件，勾选依赖库导入到单独目录（demo_lib） 将工程属性文件，例如applicati">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/4944427-43adf772b1f7a9b5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/spring boot开发经验汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/09/java/spring boot开发经验汇总/" class="article-date">
+  <time datetime="2016-07-09T06:24:08.000Z" itemprop="datePublished">2016-07-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      spring boot开发经验汇总
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文记录了Spring boot开发过程中遇到的一些坑，整理一下，希望能够帮助大家</p>
+<h1 id="spring-boot工程在Eclipse中发布"><a href="#spring-boot工程在Eclipse中发布" class="headerlink" title="spring boot工程在Eclipse中发布"></a>spring boot工程在Eclipse中发布</h1><p>导出jar包方式（以demo工程为例）</p>
+<ol>
+<li>工程右键，选择export-》java-》Runnbale JAR file<img src="https://upload-images.jianshu.io/upload_images/4944427-43adf772b1f7a9b5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></li>
+<li>选择launch configuration,设置输出目标文件，勾选依赖库导入到单独目录（demo_lib）</li>
+<li>将工程属性文件，例如application.properties拷贝到jar文件所在目录。<br>完成的发布包应该包括：demo.jar，demo_lib，application.properties等文件<br>执行 java -jar demo.jar即可启动整个项目</li>
+</ol>
+<h1 id="已有数据表如何导入入到项目的Entity"><a href="#已有数据表如何导入入到项目的Entity" class="headerlink" title="已有数据表如何导入入到项目的Entity"></a>已有数据表如何导入入到项目的Entity</h1><p>使用jpa工具导入<br>在 eclipse matketpalce里搜索jpa，选择 JPA Diagram Editor进行安装<br>在工程的属性里，选择 project facets 再选中JPA<br>工程右键，选择JPA Tools-&gt;Generate Entities from Tables。然后配置数据库连接字，选择数据表，生成entity</p>
+<h1 id="上传文件大小最大值设置"><a href="#上传文件大小最大值设置" class="headerlink" title="上传文件大小最大值设置"></a>上传文件大小最大值设置</h1><p>Spring boot默认最大上传文件是10Mb，如果要改变这个阈值需要自己设置。不同Spring boot版本存在差别。举例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//例如在application.properties</span><br><span class="line">//Spring Boot 1.3.x或者之前</span><br><span class="line">multipart.maxFileSize=500Mb</span><br><span class="line">multipart.maxRequestSize=1000Mb</span><br><span class="line">//Spring Boot 1.4.x或者之后</span><br><span class="line">spring.http.multipart.maxFileSize=500Mb</span><br><span class="line">spring.http.multipart.maxRequestSize=1000Mb</span><br><span class="line">//Spring Boot 2.0.x或者之后</span><br><span class="line">spring.servlet.multipart.maxFileSize=500Mb</span><br><span class="line">spring.servlet.multipart.maxRequestSize=1000Mb</span><br></pre></td></tr></table></figure></p>
+<p>注意：如果有使用zuul路由服务，还需要设置zuul的相关参数。</p>
+<h1 id="EntityNotFoundException"><a href="#EntityNotFoundException" class="headerlink" title="EntityNotFoundException"></a>EntityNotFoundException</h1><p>使用ManyToOne进行表关联且懒加载时，如果被关联的记录不存在时，序列化时报如下异常：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//关联定义如下</span><br><span class="line">@JoinColumn(name=&quot;topic_id&quot;)</span><br><span class="line">@JsonView(JsonViews.Public.class)</span><br><span class="line">@ManyToOne(fetch=FetchType.LAZY)</span><br><span class="line">public Topic getTopic() &#123;</span><br><span class="line">    return topic;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>异常信息如下：<br>Could not write content: Unable to find com.demo.entity.topic.Topic with id 14363<br>//跟踪代码，能发现<br>javax.persistence.EntityNotFoundException: Unable to find xxx<br>如果关联记录不存在，还需要返回结果，增加@NotFound(action= NotFoundAction.IGNORE)，解决方案：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@JoinColumn(name=&quot;topic_id&quot;)</span><br><span class="line">@ManyToOne(fetch=FetchType.LAZY)</span><br><span class="line">@NotFound(action= NotFoundAction.IGNORE)</span><br><span class="line">public Topic getTopic() &#123;</span><br><span class="line">    return topic;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="无法下载maven依赖库"><a href="#无法下载maven依赖库" class="headerlink" title="无法下载maven依赖库"></a>无法下载maven依赖库</h1><p>现象<br>下载依赖库失败。 Failure to transfer org.apache.maven.plugins:maven-compiler-plugin:pom:2.0.2 from <a href="http://repo1.maven.org/maven2" target="_blank" rel="noopener">http://repo1.maven.org/maven2</a> was cached in the local repository</p>
+<p>解决办法<br>在下面两个文件中的mirrors 组中增加自己公司里的私有仓库<br>The Maven install: $M2_HOME/conf/settings.xml<br>A user’s install: ${user.home}/.m2/settings.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;mirrors&gt;</span><br><span class="line">&lt;mirror&gt;</span><br><span class="line"> &lt;id&gt;nexus-demo&lt;/id&gt;</span><br><span class="line"> &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;</span><br><span class="line"> &lt;name&gt;Nexus demo&lt;/name&gt;</span><br><span class="line"> &lt;url&gt;http://maven.demo.com.cn/content/groups/public&lt;/url&gt;</span><br><span class="line">&lt;/mirror&gt;</span><br><span class="line">&lt;/mirrors&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后重新update，注意勾上强制更新。<br>STS里如果更新失败，可以尝试直接命令行 mvn clean &amp; mvn install</p>
+<h1 id="其他异常"><a href="#其他异常" class="headerlink" title="其他异常"></a>其他异常</h1><h2 id="Not-an-managed-type-class-com-demo-entity-Approve"><a href="#Not-an-managed-type-class-com-demo-entity-Approve" class="headerlink" title="Not an managed type: class com.demo.entity.Approve"></a>Not an managed type: class com.demo.entity.Approve</h2><p>class Approve定义没有添加注解@Entity</p>
+<h2 id="No-qualifying-bean-of-type-com-demo-service-ApplyService-found-for-dependency"><a href="#No-qualifying-bean-of-type-com-demo-service-ApplyService-found-for-dependency" class="headerlink" title="No qualifying bean of type [com.demo.service.ApplyService] found for dependency"></a>No qualifying bean of type [com.demo.service.ApplyService] found for dependency</h2><p>没有在config/JPAConfig.java里正确配置package信息。或者是没有给加上@Service注解。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2016/07/09/java/spring boot开发经验汇总/" data-id="cjemvlvy50003tccmu9l1somi" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/10/tool/Chrome无法搜索和安装插件的解决办法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          Chrome无法搜索和安装插件的解决办法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/09/FE/ng/AngularJS学习--Resource/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">AngularJS学习--Resource</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>centos安装mysql过程记录 | 李忠伟的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="软件版本：centos7，mysql5.6 具体安装过程： 1、通过ssh上传rpm安装文件2、由于centos默认安装了mariadb，需要先卸载。查询是否已安装：   $ rpm -qa |grep mariadb   如果已经安装，则卸载：  $ rpm -e --nodeps mariadb-libs-5.5.47-1.el7_2.x86_64 3、分别安装mysql server/cli">
+<meta name="keywords" content="工具,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos安装mysql过程记录">
+<meta property="og:url" content="https://belllee.github.io/2017/01/10/db/centos安装mysql过程记录/index.html">
+<meta property="og:site_name" content="李忠伟的个人博客">
+<meta property="og:description" content="软件版本：centos7，mysql5.6 具体安装过程： 1、通过ssh上传rpm安装文件2、由于centos默认安装了mariadb，需要先卸载。查询是否已安装：   $ rpm -qa |grep mariadb   如果已经安装，则卸载：  $ rpm -e --nodeps mariadb-libs-5.5.47-1.el7_2.x86_64 3、分别安装mysql server/cli">
+<meta property="og:locale" content="zh_cn">
+<meta property="og:updated_time" content="2018-03-11T06:58:11.498Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="centos安装mysql过程记录">
+<meta name="twitter:description" content="软件版本：centos7，mysql5.6 具体安装过程： 1、通过ssh上传rpm安装文件2、由于centos默认安装了mariadb，需要先卸载。查询是否已安装：   $ rpm -qa |grep mariadb   如果已经安装，则卸载：  $ rpm -e --nodeps mariadb-libs-5.5.47-1.el7_2.x86_64 3、分别安装mysql server/cli">
+  
+    <link rel="alternate" href="/atom.xml" title="李忠伟的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">李忠伟的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录点滴 分享成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">历史</a>
+        
+          <a class="main-nav-link" href="/2018/01/01/关于我/">关于我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://belllee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-db/centos安装mysql过程记录" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/10/db/centos安装mysql过程记录/" class="article-date">
+  <time datetime="2017-01-10T11:39:06.000Z" itemprop="datePublished">2017-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      centos安装mysql过程记录
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>软件版本：centos7，mysql5.6</p>
+<p>具体安装过程：</p>
+<h1 id="1、通过ssh上传rpm安装文件"><a href="#1、通过ssh上传rpm安装文件" class="headerlink" title="1、通过ssh上传rpm安装文件"></a>1、通过ssh上传rpm安装文件</h1><h1 id="2、由于centos默认安装了mariadb，需要先卸载。"><a href="#2、由于centos默认安装了mariadb，需要先卸载。" class="headerlink" title="2、由于centos默认安装了mariadb，需要先卸载。"></a>2、由于centos默认安装了mariadb，需要先卸载。</h1><pre><code>查询是否已安装：
+
+ $ rpm -qa |grep mariadb 
+
+如果已经安装，则卸载：
+
+$ rpm -e --nodeps mariadb-libs-5.5.47-1.el7_2.x86_64
+</code></pre><h1 id="3、分别安装mysql-server-client-devel。"><a href="#3、分别安装mysql-server-client-devel。" class="headerlink" title="3、分别安装mysql server/client/devel。"></a>3、分别安装mysql server/client/devel。</h1><pre><code>切换到安装包目录：    
+
+$ cd /usr/local/sw/MySql5.6
+
+ 执行安装命令：
+
+$ rpm -ivh MySQL-server-5.6.13-1.el6.x86_64.rpm
+
+ $ rpm -ivh MySQL-client-5.6.13-1.el6.x86_64.rpm
+
+ $ rpm -ivh MySQL-devel-5.6.13-1.el6.x86_64.rpm
+</code></pre><h1 id="4、复制服务启动文件"><a href="#4、复制服务启动文件" class="headerlink" title="4、复制服务启动文件"></a>4、复制服务启动文件</h1><pre><code>$ cp /usr/share/mysql/mysql.server /etc/init.d/mysqld
+</code></pre><h1 id="5、启动mysql服务"><a href="#5、启动mysql服务" class="headerlink" title="5、启动mysql服务"></a>5、启动mysql服务</h1><pre><code>$ /etc/init.d/mysqld start
+
+检查mysql 是否已经启动:$ netstat -atln | grep 3306
+</code></pre><h1 id="6、把mysql加入开机自启动"><a href="#6、把mysql加入开机自启动" class="headerlink" title="6、把mysql加入开机自启动:"></a>6、把mysql加入开机自启动:</h1><pre><code>$ chkconfig  --add mysqld  
+</code></pre><h1 id="7、设置账号密码"><a href="#7、设置账号密码" class="headerlink" title="7、设置账号密码"></a>7、设置账号密码</h1><pre><code>关闭mysql：$ /etc/init.d/mysql stop
+
+进入mysql安全模式: $ mysqld_safe --user=mysql --skip-grant-tables --skip-networking &amp;
+
+设置root账号密码，允许root远程连接，开发所有权限：
+
+mysql -u root
+
+mysql&gt; use mysql;
+
+mysql&gt; UPDATE user SET Password=PASSWORD(&apos;newpassword&apos;) where USER=&apos;root&apos;;
+
+mysql&gt; INSERT INTO mysql.user (Host,User,Password,ssl_cipher,x509_issuer,x509_subject) VALUES (&apos;%&apos;,&apos;root&apos;,PASSWORD(&apos;newpassword&apos;),&quot;&quot;,&quot;&quot;,&quot;&quot;); 
+
+mysql&gt; GRANT ALL PRIVILEGES ON *.* TO &apos;root&apos;@&apos;%&apos; IDENTIFIED BY &apos;newpassword&apos; WITH GRANT OPTION;
+
+mysql&gt; FLUSH PRIVILEGES;
+
+mysql&gt; quit
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://belllee.github.io/2017/01/10/db/centos安装mysql过程记录/" data-id="cjemvlvyl0004tccmipsgh3kz" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/12/FE/js/高性能JavaScript--DOM操作/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          高性能JavaScript--DOM操作
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/16/FE/web前端介绍/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">WEB前端介绍</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS/">AngularJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gerrit/">gerrit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，java/">linux，java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zuul/">zuul</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能/">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/敏捷/">敏捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AngularJS/" style="font-size: 14px;">AngularJS</a> <a href="/tags/JS/" style="font-size: 18px;">JS</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/gerrit/" style="font-size: 10px;">gerrit</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/linux，java/" style="font-size: 10px;">linux，java</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/zuul/" style="font-size: 10px;">zuul</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/性能/" style="font-size: 14px;">性能</a> <a href="/tags/敏捷/" style="font-size: 10px;">敏捷</a> <a href="/tags/测试/" style="font-size: 12px;">测试</a> <a href="/tags/自动化/" style="font-size: 12px;">自动化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/26/java/ZUUL路由服务遇到的坑/">ZUUL路由服务遇到的坑</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/tool/JConsole的远程连接/">JConsole的远程连接</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/tool/linux上使用publickey访问gerrit异常/">linux上使用publickey访问gerrit异常</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--创建和销毁对象/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/java/EffectiveJava--对象的通用方法/">EffectiveJava--对象的通用方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 belllee.github.io<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">历史</a>
+  
+    <a href="/2018/01/01/关于我/" class="mobile-nav-link">关于我</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
